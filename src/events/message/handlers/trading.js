@@ -67,7 +67,7 @@ module.exports = new MessageHandler(
     if (lineCheck) {
       msg.delete();
       reply('your trade-ad was 15 lines or longer, please post a shorter ad.');
-      return logMessage('15+ lines in trade ad');
+      return logMessage('trade ad was 15 lines or longer');
     }
     return null;
   },
