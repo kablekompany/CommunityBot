@@ -9,10 +9,7 @@ class MessageHandler {
   }
 
   static argify(msg, prefix, separator = / /g) {
-    if (
-      msg.content.startsWith(prefix) ||
-      msg.content.startsWith(prefix.toLowerCase())
-    ) {
+    if (msg.content.toLowerCase().startsWith(prefix.toLowerCase())) {
       return msg.content
         .slice(prefix.length)
         .split(separator)
