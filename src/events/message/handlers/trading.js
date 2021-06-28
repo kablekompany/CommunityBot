@@ -33,15 +33,15 @@ module.exports = new MessageHandler(
       return logMessage('trading coins in item-ads');
     }
 
-    if (filter(ctx.config.dmc.tradeBuying, 'sell')) {
-      msg.delete();
-      return logMessage('selling in buying-ads');
-    }
+    // if (filter(ctx.config.dmc.tradeBuying, 'sell')) {
+    //   msg.delete();
+    //   return logMessage('selling in buying-ads');
+    // }
 
-    if (filter(ctx.config.dmc.tradeSelling, 'buy')) {
-      msg.delete();
-      return logMessage('buying in selling-ads');
-    }
+    // if (filter(ctx.config.dmc.tradeSelling, 'buy')) {
+    //   msg.delete();
+    //   return logMessage('buying in selling-ads');
+    // }
     return null;
   },
   {
