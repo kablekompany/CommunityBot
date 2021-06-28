@@ -62,6 +62,13 @@ module.exports = new MessageHandler(
       reply('this channel is only for item-item trades!');
       return logMessage('trading coins in item-ads');
     }
+
+    const lineCheck = msg.content.split('\n').length >= 15;
+    if (lineCheck) {
+      msg.delete();
+      reply('your trade-ad was 15 lines or longer, please post a shorter ad.');
+      return logMessage('15+ lines in trade ad');
+    }
     return null;
   },
   {
