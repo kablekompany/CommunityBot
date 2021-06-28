@@ -11,7 +11,8 @@ module.exports = new MessageHandler(
       return null;
     }
 
-    if (!msg.content.toLowerCase().includes('dm')) {
+    const content = msg.content.toLowerCase().split(' ');
+    if (!content.includes('dm')) {
       return null;
     }
 
