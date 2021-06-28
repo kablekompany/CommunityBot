@@ -6,8 +6,7 @@ async function ready() {
   this.bot.user
     .setActivity('you', {
       type: 'WATCHING',
-    })
-    .then(() => this.bot.user.setStatus('dnd'));
+    });
   if (!log.bootLog.enabled) {
     return null;
   }
