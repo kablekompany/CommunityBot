@@ -21,7 +21,11 @@ class BotModel {
     this.cmds = [];
     this.bot = new Client({
       fetchAllMembers: true,
-      disableMentions: 'everyone',
+      disableMentions: 'all',
+      messageCacheMaxSize: 50,
+      messageCacheLifetime: 600,
+      messageSweepInterval: 60,
+      messageEditHistoryMaxSize: 60,
       ws: { intents },
     });
     this.config = require('../../configs/config.json');
