@@ -6,17 +6,11 @@ module.exports = new MessageHandler(
       return null;
     }
 
-    const filter = (channel, word, check = false) => {
+    const filter = (channel, word) => {
       const content = msg.content.toLowerCase();
       const badMsg = msg.channel.id === channel && content.includes(word);
-      if (check && badMsg) {
-        const safe = ['buy', 'sell'].every((w) => content.includes(w));
-        if (safe) {
-          return false;
-        }
-        return true;
-      }
-      if (badMsg) {
+      const safe = ['buy', 'sell'].every((w) => content.includes(w));
+      if (badMsg && !safe) {
         return true;
       }
       return false;
@@ -44,12 +38,6 @@ module.exports = new MessageHandler(
     const reply = (content) =>
       msg.reply(content).then((m) => m.delete({ timeout: 7500 }));
 
-    if (filter(ctx.config.dmc.tradeItems, 'coin')) {
-      msg.delete();
-      reply('this channel is only for item-item trades!');
-      return logMessage('trading coins in item-ads');
-    }
-
     if (filter(ctx.config.dmc.tradeBuying, 'sell', true)) {
       msg.delete();
       reply(
@@ -64,6 +52,15 @@ module.exports = new MessageHandler(
         `this channel is for selling stuff, go to <#${ctx.config.dmc.tradeBuying}> to buy.`,
       );
       return logMessage('buying in selling-ads');
+    }
+
+    if (
+      msg.channel.id === ctx.config.dmc.tradeItems &&
+      msg.content.split(' ').some((w) => w.match(/\b(coin|coins)\b/g))
+    ) {
+      msg.delete();
+      reply('this channel is only for item-item trades!');
+      return logMessage('trading coins in item-ads');
     }
     return null;
   },
