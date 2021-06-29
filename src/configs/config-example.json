@@ -1,8 +1,13 @@
 {
   "owners": [],
   "prefix": "d!",
-    "dmc": {
+  "dmc": {
     "modRole": "",
+    "memerID": "",
+    "sales": "",
+    "lottery": "",
+    "prestige": "",
+    "general": "",
     "tradeItems": "",
     "tradeBuying": "",
     "tradeSelling": "",
@@ -16,14 +21,6 @@
       "channel": ""
     },
     "dmLog": {
-      "enabled": false,
-      "channel": ""
-    },
-    "joinleaveLog": {
-      "enabled": false,
-      "channel": ""
-    },
-    "shutdownLog": {
       "enabled": false,
       "channel": ""
     }
