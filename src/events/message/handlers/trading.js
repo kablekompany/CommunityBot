@@ -54,15 +54,6 @@ module.exports = new MessageHandler(
       return logMessage('buying in selling-ads');
     }
 
-    if (
-      msg.channel.id === ctx.config.dmc.tradeItems &&
-      msg.content.match(/\b(coin|coins)\b/gi)
-    ) {
-      msg.delete();
-      reply('this channel is only for item-item trades!');
-      return logMessage('trading coins in item-ads');
-    }
-
     const lineCheck = msg.content.split('\n').length >= 15;
     if (lineCheck) {
       msg.delete();
