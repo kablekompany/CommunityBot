@@ -14,6 +14,7 @@ module.exports = {
     }
     return pages;
   },
+
   randomColour: () =>
     Number(
       colours[Math.floor(Math.random() * colours.length)].replace('#', '0x'),

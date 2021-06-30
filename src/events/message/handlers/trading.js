@@ -38,7 +38,7 @@ module.exports = new MessageHandler(
     const reply = (content) =>
       msg.reply(content).then((m) => m.delete({ timeout: 7500 }));
 
-    if (filter(ctx.config.dmc.tradeBuying, 'sell', true)) {
+    if (filter(ctx.config.dmc.tradeBuying, 'sell')) {
       msg.delete();
       reply(
         `this channel is for buying stuff, go to <#${ctx.config.dmc.tradeSelling}> to sell.`,
@@ -46,7 +46,7 @@ module.exports = new MessageHandler(
       return logMessage('selling in buying-ads');
     }
 
-    if (filter(ctx.config.dmc.tradeSelling, 'buy', true)) {
+    if (filter(ctx.config.dmc.tradeSelling, 'buy')) {
       msg.delete();
       reply(
         `this channel is for selling stuff, go to <#${ctx.config.dmc.tradeBuying}> to buy.`,

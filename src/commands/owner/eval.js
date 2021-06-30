@@ -22,6 +22,8 @@ module.exports = new OwnerCommand(
       result = e.message;
     }
 
+    const tokenRegex = new RegExp(ctx.token, 'gi');
+    result = result.replace(tokenRegex, 'no');
     if (result.length > 1500) {
       if (result.length >= 1901) {
         result = await OwnerCommand.uploadResult(result, {

@@ -4,12 +4,11 @@ const OwnerCommand = require('../../models/Command/OwnerCommand');
 module.exports = new OwnerCommand(
   async ({ ctx, msg, args }) => {
     const toExec = args.join(' ');
-
     const hrStart = process.hrtime();
     const hrDiff = process.hrtime(hrStart);
 
     exec(toExec, async (e, stdout, stderr) => {
-      if (stdout?.length + stderr?.length > 1990) {
+      if (stdout.length + stderr.length > 1990) {
         const haste = await OwnerCommand.uploadResult(
           `${stdout}\n\n${stderr}`,
           {
