@@ -11,7 +11,7 @@ module.exports = new MessageHandler(
       return null;
     }
 
-    if (!msg.content.match(/\b(dm|pm|msg me)\b/gi)) {
+    if (!msg.content.match(/\b(dm|pm me|msg me)\b/gi)) {
       return null;
     }
 
