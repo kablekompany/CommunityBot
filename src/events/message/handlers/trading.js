@@ -56,7 +56,7 @@ module.exports = new MessageHandler(
 
     if (
       msg.channel.id === ctx.config.dmc.tradeItems &&
-      msg.content.split(' ').some((w) => w.match(/\b(coin|coins)\b/g))
+      msg.content.match(/\b(coin|coins)\b/gi)
     ) {
       msg.delete();
       reply('this channel is only for item-item trades!');
