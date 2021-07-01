@@ -1,10 +1,6 @@
 module.exports = {
   logmsg: async (bot, msg, channel) => {
     const logChannel = bot.channels.resolve(channel);
-    const title =
-      msg.author.id !== bot.id
-        ? `Received DM from ${msg.author.tag}`
-        : `Sent DM to ${msg.author.tag}`;
 
     const description = [];
     if (msg.content) {
@@ -25,10 +21,11 @@ module.exports = {
     await logChannel.send({
       embed: {
         description: description.join('\n\n'),
-        title,
-        color: title.startsWith('Received')
-          ? Number(0x039be5)
-          : Number(0xdb4647),
+        title: `Received DM from ${msg.author.tag}`,
+        footer: {
+          text: msg.author.id,
+        },
+        color: 0x039be5,
       },
     });
   },

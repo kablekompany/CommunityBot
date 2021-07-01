@@ -20,7 +20,7 @@ class BotModel {
     this.token = token;
     this.cmds = [];
     this.bot = new Client({
-      fetchAllMembers: true,
+      fetchAllMembers: false,
       disableMentions: 'all',
       messageCacheMaxSize: 50,
       messageCacheLifetime: 600,

@@ -1,7 +1,3 @@
-/** @typedef {Object} ExtendedMessage
- * @prop {import("discord.js").Message} msg
- */
-
 class MessageHandler {
   constructor(fn, props) {
     this.fn = fn;
@@ -9,13 +5,13 @@ class MessageHandler {
   }
 
   static argify(msg, prefix, separator = / /g) {
-    if (msg.content.toLowerCase().startsWith(prefix.toLowerCase())) {
-      return msg.content
-        .slice(prefix.length)
-        .split(separator)
-        .filter((i) => !!i);
+    if (!msg.content.toLowerCase().startsWith(prefix.toLowerCase())) {
+      return null;
     }
-    return null;
+    return msg.content
+      .slice(prefix.length)
+      .split(separator)
+      .filter((i) => !!i);
   }
 
   async execute({ ctx, msg }) {
