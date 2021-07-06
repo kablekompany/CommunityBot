@@ -102,6 +102,17 @@ class Command {
       return null;
     }
 
+    if (
+      this.props.adminOnly &&
+      !msg.member._roles.includes(ctx.config.dmc.adminRole)
+    ) {
+      return null;
+    }
+
+    if (this.props.ownerOnly && !ctx.config.owners.includes(msg.author.id)) {
+      return null;
+    }
+
     if (this.props.argReq) {
       if (args.length === 0) {
         return this.props.responses.noArg;
@@ -132,6 +143,7 @@ class Command {
       aliases: [],
       usage: '<command>',
       ownerOnly: false,
+      adminOnly: false,
       argReq: false,
       minArgs: 0,
       responses: {

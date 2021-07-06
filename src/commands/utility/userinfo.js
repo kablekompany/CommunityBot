@@ -41,6 +41,6 @@ module.exports = new Command(
     name: 'userinfo',
     aliases: ['ui'],
     usage: 'View user info for someone or yourself',
-    ownerOnly: true,
+    adminOnly: true,
   },
 );

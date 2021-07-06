@@ -17,10 +17,7 @@ module.exports = new Command(
       return `Page **${pageNum}** doesn't exist you dingus, there are only ${pages.length} pages`;
     }
 
-    if (
-      ctx.config.owners.includes(msg.author.id) &&
-      msg.content.includes('--all')
-    ) {
+    if (msg.content.includes('--all')) {
       const color = ctx.utils.randomColour();
       await Promise.all(
         pages.map(async (page, index, arr) => {
@@ -49,8 +46,8 @@ module.exports = new Command(
   },
   {
     name: 'listemotes',
-    aliases: ['lsemotes', 'le'],
-    ownerOnly: true,
+    aliases: ['le'],
+    adminOnly: true,
     usage: 'View server emotes',
   },
 );

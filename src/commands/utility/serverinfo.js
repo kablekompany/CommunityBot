@@ -7,7 +7,7 @@ module.exports = new Command(
     try {
       invs = `[\`Link\`](${(await guild.fetchInvites()).first().url})`;
     } catch (_) {
-      invs = '[`None`](https://github.com/tintin9999/nullBot)';
+      invs = '[`Link`](https://discord.gg/memers)';
     }
     const vLevel = guild.verificationLevel.toLowerCase();
     const upper = vLevel.charAt(0).toUpperCase() + vLevel.substring(1);
@@ -61,6 +61,6 @@ module.exports = new Command(
     name: 'serverinfo',
     aliases: ['si'],
     usage: 'View server information',
-    ownerOnly: true,
+    adminOnly: true,
   },
 );

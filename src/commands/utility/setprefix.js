@@ -22,7 +22,7 @@ module.exports = new Command(
     usage: 'Change the prefix to whatever you want! <command>',
     argReq: true,
     minArgs: 1,
-    ownerOnly: true,
+    adminOnly: true,
     responses: {
       noArg: 'At least give me a new prefix to set...',
     },

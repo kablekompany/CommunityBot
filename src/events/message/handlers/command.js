@@ -9,10 +9,6 @@ module.exports = new MessageHandler(
       guild = await ctx.db.guilds.initGuild(guildID);
     }
 
-    if (!ctx.config.owners.includes(msg.author.id)) {
-      return null;
-    }
-
     const args = MessageHandler.argify(msg, guild.prefix);
 
     if (!args) {
@@ -29,11 +25,17 @@ module.exports = new MessageHandler(
     }
 
     await ctx.db.guilds.inc(guildID, 'commands');
-    let possibleMsg = await possibleCmd.execute({
-      ctx,
-      msg,
-      args,
-    });
+    let possibleMsg;
+    try {
+      possibleMsg = await possibleCmd.execute({
+        ctx,
+        msg,
+        args,
+      });
+    } catch (err) {
+      console.log(err.stack);
+    }
+
     if (possibleMsg) {
       if (possibleMsg instanceof Object) {
         possibleMsg = { embed: possibleMsg };

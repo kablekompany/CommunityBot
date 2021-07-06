@@ -7,7 +7,7 @@ module.exports = new Command(
   {
     name: 'ping',
     usage: '<command>',
-    ownerOnly: false,
+    adminOnly: true,
     argReq: false,
   },
 );

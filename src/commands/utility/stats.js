@@ -35,6 +35,6 @@ module.exports = new Command(
   {
     name: 'stats',
     usage: 'view bot stats',
-    ownerOnly: true,
+    adminOnly: true,
   },
 );

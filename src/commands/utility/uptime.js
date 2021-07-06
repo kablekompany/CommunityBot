@@ -9,7 +9,7 @@ module.exports = new Command(
   {
     name: 'uptime',
     usage: '<command>',
-    ownerOnly: true,
+    adminOnly: true,
     argReq: false,
   },
 );

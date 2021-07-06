@@ -7,15 +7,20 @@ module.exports = new MessageHandler(
       ctx.config.dmc.memerCategory,
     ];
 
+    if (msg.member._roles.includes(ctx.config.dmc.modRole)) {
+      return null;
+    }
+
     if (!categories.includes(msg.channel.parentID)) {
       return null;
     }
 
-    if (!msg.content.match(/\b(dm|pm me|msg me)\b/gi)) {
+    if (!msg.content.match(/(dm me|pm me|msg me)/gi)) {
       return null;
     }
 
     msg.delete();
+    ctx.utils.muteMember(msg);
 
     const channel = ctx.bot.channels.resolve(ctx.config.dmc.dramaWatcher);
     return channel.send({
@@ -25,7 +30,7 @@ module.exports = new MessageHandler(
           msg.author.id
         }\`) said:\n${ctx.utils.codeblock(msg.content)}\nChannel: <#${
           msg.channel.id
-        }>`,
+        }>\nUser has been muted for **20 minutes**.`,
         timestamp: new Date(),
         color: 15705088,
       },

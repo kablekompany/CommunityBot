@@ -1,4 +1,5 @@
 const colours = require('../../assets/colours.json');
+const config = require('../configs/config.json');
 
 module.exports = {
   paginate: (data, separator = '\n') => {
@@ -23,6 +24,12 @@ module.exports = {
   codeblock: (msg, language = '') => {
     const backticks = '```';
     return `${backticks}${language}\n${msg}${backticks}`;
+  },
+
+  muteMember: (msg, duration = 1.2e6) => {
+    // 20 minutes = default
+    msg.member.roles.add(config.dmc.mutedRole);
+    setTimeout(() => msg.member.roles.remove(config.dmc.mutedRole), duration);
   },
 
   prettyDate: () => {

@@ -18,7 +18,11 @@ class MessageHandler {
     if (msg.channel.type === 'dm' && !this.props.allowDM) return null;
     if (msg.author.bot && !this.props.allowBot) return null;
 
-    return this.fn({ ctx, msg });
+    try {
+      this.fn({ ctx, msg });
+    } catch (err) {
+      console.log(err.stack);
+    }
   }
 
   get props() {
