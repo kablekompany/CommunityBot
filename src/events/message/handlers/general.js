@@ -15,6 +15,10 @@ module.exports = new MessageHandler(
     }
 
     if (msg.content.match(/(dm me|pm me|msg me)/gi)) {
+      const modRoles = [ctx.config.dmc.trialMod, ctx.config.dmc.modRole];
+      if (modRoles.some((r) => msg.member._roles.includes(r))) {
+        return null;
+      }
       msg.delete();
       ctx.utils.muteMember(msg);
       const channel = ctx.bot.channels.resolve(ctx.config.dmc.dramaWatcher);

@@ -2,12 +2,13 @@ const MessageHandler = require('../../../models/Handlers/MessageHandler');
 
 module.exports = new MessageHandler(
   async ({ ctx, msg }) => {
+    const modRoles = [ctx.config.dmc.trialMod, ctx.config.dmc.modRole];
     const categories = [
       ctx.config.dmc.tradeCategory,
       ctx.config.dmc.memerCategory,
     ];
 
-    if (msg.member._roles.includes(ctx.config.dmc.modRole)) {
+    if (modRoles.some((r) => msg.member._roles.includes(r))) {
       return null;
     }
 
