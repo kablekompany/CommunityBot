@@ -1,5 +1,5 @@
 {
-  "name": "communitybot",
+  "name": "community-bot",
   "version": "1.0.0",
   "description": "Custom utility bot for Dank Memer Community",
   "main": "index.js",
