@@ -106,9 +106,11 @@ dist
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
 
-# config and secrets 
+# config and secrets and old code and tests
 src/configs/secrets.json
 src/configs/config.json
+old
+test.js
 
 # editors/workspace
 dmc.code-workspace
