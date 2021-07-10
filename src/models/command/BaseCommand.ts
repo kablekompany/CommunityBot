@@ -48,10 +48,10 @@ export class Command {
 			reqArgs: false,
 			minArgs: 0,
 			responses: {
-        noArgs: 'You need to put in some args!',
-        missingArgs: 'Not enough args!',
-      },
-      development: false,
+				noArgs: 'You need to put in some args!',
+				missingArgs: 'Not enough args!',
+			},
+			development: false,
 		};
 	}
 
@@ -104,7 +104,7 @@ export class Command {
 		if (user.match(pingMatch)) {
 			user = result.shift();
 			user = user.replace(/<@!?/g, '').replace(/>/g, '');
-      possibleUser = users.get(user as Snowflake);
+			possibleUser = users.get(user as Snowflake);
 		}
 		if (user.match(tagMatch)) {
 			user = result.shift();
@@ -121,21 +121,21 @@ export class Command {
 		const members = msg.guild.members.cache;
 		let possibleMember: GuildMember;msg
 		const result =
-      member.match(pingMatch) || member.match(tagMatch);
-    if (member.match(pingMatch)) {
-      member = result.shift();
-      member = member.replace(/<@!?/g, '').replace('>', '');
-      possibleMember = members.get(member as Snowflake);
-    }
+			member.match(pingMatch) || member.match(tagMatch);
+		if (member.match(pingMatch)) {
+			member = result.shift();
+			member = member.replace(/<@!?/g, '').replace('>', '');
+			possibleMember = members.get(member as Snowflake);
+		}
 
-    if (member.match(tagMatch)) {
-      member = result.shift();
-      possibleMember = members.find(m => m.user.tag === member);
-    } else {
-      possibleMember = members.find(m => m.nickname === member);
-    }
+		if (member.match(tagMatch)) {
+			member = result.shift();
+			possibleMember = members.find(m => m.user.tag === member);
+		} else {
+			possibleMember = members.find(m => m.nickname === member);
+		}
 
-    return possibleMember;
+		return possibleMember;
 	}
 
 	/**
@@ -146,14 +146,14 @@ export class Command {
 		let possibleChannel: TextChannel;
 
 		const result = channel.match(/<?(@!?)?(\d{15,21})>?/g);
-    if (channel.match(/(<#)?\d{15,21}>?/g)) {
-      channel = result.shift();
-      channel = channel.replace('<#', '').replace('>', '');
-      possibleChannel = channels.get(channel as Snowflake);
-    } else {
-      possibleChannel = channels.find((c) => c.name === channel);
-    }
-    return possibleChannel;
+		if (channel.match(/(<#)?\d{15,21}>?/g)) {
+			channel = result.shift();
+			channel = channel.replace('<#', '').replace('>', '');
+			possibleChannel = channels.get(channel as Snowflake);
+		} else {
+			possibleChannel = channels.find((c) => c.name === channel);
+		}
+		return possibleChannel;
 	}
 
 	/**
@@ -164,15 +164,15 @@ export class Command {
 		let possibleRole: Role;
 
 		const result = role.match(/<?(@!?)?(\d{15,21})>?/g);
-    if (role.match(/(<@&)?\d{15,21}>?/g)) {
-      role = result.shift();
-      role = role.replace(/<@&/g, '').replace(/>/g, '');
-      possibleRole = roles.get(role as Snowflake);
-    } else {
-      possibleRole = roles.find((r) => r.name === role);
-    }
+		if (role.match(/(<@&)?\d{15,21}>?/g)) {
+			role = result.shift();
+			role = role.replace(/<@&/g, '').replace(/>/g, '');
+			possibleRole = roles.get(role as Snowflake);
+		} else {
+			possibleRole = roles.find((r) => r.name === role);
+		}
 
-    return possibleRole;
+		return possibleRole;
 	}
 }
 

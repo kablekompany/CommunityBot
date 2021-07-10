@@ -47,11 +47,11 @@ export class BotUtil {
 	 */
 	parseDate = (date: Date) => date.toLocaleString('utc', {
 		hour: 'numeric',
-	  minute: 'numeric',
-	  weekday: 'long',
-	  day: 'numeric',
-	  year: 'numeric',
-	  month: 'long',
+		minute: 'numeric',
+		weekday: 'long',
+		day: 'numeric',
+		year: 'numeric',
+		month: 'long',
 	});
 
 	/**
@@ -60,24 +60,24 @@ export class BotUtil {
 	 */
 	parseTime = (time: number) => {
 		const methods = [
-      { name: 'd', count: 86400 },
-      { name: 'h', count: 3600 },
-      { name: 'm', count: 60 },
-      { name: 's', count: 1 },
-    ];
+			{ name: 'd', count: 86400 },
+			{ name: 'h', count: 3600 },
+			{ name: 'm', count: 60 },
+			{ name: 's', count: 1 },
+		];
 
-    const timeStr = [
-      Math.floor(time / methods[0].count).toString() + methods[0].name,
-    ];
-    for (let i = 0; i < 3; i++) {
-      timeStr.push(
-        Math.floor(
-          (time % methods[i].count) / methods[i + 1].count,
-        ).toString() + methods[i + 1].name,
-      );
-    }
+		const timeStr = [
+			Math.floor(time / methods[0].count).toString() + methods[0].name,
+		];
+		for (let i = 0; i < 3; i++) {
+			timeStr.push(
+				Math.floor(
+					(time % methods[i].count) / methods[i + 1].count,
+				).toString() + methods[i + 1].name,
+			);
+		}
 
-    return timeStr.filter((t) => !t.startsWith('0')).join(' ');
+		return timeStr.filter((t) => !t.startsWith('0')).join(' ');
 	}
 
 	/**
@@ -104,9 +104,9 @@ export class BotUtil {
 	prettyDate = () => {
 		const date = new Date(Date.now() - 1.44e7); // UTC to UTC -4
 		const times = [date.getHours(), date.getMinutes(), date.getSeconds()];
-    const formattedDate = `${times
-    	.map((t) => t.toString().padStart(2, '0'))
-      .join(':')} — ${date.toLocaleDateString()}`;
-    return formattedDate;
+		const formattedDate = `${times
+			.map((t) => t.toString().padStart(2, '0'))
+			.join(':')} — ${date.toLocaleDateString()}`;
+		return formattedDate;
 	}
 }
