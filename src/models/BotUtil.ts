@@ -1,4 +1,4 @@
-import { GuildMember, GuildChannel, PermissionResolvable, User, Message } from 'discord.js';
+import { GuildMember, GuildChannel, PermissionResolvable, User, Message, TextChannel, Snowflake } from 'discord.js';
 import colors from '../../assets/colours.json';
 import Bot from './Client';
 
@@ -109,4 +109,63 @@ export class BotUtil {
 			.join(':')} — ${date.toLocaleDateString()}`;
 		return formattedDate;
 	}
+
+	/**
+	 * Paginator.
+	 */
+	paginate = (data: any, separator = '\n') => {
+    let counter = 0;
+    const pages = [];
+    pages[counter] = '';
+    for (const parts of data) {
+      if (pages[counter].length > 1900) {
+        counter++;
+        pages[counter] = '';
+      }
+      pages[counter] += parts + separator;
+    }
+    return pages;
+  };
+
+  /**
+   * Mute a member from DMC.
+   * @TODO Extend GuildMember and apply this method.
+   * @param msg the message context
+   */
+  muteMember = (msg: Message, duration = 1.2e6) => {
+    // 20 minutes = default
+    msg.member.roles.add(this.bot.config.dmc.mutedRole as Snowflake);
+    setTimeout(() => msg.member.roles.remove(this.bot.config.dmc.mutedRole as Snowflake), duration);
+  }
+
+  /**
+   * Log a certain message to some specific log channel.
+   * @param msg the context msg
+   * @param channel the channel id to log for
+   */
+  logMsg = (msg: Message, channel: Snowflake) => {
+  	const logs = this.bot.bot.channels.resolve(channel);
+  	const description: string[] = [];
+
+  	if (msg.content) description.push(`**Content:**\n${msg.content}`);
+  	if (msg.attachments.size > 0) {
+  		description.push(`**Attachments:**${
+  			msg.attachments.map((attachment, i) => {
+  				return `[\`Attachment - ${i}\`](${attachment.url})`;
+  			}).join('\n')
+  		}`);
+  	}
+
+  	return (logs as TextChannel).send({ embeds: [{
+  		description: description.join('\n\n'),
+  		title: `Recieved DM from ${msg.author.tag}`,
+  		footer: { text: msg.author.id },
+  		color: 0x039be5
+  	}]});
+  }
+
+  /**
+   * Timeout for a certain amount of time.
+   */
+  sleep = (ms: number) => new Promise(res => setTimeout(res, ms));
 }

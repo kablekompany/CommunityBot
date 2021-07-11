@@ -1,7 +1,12 @@
-import { BaseCollection } from './BaseCollection';
+import { BaseCollection, BaseModel } from './BaseCollection';
 import { Collection } from 'mongodb';
 
-export class Guilds extends BaseCollection {
+export interface GuildModel extends BaseModel {
+	prefix: string;
+	commands: number;
+}
+
+export class Guilds extends BaseCollection<GuildModel> {
 	public constructor(collection: Collection) {
 		super(collection, {
 			prefix: 'd!',

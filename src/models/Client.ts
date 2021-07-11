@@ -2,8 +2,10 @@ import { Client, ClientOptions, Collection } from 'discord.js';
 import { readdirSync, PathLike } from 'fs';
 import { join } from 'path';
 
+import { Database } from '../database/Database';
 import { Command } from './command/BaseCommand';
 import { Handler } from './handler/BaseHandler';
+import { BotUtil } from './BotUtil';
 
 /**
  * Global type overrides.
@@ -35,6 +37,14 @@ export default class CommunityBot {
 	 * The bot config.
 	 */
 	public config: typeof import('../config')['default'];
+	/**
+	 * The mongo database.
+	 */
+	public db: Database;
+	/**
+	 * Bot utils.
+	 */
+	public utils: BotUtil;
 
 	/**
 	 * Constructor for this bot.
@@ -42,9 +52,11 @@ export default class CommunityBot {
 	 * @param options client options for discord.js
 	 */
 	public constructor(public token: string, options: ClientOptions) {
+		this.db = new Database();
 		this.bot = new Client(options);
 		this.cmds = new Collection();
 		this.config = require('../config').default;
+		this.utils = new BotUtil(this);
 	}
 
 	/**
@@ -87,6 +99,7 @@ export default class CommunityBot {
 	 * Connect to discord and load it's microtasks.
 	 */
 	async launch() {
+		await this.db.bootstrap(this.config);
 		this.loadCommands();
 		this.loadListeners();
 		return this.bot.login(this.token);

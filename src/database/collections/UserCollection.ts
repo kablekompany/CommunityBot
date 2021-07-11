@@ -1,7 +1,12 @@
-import { BaseCollection } from './BaseCollection';
+import { BaseCollection, BaseModel } from './BaseCollection';
 import { Collection } from 'mongodb';
 
-export class Users extends BaseCollection {
+export interface UserModel extends BaseModel {
+	reminders: object;
+	flags: number;
+}
+
+export class Users extends BaseCollection<UserModel> {
 	public constructor(collection: Collection) {
 		super(collection, {
 			reminders: {},

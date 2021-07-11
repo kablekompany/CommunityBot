@@ -1,31 +1,42 @@
-import { Collection, Condition, FilterQuery } from 'mongodb';
+import { Collection, Condition, FilterQuery, Cursor, InsertWriteOpResult } from 'mongodb';
 
-export class BaseCollection {
+export interface BaseModel {
+	/**
+	 * The id of this model.
+	 */
+	_id: any;
+} 
+
+export class BaseCollection<Model extends BaseModel> {
 	public collection: Collection;
-	public default: any;
+	public readonly default: Model;
 
-	public constructor(collection: Collection, def: any) {
+	public constructor(collection: Collection, def: Omit<Model, '_id'>) {
 		Object.defineProperty(this, 'default', { value: def });
 		this.collection = collection;
 	}
 
-	public find(query: FilterQuery<any>) {
+	public init(_id: string) {
+		return this.collection.insertOne({ _id, ...this.default }).then(i => i.ops[0] as Model);
+	}
+
+	public find(query: FilterQuery<Model>): Promise<Model[]> {
 		return this.collection.find({ ...query }).toArray();
 	}
 
-	public get(_id: string) {
+	public get(_id: string): Promise<Model> {
 		return this.collection.findOne({ _id }).then(found => ({ ...this.default, ...found }));
 	}
 
-	public getAll() {
-		return this.collection.find({});
+	public getAll(): Promise<Model[]> {
+		return this.collection.find({}).toArray();
 	}
 
-	public getLatest() {
-		return this.collection.find({}, { sort: { $natural: -1 } });
+	public getLatest(): Promise<Model[]> {
+		return this.collection.find({}, { sort: { $natural: -1 } }).toArray();
 	}
 
-	public update(_id: string, query: FilterQuery<any>) {
+	public update(_id: string, query: FilterQuery<Model>) {
 		return this.collection.updateOne({ _id }, { ...query }, { upsert: true });
 	}
 

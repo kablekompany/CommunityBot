@@ -117,7 +117,7 @@ export class Command {
 	/**
 	 * Resolve a user guild-wise.
 	 */
-	public resolveMember(msg: Message, member: string) {
+	public static resolveMember(msg: Message, member: string) {
 		const members = msg.guild.members.cache;
 		let possibleMember: GuildMember;msg
 		const result =
