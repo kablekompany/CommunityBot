@@ -3,7 +3,7 @@ import Bot from '../Client';
 
 export type HandlerFunction<Event extends keyof ClientEvents> = (this: Bot, ...args: ClientEvents[Event]) => Awaited<void>;
 
-export class Handler<Event extends keyof ClientEvents = never> {
+export class Handler<Event extends keyof ClientEvents = never> extends null {
 	/**
 	 * Construct a client listener.
 	 */

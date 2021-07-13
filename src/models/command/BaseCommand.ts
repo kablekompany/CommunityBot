@@ -1,4 +1,5 @@
 import { MessageOptions, Message, Role, Snowflake, User, Collection, GuildMember, TextChannel } from 'discord.js';
+import fetch from 'node-fetch';
 import Bot from '../Client';
 
 const pingMatch = /<?(@!?)?(\d{15,21})>?/g;
@@ -8,9 +9,9 @@ const tagMatch = /.+#\d{4}/g;
  * Function to run this command.
  * @param args the command parameters
  */
-export type CommandFunction = (args: CommandParams) => string | MessageOptions;
+export type CommandFunction = (this: Command, args: CommandParams) => string | MessageOptions;
 
-export class Command {
+export class Command extends null {
 	/**
 	 * The command function.
 	 */
@@ -30,16 +31,14 @@ export class Command {
 	 * @param props the command options
 	 */
 	public constructor(fn: CommandFunction, props: CommandProps) {
-		/** @type {CommandProps} */
 		this.props = Object.assign(this.defaultProps, props);
-		/** @type {CommandFunction} */
 		this.fn = fn.bind(this);
 	}
 
 	/**
 	 * The default command options.
 	 */
-	private get defaultProps(): Partial<CommandProps> {
+	public get defaultProps(): Partial<CommandProps> {
 		return {
 			aliases: [],
 			usage: '<command>',
@@ -86,11 +85,35 @@ export class Command {
 		if (typeof check === 'string') return check;
 
 		try {
-			const ret = await this.fn({ args, ctx, msg, cleanArgs });
+			const ret = await this.fn.bind(this)({ args, ctx, msg, cleanArgs });
 			return ret;
 		} catch(e) {
 			return `An error occured :(\n${e.message}`;
 		}
+	}
+
+	/**
+	 * Upload something to hastepaste.
+	 */
+	public static uploadResult(content: string, options: {
+		ext: string;
+		input: string;
+	} = { 
+		ext: 'javascript', 
+		input: '' 
+	}) {
+		const body = new URLSearchParams();
+		body.set('raw', 'false');
+		body.set('ext', options.ext);
+		body.set('text', encodeURIComponent((options.input ? `${options.input}\n\n` : '') + content));
+
+		return fetch('https://hastepaste.com/api/create', {
+			method: 'POST',
+			body,
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded'
+			}
+		}).then(r => r.text());
 	}
 
 	/**
