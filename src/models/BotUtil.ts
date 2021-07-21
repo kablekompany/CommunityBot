@@ -7,7 +7,7 @@ import {
   TextChannel,
   Snowflake,
 } from 'discord.js';
-import colors from '../../assets/colours.json';
+import colours from '../../assets/colours';
 import Bot from './Client';
 
 export class BotUtil {
@@ -104,7 +104,7 @@ export class BotUtil {
   /**
    * Generate a random color from daunt's epic color list.
    */
-  randomColour = () => Number(this.randomItem(colors).replace('#', '0x'));
+  randomColour = () => Number(this.randomItem(colours).replace('#', '0x'));
 
   /**
    * Transform something to a codeblock.
