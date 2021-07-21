@@ -11,7 +11,7 @@ class OwnerCommand extends Command {
       return null;
     }
     try {
-      super.execute({ ctx, msg, args, cleanArgs });
+      return super.execute({ ctx, msg, args, cleanArgs });
     } catch (err) {
       console.log(err.stack);
     }
