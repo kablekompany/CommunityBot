@@ -1,4 +1,4 @@
-import { Message, MessageEmbed, MessageEmbedOptions } from 'discord.js';
+import { Message, MessageOptions } from 'discord.js';
 import { MessageHandler } from '../../../models/handler/MessageHandler';
 
 export default new MessageHandler(
@@ -20,16 +20,24 @@ export default new MessageHandler(
     if (!possibleCmd) return null;
     await this.db.guilds.inc(msg.guild.id, 'commands');
 
+    let returned: string | MessageOptions;
     try {
-      const returned = await possibleCmd.execute({
+      returned = await possibleCmd.execute({
         args,
         ctx: this,
         msg,
         cleanArgs: args,
       });
-      if (returned) msg.channel.send(returned);
     } catch (e) {
       console.log(e.stack);
+    }
+
+    if (returned) {
+      if (returned instanceof Array) {
+        msg.channel.send({ embeds: returned });
+      } else {
+        msg.channel.send({ content: `${returned}` });
+      }
     }
   },
   {

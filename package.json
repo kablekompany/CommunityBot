@@ -1,10 +1,10 @@
 {
   "name": "community-bot",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Custom utility bot for Dank Memer Community",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
-    "run": "cd src/ && node index.js"
+    "run": "ts-node src/index.ts"
   },
   "repository": {
     "type": "git",
@@ -12,6 +12,7 @@
   },
   "author": "dauntless",
   "license": "MIT",
+  "type": "module",
   "dependencies": {
     "axios": "^0.21.1",
     "discord.js": "^13.0.0-dev.07017a9.1626869177",
@@ -19,7 +20,8 @@
     "mongodb": "^3.6.3",
     "node-fetch": "^2.6.1",
     "npm": "^6.14.9",
-    "pm2": "^5.1.0"
+    "pm2": "^5.1.0",
+    "ts-node": "^10.1.0"
   },
   "devDependencies": {
     "@types/dotenv": "^8.2.0",

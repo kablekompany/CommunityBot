@@ -21,7 +21,7 @@ const tagMatch = /.+#\d{4}/g;
 export type CommandFunction = (
   this: Command,
   args: CommandParams,
-) => string | MessageOptions;
+) => Promise<string | MessageOptions>;
 
 export class Command extends null {
   /**
@@ -195,7 +195,7 @@ export class Command extends null {
   }
 
   /**
-   * Resolve a channel form the guild.
+   * Resolve a channel from the guild.
    */
   public static resolveChannel(msg: Message, channel: string) {
     const channels = msg.guild.channels.cache as Collection<
@@ -262,21 +262,21 @@ export interface CommandProps {
   /**
    * The command triggers.
    */
-  aliases: string[];
+  aliases?: string[];
   /**
    * The usage of the command.
    */
   usage?: string;
   /**
-   * Wether this command is limited to bot owners only.
+   * Whether this command is limited to bot owners only.
    */
   ownerOnly?: boolean;
   /**
-   * Wether this is only limited for server admins only.
+   * Whether this is only limited for server admins only.
    */
   adminOnly?: boolean;
   /**
-   * Wether this command requires arguments.
+   * Whether this command requires arguments.
    */
   reqArgs?: boolean;
   /**
@@ -286,7 +286,7 @@ export interface CommandProps {
   /**
    * The responses for arguments.
    */
-  responses: {
+  responses?: {
     /**
      * Response if no args were passed.
      */
@@ -298,7 +298,7 @@ export interface CommandProps {
   };
   // argType: any[];
   /**
-   * Wether this command is available for prod.
+   * Whether this command is available for prod.
    */
   development?: boolean;
 }

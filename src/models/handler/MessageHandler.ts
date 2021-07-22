@@ -49,7 +49,7 @@ export class MessageHandler extends Handler<'messageCreate'> {
     if (msg.author.bot && !this.props.allowBot) return null;
 
     try {
-      this.fn.bind(ctx)(msg);
+      return this.fn.bind(ctx)(msg);
     } catch (e) {
       console.error(e.stack);
     }
@@ -63,11 +63,11 @@ export interface MessageHandlerProps
    */
   name: string;
   /**
-   * Wether to listen for messages from dms.
+   * Whether to listen for messages from DMs.
    */
-  allowDM: boolean;
+  allowDM?: boolean;
   /**
-   * Wether to allow bots for this handler.
+   * Whether to allow bots for this handler.
    */
-  allowBot: boolean;
+  allowBot?: boolean;
 }

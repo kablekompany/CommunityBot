@@ -92,17 +92,20 @@ export default class CommunityBot {
    * Load all listeners.
    */
   public loadListeners() {
-    return this.readSync(join(__dirname, '..', 'handlers'), (file) => {
-      const listeners: Handler[] = require(join(
-        __dirname,
-        '..',
-        'handlers',
-        file,
-      )).default;
-      for (const listener of listeners) {
-        this.bot.on(listener.props.event, listener.fn.bind(listener));
-      }
-    });
+    return this.readSync(
+      join(__dirname, '..', 'handlers'),
+      (file: string): void => {
+        const listeners: Handler[] = require(join(
+          __dirname,
+          '..',
+          'handlers',
+          file,
+        )).default;
+        for (const listener of listeners) {
+          this.bot.on(listener.props.event, listener.fn.bind(listener));
+        }
+      },
+    );
   }
 
   /**

@@ -12,7 +12,7 @@ export interface ModCommandProps extends CommandProps {
    */
   permissions: PermissionString[];
   /**
-   * Wether this command requires hierarchy check or not.
+   * Whether this command requires hierarchy check or not.
    */
   hierarchy: boolean;
 }

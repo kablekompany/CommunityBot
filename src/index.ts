@@ -1,3 +1,3 @@
-import Bot from './models/Client';
+import CommunityBot from './models/Client';
 
-new Bot(process.env.DISCORD_TOKEN, { intents: 5711 }).launch();
+new CommunityBot(process.env.DISCORD_TOKEN, { intents: 5711 }).launch();

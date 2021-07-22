@@ -41,13 +41,13 @@ export class BotUtil {
   };
 
   /**
-   * Check wether the author is the context guild owner.
+   * Check Whether the author is the context guild owner.
    * @param msg the discord.js message instance
    */
   isGuildOwner = (msg: Message) => msg.guild.ownerId === msg.author.id;
 
   /**
-   * Check wether the user is one of the bot owners.
+   * Check Whether the user is one of the bot owners.
    * @param config the config of this bot
    * @param user the user to be checked for
    */
