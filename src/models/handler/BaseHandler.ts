@@ -6,7 +6,7 @@ export type HandlerFunction<Event extends keyof ClientEvents> = (
   ...args: ClientEvents[Event]
 ) => Promise<void>;
 
-export class Handler<Event extends keyof ClientEvents = never> extends null {
+export class Handler<Event extends keyof ClientEvents = never> {
   /**
    * Construct a client listener.
    */

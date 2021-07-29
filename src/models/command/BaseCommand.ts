@@ -23,7 +23,7 @@ export type CommandFunction = (
   args: CommandParams,
 ) => Promise<string | MessageOptions>;
 
-export class Command extends null {
+export class Command {
   /**
    * The command function.
    */
