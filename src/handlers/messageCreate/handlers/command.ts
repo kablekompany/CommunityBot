@@ -36,7 +36,7 @@ export default new MessageHandler(
       if (returned instanceof Array) {
         msg.channel.send({ embeds: returned });
       } else {
-        msg.channel.send({ content: `${returned}` });
+        msg.channel.send(returned);
       }
     }
   },
