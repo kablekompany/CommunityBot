@@ -129,7 +129,7 @@ export class BotUtil {
   /**
    * Paginator.
    */
-  paginate = (data: any, separator = '\n') => {
+  paginate = (data: any[], separator = '\n') => {
     let counter = 0;
     const pages = [];
     pages[counter] = '';
@@ -148,13 +148,11 @@ export class BotUtil {
    * @TODO Extend GuildMember and apply this method.
    * @param msg the message context
    */
-  muteMember = (msg: Message, duration = 1.2e6) => {
+  muteMember = async (msg: Message, duration = 1.2e6) => {
     // 20 minutes = default
-    msg.member.roles.add(this.bot.config.dmc.mutedRole as Snowflake);
-    setTimeout(
-      () => msg.member.roles.remove(this.bot.config.dmc.mutedRole as Snowflake),
-      duration,
-    );
+    await msg.member.roles.add(this.bot.config.dmc.mutedRole as Snowflake);
+    await this.sleep(duration);
+    await msg.member.roles.remove(this.bot.config.dmc.mutedRole as Snowflake);
   };
 
   /**

@@ -53,7 +53,7 @@ export class Command {
   public get defaultProps(): Partial<CommandProps> {
     return {
       aliases: [],
-      usage: '<command>',
+      usage: '{command}',
       ownerOnly: false,
       adminOnly: false,
       reqArgs: false,

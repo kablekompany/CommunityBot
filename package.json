@@ -12,7 +12,6 @@
   },
   "author": "dauntless",
   "license": "MIT",
-  "type": "module",
   "dependencies": {
     "axios": "^0.21.1",
     "discord.js": "^13.0.0-dev.07017a9.1626869177",

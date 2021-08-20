@@ -102,7 +102,7 @@ export default class CommunityBot {
           file,
         )).default;
         for (const listener of listeners) {
-          this.bot.on(listener.props.event, listener.fn.bind(listener));
+          this.bot.on(listener.props.event, listener.fn.bind(this));
         }
       },
     );
