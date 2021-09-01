@@ -2,7 +2,7 @@ const MessageHandler = require('../../../models/Handlers/MessageHandler');
 
 module.exports = new MessageHandler(
   async ({ ctx, msg }) => {
-    if (!ctx.config.dmc.tradeCategory.includes(msg.channel.parentID)) {
+    if (!ctx.config.dmc.tradeCategory.includes(msg.channel.parentId)) {
       return null;
     }
 
@@ -19,29 +19,33 @@ module.exports = new MessageHandler(
     const dramaWatcher = ctx.bot.channels.resolve(ctx.config.dmc.dramaWatcher);
     const logMessage = (reason) =>
       dramaWatcher.send({
-        embed: {
-          title: `Reason: ${reason}`,
-          author: {
-            name: 'Trade Message Deleted',
-            icon_url: msg.author.avatarURL({ dynamic: true, size: 1024 }),
+        embeds: [
+          {
+            title: `Reason: ${reason}`,
+            author: {
+              name: 'Trade Message Deleted',
+              icon_url: msg.author.avatarURL({ dynamic: true, size: 1024 }),
+            },
+            description: `**${msg.author.tag}** (\`${
+              msg.author.id
+            }\`) said:\n${ctx.utils.codeblock(msg.content)}\nChannel: <#${
+              msg.channel.id
+            }>`,
+            timestamp: new Date(),
+            color: 15705088,
           },
-          description: `**${msg.author.tag}** (\`${
-            msg.author.id
-          }\`) said:\n${ctx.utils.codeblock(msg.content)}\nChannel: <#${
-            msg.channel.id
-          }>`,
-          timestamp: new Date(),
-          color: 15705088,
-        },
+        ],
       });
 
-    const reply = (content) =>
-      msg.reply(content).then((m) => m.delete({ timeout: 7500 }));
+    const reply = (content) => {
+      const r = msg.reply(content);
+      return setTimeout(() => r.delete(), 7500);
+    };
 
     if (filter(ctx.config.dmc.tradeBuying, 'sell')) {
       msg.delete();
       reply(
-        `this channel is for buying stuff, go to <#${ctx.config.dmc.tradeSelling}> to sell.`,
+        `This channel is for buying stuff, go to <#${ctx.config.dmc.tradeSelling}> to sell.`,
       );
       return logMessage('selling in buying-ads');
     }
@@ -49,7 +53,7 @@ module.exports = new MessageHandler(
     if (filter(ctx.config.dmc.tradeSelling, 'buy')) {
       msg.delete();
       reply(
-        `this channel is for selling stuff, go to <#${ctx.config.dmc.tradeBuying}> to buy.`,
+        `This channel is for selling stuff, go to <#${ctx.config.dmc.tradeBuying}> to buy.`,
       );
       return logMessage('buying in selling-ads');
     }
@@ -57,7 +61,7 @@ module.exports = new MessageHandler(
     const lineCheck = msg.content.split('\n').length >= 15;
     if (lineCheck) {
       msg.delete();
-      reply('your trade-ad was 15 lines or longer, please post a shorter ad.');
+      reply('Your trade-ad was 15 lines or longer, please post a shorter ad.');
       return logMessage('trade ad was 15 lines or longer');
     }
     return null;

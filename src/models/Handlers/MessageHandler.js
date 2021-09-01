@@ -15,14 +15,15 @@ class MessageHandler {
   }
 
   async execute({ ctx, msg }) {
-    if (msg.channel.type === 'dm' && !this.props.allowDM) return null;
+    if (msg.channel.type === 'DM' && !this.props.allowDM) return null;
     if (msg.author.bot && !this.props.allowBot) return null;
 
     try {
-      this.fn({ ctx, msg });
+      await this.fn({ ctx, msg });
     } catch (err) {
       console.log(err.stack);
     }
+    return null;
   }
 
   get props() {

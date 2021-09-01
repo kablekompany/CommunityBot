@@ -38,9 +38,10 @@ module.exports = new MessageHandler(
 
     if (possibleMsg) {
       if (possibleMsg instanceof Object) {
-        possibleMsg = { embed: possibleMsg };
+        msg.channel.send({ embeds: [possibleMsg] });
+      } else {
+        msg.channel.send(possibleMsg);
       }
-      msg.channel.send(possibleMsg);
     }
     return null;
   },

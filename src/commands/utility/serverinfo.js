@@ -3,6 +3,7 @@ const Command = require('../../models/Command/CommandModel');
 module.exports = new Command(
   async ({ ctx, msg, args }) => {
     const guild = args[0] ? ctx.bot.guilds.resolve(args[0]) : msg.guild;
+    const { username } = ctx.bot.users.resolve(msg.guild.ownerId);
     let invs;
     try {
       invs = `[\`Link\`](${(await guild.fetchInvites()).first().url})`;
@@ -24,9 +25,8 @@ module.exports = new Command(
         {
           name: 'Owner',
           value:
-            `**Tag**: \`${guild.owner.user.tag}\` [<@${guild.ownerID}>]\n` +
-            `**Nickname**: ${guild.owner.nickname || 'No Nickname'}\n` +
-            `**ID**: \`${guild.ownerID}\``,
+            `**Tag**: \`${username}\` [<@${guild.ownerId}>]\n` +
+            `**ID**: \`${guild.ownerId}\``,
           inline: true,
         },
         {

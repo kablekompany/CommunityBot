@@ -22,14 +22,16 @@ module.exports = new Command(
       await Promise.all(
         pages.map(async (page, index, arr) => {
           msg.channel.send({
-            embed: {
-              description: page,
-              color,
-              title: `Server emotes - ${msg.guild.name}`,
-              footer: {
-                text: `Page ${index + 1} of ${arr.length}`,
+            embeds: [
+              {
+                description: page,
+                color,
+                title: `Server emotes - ${msg.guild.name}`,
+                footer: {
+                  text: `Page ${index + 1} of ${arr.length}`,
+                },
               },
-            },
+            ],
           });
         }),
       );

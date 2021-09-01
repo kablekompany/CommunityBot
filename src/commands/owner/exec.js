@@ -16,15 +16,17 @@ module.exports = new OwnerCommand(
           },
         );
         return msg.channel.send({
-          embed: {
-            title: 'Result too long!',
-            description: `Exceeds 2,000 characters.\n**[View Here](${haste})**`,
-            footer: {
-              text: `Executed in ${hrDiff[0] > 0 ? `${hrDiff[0]}s ` : ''}${
-                hrDiff[1] / 10000
-              }ms`,
+          embeds: [
+            {
+              title: 'Result too long!',
+              description: `Exceeds 2,000 characters.\n**[View Here](${haste})**`,
+              footer: {
+                text: `Executed in ${hrDiff[0] > 0 ? `${hrDiff[0]}s ` : ''}${
+                  hrDiff[1] / 10000
+                }ms`,
+              },
             },
-          },
+          ],
         });
       }
       if (stdout) {

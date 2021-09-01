@@ -9,14 +9,16 @@ module.exports = new Command(
 
     try {
       await user.send({
-        embed: {
-          author: {
-            name: `You've received a message from a server admin in ${msg.guild.name}`,
-            icon_url: msg.guild.iconURL({ dynamic: true, size: 1024 }),
+        embeds: [
+          {
+            author: {
+              name: `You've received a message from a server admin in ${msg.guild.name}`,
+              icon_url: msg.guild.iconURL({ dynamic: true, size: 1024 }),
+            },
+            description: args.join(' '),
+            timestamp: new Date(),
           },
-          description: args.join(' '),
-          timestamp: new Date(),
-        },
+        ],
       });
       await msg.react('📨');
     } catch (err) {

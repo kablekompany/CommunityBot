@@ -1,32 +1,20 @@
-const { Client, Intents } = require('discord.js');
+const { Client, Collection, LimitedCollection } = require('discord.js');
 const { join } = require('path');
 const { readdirSync } = require('fs');
 const Database = require('../../Database/index');
-
-const intents = new Intents();
-intents.add(
-  'GUILDS',
-  'GUILD_BANS',
-  'GUILD_EMOJIS',
-  'GUILD_INVITES',
-  'GUILD_MEMBERS',
-  'GUILD_MESSAGES',
-  'GUILD_MESSAGE_REACTIONS',
-  'DIRECT_MESSAGES',
-);
 
 class BotModel {
   constructor(token) {
     this.token = token;
     this.cmds = [];
     this.bot = new Client({
-      fetchAllMembers: false,
-      disableMentions: 'all',
-      messageCacheMaxSize: 50,
-      messageCacheLifetime: 600,
-      messageSweepInterval: 60,
-      messageEditHistoryMaxSize: 60,
-      ws: { intents },
+      makeCache: (manager) => {
+        if (manager.name === 'MessageManager') {
+          return new LimitedCollection({ maxSize: 250 });
+        }
+        return new Collection();
+      },
+      intents: 5711,
     });
     this.config = require('../../configs/config.json');
     this.utils = {};

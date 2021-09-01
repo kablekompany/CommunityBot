@@ -19,14 +19,16 @@ module.exports = {
     }
 
     await logChannel.send({
-      embed: {
-        description: description.join('\n\n'),
-        title: `Received DM from ${msg.author.tag}`,
-        footer: {
-          text: msg.author.id,
+      embeds: [
+        {
+          description: description.join('\n\n'),
+          title: `Received DM from ${msg.author.tag}`,
+          footer: {
+            text: msg.author.id,
+          },
+          color: 0x039be5,
         },
-        color: 0x039be5,
-      },
+      ],
     });
   },
 };
