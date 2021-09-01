@@ -17,6 +17,7 @@ class BotModel {
       intents: 5711,
     });
     this.config = require('../../configs/config.json');
+    this.roles = require('../../../assets/communityRoles');
     this.utils = {};
     this.db = new Database();
   }

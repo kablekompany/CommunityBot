@@ -16,6 +16,9 @@ module.exports = new MessageHandler(
       return false;
     };
 
+    const deleteMsg = () => setTimeout(() => msg.delete(), 2000);
+    const reply = (content) => msg.reply(content);
+
     const dramaWatcher = ctx.bot.channels.resolve(ctx.config.dmc.dramaWatcher);
     const logMessage = (reason) =>
       dramaWatcher.send({
@@ -37,31 +40,26 @@ module.exports = new MessageHandler(
         ],
       });
 
-    const reply = (content) => {
-      const r = msg.reply(content);
-      return setTimeout(() => r.delete(), 7500);
-    };
-
     if (filter(ctx.config.dmc.tradeBuying, 'sell')) {
-      msg.delete();
       reply(
         `This channel is for buying stuff, go to <#${ctx.config.dmc.tradeSelling}> to sell.`,
       );
+      deleteMsg();
       return logMessage('selling in buying-ads');
     }
 
     if (filter(ctx.config.dmc.tradeSelling, 'buy')) {
-      msg.delete();
       reply(
         `This channel is for selling stuff, go to <#${ctx.config.dmc.tradeBuying}> to buy.`,
       );
+      deleteMsg();
       return logMessage('buying in selling-ads');
     }
 
     const lineCheck = msg.content.split('\n').length >= 15;
     if (lineCheck) {
-      msg.delete();
       reply('Your trade-ad was 15 lines or longer, please post a shorter ad.');
+      deleteMsg();
       return logMessage('trade ad was 15 lines or longer');
     }
     return null;

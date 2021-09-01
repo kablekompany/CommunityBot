@@ -4,7 +4,7 @@ class Guilds extends BaseCollection {
   constructor(collection) {
     super(collection);
     this.default = {
-      prefix: 'd!',
+      prefix: '!',
       commands: 0,
     };
   }
