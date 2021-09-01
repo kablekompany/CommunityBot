@@ -18,7 +18,6 @@ module.exports = new Command(
           value:
             `**Name**: ${guild.name}\n` +
             `**ID**: \`${guild.id}\`\n` +
-            `**Region**: ${guild.region}\n` +
             `**Verification**: ${upper}`,
           inline: true,
         },
