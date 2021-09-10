@@ -35,7 +35,7 @@ module.exports = new Command(
             `**Channels**: ${guild.channels.cache.size}\n` +
             `**Emotes**: ${guild.emojis.cache.size}\n` +
             `**Roles**: ${guild.roles.cache.size}\n` +
-            `**Members**: ${guild.memberCount}`,
+            `**Members**: ${guild.memberCount.toLocaleString()}`,
           inline: true,
         },
         {

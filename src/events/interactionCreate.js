@@ -16,6 +16,7 @@ module.exports = async function oninteraction(interaction) {
     const reply = (stuff) =>
       interaction.reply(stuff).catch((e) => console.error(e.message));
 
+    await interaction.guild.members.fetch(interaction.member.id);
     if (!role) {
       return reply({
         content: 'uh this is awkward, go yell at daunt',

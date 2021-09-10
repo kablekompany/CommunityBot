@@ -13,7 +13,7 @@ module.exports = new Command(
             }\n` +
             `**Emotes**: ${bot.emojis.cache.size}\n` +
             `**Guilds**: ${bot.guilds.cache.size}\n` +
-            `**Users**: ${bot.users.cache.size}\n`,
+            `**Users**: ${bot.users.cache.size.toLocaleString()}\n`,
           inline: false,
         },
         {
