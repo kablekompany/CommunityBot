@@ -99,10 +99,12 @@ module.exports = async function oninteraction(interaction) {
 
   // Slash commands
   try {
-    if (!this.slashCmds.has(interaction.commandName)) {
+    if (!interaction.client.slashCmds.has(interaction.commandName)) {
       return null;
     }
-    await this.slashCmds.get(interaction.commandName).execute(interaction);
+    await interaction.client.slashCmds
+      .get(interaction.commandName)
+      .execute(interaction);
   } catch (error) {
     console.error(`[Application Command Interaction] ${error}`);
     await interaction.reply({

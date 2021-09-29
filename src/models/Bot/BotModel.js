@@ -11,7 +11,6 @@ class BotModel {
   constructor(token) {
     this.token = token;
     this.cmds = new Collection();
-    this.slashCmds = new Collection();
     this.bot = new Client({
       makeCache: (manager) => {
         if (manager.name === 'MessageManager') {
@@ -22,6 +21,7 @@ class BotModel {
       intents: 4847,
     });
     this.bot.player = new Player(this.bot);
+    this.bot.slashCmds = new Collection();
     this.config = require('../../configs/config.json');
     this.roles = require('../../../assets/communityRoles');
     this.utils = {};
@@ -57,11 +57,10 @@ class BotModel {
       if (!command.name) {
         return console.error(`The file \`${file}\` is missing a command name.`);
       }
-      this.slashCmds.set(command.name, command);
+      this.bot.slashCmds.set(command.name, command);
     }
 
-    const command = this.slashCmds.map(({ execute, ...data }) => data);
-
+    const command = this.bot.slashCmds.map(({ execute, ...data }) => data);
     const rest = new REST({ version: '9' }).setToken(this.token);
 
     try {
