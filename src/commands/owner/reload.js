@@ -1,5 +1,6 @@
 /* eslint-disable no-restricted-syntax */
 const { join } = require('path');
+const { Collection } = require('discord.js');
 const OwnerCommand = require('../../models/Command/OwnerCommand');
 const config = require('../../configs/config.json');
 
@@ -12,7 +13,7 @@ module.exports = new OwnerCommand(
           delete require.cache[path];
         }
       }
-      ctx.cmds = [];
+      ctx.cmds = new Collection();
       ctx.loadCommands();
       return 'Reloaded all commands';
     }
@@ -41,7 +42,8 @@ module.exports = new OwnerCommand(
           path.includes(join('src', 'configs')) ||
           path.includes(join('src', 'commands')) ||
           path.includes(join('src', 'events')) ||
-          path.includes(join('src', 'utils'))
+          path.includes(join('src', 'utils')) ||
+          path.includes(join('src', 'slashCommands'))
         ) {
           delete require.cache[path];
         }
@@ -49,7 +51,7 @@ module.exports = new OwnerCommand(
       delete ctx.bot._events;
       ctx.loadListeners();
 
-      ctx.cmds = [];
+      ctx.cmds = new Collection();
       ctx.loadCommands();
 
       ctx.utils = {};

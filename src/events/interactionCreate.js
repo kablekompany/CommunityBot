@@ -4,11 +4,11 @@ const { selfRoles, colourRoles } = require('../../assets/communityRoles');
 
 const buttonChannel = '882509580024840192';
 /**
- * @param {import('discord.js').Componentinteraction} interaction interaction received by the API
+ * @param {import('discord.js').Interaction} interaction interaction received by the API
  * @returns {null}
  */
 module.exports = async function oninteraction(interaction) {
-  if (interaction.message.channelId === buttonChannel) {
+  if (interaction.channelId === buttonChannel) {
     const role = interaction.guild.roles.cache.get(
       selfRoles[interaction.customId],
     );
@@ -95,6 +95,20 @@ module.exports = async function oninteraction(interaction) {
       });
       console.error(err.message);
     }
+  }
+
+  // Slash commands
+  try {
+    if (!this.slashCmds.has(interaction.commandName)) {
+      return null;
+    }
+    await this.slashCmds.get(interaction.commandName).execute(interaction);
+  } catch (error) {
+    console.error(`[Application Command Interaction] ${error}`);
+    await interaction.reply({
+      content: 'There was an error while executing this command :(',
+      ephemeral: true,
+    });
   }
   return null;
 };
