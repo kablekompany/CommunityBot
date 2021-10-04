@@ -106,11 +106,7 @@ module.exports = async function oninteraction(interaction) {
       .get(interaction.commandName)
       .execute(interaction);
   } catch (error) {
-    console.error(`[Application Command Interaction] ${error}`);
-    await interaction.reply({
-      content: 'There was an error while executing this command :(',
-      ephemeral: true,
-    });
+    console.error(`[Application Command Interaction] ${error.stack}`);
   }
   return null;
 };

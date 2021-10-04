@@ -9,7 +9,7 @@ module.exports = new Command(
           name: 'Cache',
           value:
             `**Channels**: ${
-              bot.channels.cache.filter((c) => c.type === 'text').size
+              bot.channels.cache.filter((c) => c.type === 'GUILD_TEXT').size
             }\n` +
             `**Emotes**: ${bot.emojis.cache.size}\n` +
             `**Guilds**: ${bot.guilds.cache.size}\n` +
@@ -19,10 +19,10 @@ module.exports = new Command(
         {
           name: 'Latency',
           value:
-            `**Uptime**: ${ctx.utils.parseTime(
-              Math.round(bot.uptime / 1000),
-            )}\n` +
-            `**Shard online since**: ${ctx.utils.parseDate(bot.readyAt)}\n` +
+            `**Uptime**: <t:${Math.round(
+              Date.now() / 1000 - process.uptime(),
+            )}:R>\n` +
+            `**Shard online since**: ${ctx.utils.relativeTime(bot.readyAt)}\n` +
             `**Ping**: ${Math.round(bot.ws.ping)}\n`,
         },
       ],

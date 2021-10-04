@@ -1,3 +1,4 @@
+const { promisify } = require('util');
 const colours = require('../../assets/colours.json');
 const config = require('../configs/config.json');
 
@@ -24,6 +25,17 @@ module.exports = {
   codeblock: (msg, language = '') => {
     const backticks = '```';
     return `${backticks}${language}\n${msg}${backticks}`;
+  },
+
+  removeDuplicates: (array) => Array.from(new Set(array).values()),
+
+  relativeTime: (date = Date.now()) => `<t:${Math.round(date / 1000)}:R>`,
+
+  randomInArray: (array) => array[Math.floor(Math.random() * array.length)],
+
+  sleep: async (ms) => {
+    const wait = promisify(setTimeout);
+    await wait(ms);
   },
 
   muteMember: (msg, duration = 1.2e6) => {
