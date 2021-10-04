@@ -68,22 +68,28 @@ module.exports = {
 
     collector.on('end', async (collected) => {
       users = removeDuplicates(collected.map((c) => c.user));
-      if (users.length <= 1) {
-        return interaction.followUp('Not enough people joined :(');
-      }
-      return message.edit({
+      await message.edit({
         content: `**Event ended** ${relativeTime()} and **\`${
-          users.length
-        }\`** people joined!`,
+          users.length === 1 ? 'one person' : `${users.length} people`
+        }\`** joined!`,
         components: [
           new MessageActionRow().addComponents(joinButton.setDisabled(true)),
         ],
       });
+      if (users.length <= 1) {
+        return interaction.followUp('Not enough people joined :(');
+      }
+      return null;
     });
 
     await sleep(time);
     const winner1 = randomInArray(users);
     const winner2 = randomInArray(users.filter((u) => u !== winner1));
+
+    if (!winner1 || !winner2) {
+      return null;
+    }
+
     const winners = [winner1.id, winner2.id];
     const choices = new Collection();
     const getChoice = (winner) =>
