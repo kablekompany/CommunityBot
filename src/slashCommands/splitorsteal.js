@@ -85,7 +85,9 @@ module.exports = {
 
     await sleep(time);
     const winner1 = randomInArray(users);
-    const winner2 = randomInArray(users.filter((u) => u !== winner1));
+    const winner2 = randomInArray(
+      users.filter((u) => u.user.id !== winner1.user.id),
+    );
 
     if (!winner1 || !winner2) {
       return null;
