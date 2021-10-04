@@ -91,7 +91,7 @@ module.exports = {
       return null;
     }
 
-    // add event participant role to both users
+    // add event participant role to both users for 2 minutes
     await Promise.all(
       [winner1, winner2].map(async ({ member }) => {
         await member.roles.add(dmc.eventParticipant);
@@ -111,45 +111,35 @@ module.exports = {
       .setStyle('SUCCESS')
       .setCustomId('split')
       .setLabel('Split')
-      .setEmoji('💸')
-      .setDisabled(true);
-
+      .setEmoji('💸');
     const stealButton = new MessageButton()
       .setStyle('DANGER')
       .setCustomId('steal')
       .setLabel('Steal')
-      .setEmoji('a:pepeRobber:894458233769558096')
-      .setDisabled(true);
+      .setEmoji('a:pepeRobber:894458233769558096');
 
-    const prompt = await interaction.channel.send({
+    await interaction.followUp({
       content: `${winnerMentions} are the contestants!`,
       embeds: [
         {
-          title: `${prize} is on the line! Ends <t:${Math.round(
-            Date.now() / 1000 + 120,
-          )}:R>`,
-          description:
-            'Both of you have **1 minute and 30 seconds to discuss**, and then **30 seconds to choose** either **SPLIT** or **STEAL**! Remember, if both users choose steal then it has to be re-done!',
+          title: `${prize} is on the line!`,
+          description: `Both of you have **1 minute and 30 seconds to discuss**, and then **30 seconds to choose** either **SPLIT** or **STEAL**! Remember, if both users choose steal then it has to be re-done!\n\nA message with 2 buttons (split/steal) will be posted <t:${Math.round(
+            Date.now() / 1000 + 90,
+          )}:R> for both contestants to choose!`,
           footer: {
             icon_url: interaction.guild.iconURL({ dynamic: true }),
             text: 'Results will be posted after both users have discussed and made a choice.',
           },
         },
       ],
-      components: [
-        new MessageActionRow().addComponents(splitButton, stealButton),
-      ],
     });
 
     // wait 90s then enable buttons for players to make a choice
     await sleep(time * 3);
-    await prompt.edit({
+    const prompt = await interaction.channel.send({
       content: `It's time for ${winnerMentions} to make a choice!`,
       components: [
-        new MessageActionRow().addComponents(
-          splitButton.setDisabled(false),
-          stealButton.setDisabled(false),
-        ),
+        new MessageActionRow().addComponents(splitButton, stealButton),
       ],
     });
     const choiceCollector = await prompt.createMessageComponentCollector({
