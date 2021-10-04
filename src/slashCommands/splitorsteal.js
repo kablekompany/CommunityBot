@@ -6,6 +6,7 @@ const {
   randomInArray,
   sleep,
 } = require('../utils/misc');
+const { dmc } = require('../configs/config.json');
 
 const time = 30 * 1000;
 
@@ -67,7 +68,7 @@ module.exports = {
     });
 
     collector.on('end', async (collected) => {
-      users = removeDuplicates(collected.map((c) => c.user));
+      users = removeDuplicates(collected.map((c) => c));
       await message.edit({
         content: `**Event ended** ${relativeTime()} and **\`${
           users.length === 1 ? 'one person' : `${users.length} people`
@@ -90,38 +91,48 @@ module.exports = {
       return null;
     }
 
-    const winners = [winner1.id, winner2.id];
-    const choices = new Collection();
-    const getChoice = (winner) =>
-      `<@${winner.id}> has chosen to **${choices
-        .get(winner.username)
-        .toUpperCase()}**`;
+    // add event participant role to both users
+    await Promise.all(
+      [winner1, winner2].map(async ({ member }) => {
+        await member.roles.add(dmc.eventParticipant);
+        return setTimeout(
+          () => member.roles.remove(dmc.eventParticipant),
+          120000,
+        );
+      }),
+    );
 
+    const winners = [winner1.user.id, winner2.user.id];
+    const winnerMentions = `${winners
+      .map((userID) => `<@${userID}>`)
+      .join(' & ')}`;
+    const choices = new Collection();
     const splitButton = new MessageButton()
       .setStyle('SUCCESS')
       .setCustomId('split')
       .setLabel('Split')
-      .setEmoji('💸');
+      .setEmoji('💸')
+      .setDisabled(true);
+
     const stealButton = new MessageButton()
       .setStyle('DANGER')
       .setCustomId('steal')
       .setLabel('Steal')
-      .setEmoji('a:pepeRobber:894458233769558096');
+      .setEmoji('a:pepeRobber:894458233769558096')
+      .setDisabled(true);
 
     const prompt = await interaction.channel.send({
-      content: `${winners
-        .map((userID) => `<@${userID}>`)
-        .join(' & ')} are the contestants!`,
+      content: `${winnerMentions} are the contestants!`,
       embeds: [
         {
           title: `${prize} is on the line! Ends <t:${Math.round(
             Date.now() / 1000 + 120,
           )}:R>`,
           description:
-            'Both of you have 2 minutes to choose, either **SPLIT** or **STEAL**! Remember, if both users choose steal then it has to be re-done!',
+            'Both of you have **1 minute and 30 seconds to discuss**, and then **30 seconds to choose** either **SPLIT** or **STEAL**! Remember, if both users choose steal then it has to be re-done!',
           footer: {
             icon_url: interaction.guild.iconURL({ dynamic: true }),
-            text: 'Results will be posted after the 2 minutes has passed.',
+            text: 'Results will be posted after both users have discussed and made a choice.',
           },
         },
       ],
@@ -130,9 +141,20 @@ module.exports = {
       ],
     });
 
+    // wait 90s then enable buttons for players to make a choice
+    await sleep(time * 3);
+    await prompt.edit({
+      content: `It's time for ${winnerMentions} to make a choice!`,
+      components: [
+        new MessageActionRow().addComponents(
+          splitButton.setDisabled(false),
+          stealButton.setDisabled(false),
+        ),
+      ],
+    });
     const choiceCollector = await prompt.createMessageComponentCollector({
       componentType: 'BUTTON',
-      time: time * 4,
+      time,
     });
 
     choiceCollector.on('collect', async (click) => {
@@ -156,7 +178,7 @@ module.exports = {
       if (click.customId === 'split') {
         choices.set(click.user.username, 'split');
         await reply();
-        return click.reply({
+        await click.reply({
           content: `You've chosen to **SPLIT** 💸 ${click.user.username}!`,
           ephemeral: true,
         });
@@ -165,10 +187,14 @@ module.exports = {
       if (click.customId === 'steal') {
         choices.set(click.user.username, 'steal');
         await reply();
-        return click.reply({
+        await click.reply({
           content: `You've chosen to **STEAL** <a:pepeRobber:894458233769558096> ${click.user.username}!`,
           ephemeral: true,
         });
+      }
+
+      if (choices.size === 2) {
+        choiceCollector.stop('choices set');
       }
       return null;
     });
@@ -187,6 +213,10 @@ module.exports = {
           "One of the contestants didn't make a choice, time to re-do that I guess.",
         );
       }
+      const getChoice = (winner) =>
+        `<@${winner.user.id}> has chosen to **${choices
+          .get(winner.user.username)
+          .toUpperCase()}**`;
       return interaction.followUp({
         content: `${getChoice(winner1)}\n${getChoice(winner2)}`,
       });

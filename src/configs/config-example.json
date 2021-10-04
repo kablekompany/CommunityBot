@@ -1,5 +1,6 @@
 {
   "owners": [],
+  "applicationID": "",
   "prefix": "d!",
   "dmc": {
     "modRole": "",
@@ -15,7 +16,10 @@
     "tradeSelling": "",
     "tradeCategory": "",
     "memerCategory": "",
-    "dramaWatcher": ""
+    "dramaWatcher": "",
+    "modlog": "",
+    "serverID": "",
+    "eventParticipant": ""
   },
   "log": {
     "bootLog": {
