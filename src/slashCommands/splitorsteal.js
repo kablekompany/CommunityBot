@@ -108,12 +108,12 @@ module.exports = {
       .join(' & ')}`;
     const choices = new Collection();
     const splitButton = new MessageButton()
-      .setStyle('SUCCESS')
+      .setStyle('PRIMARY')
       .setCustomId('split')
       .setLabel('Split')
       .setEmoji('💸');
     const stealButton = new MessageButton()
-      .setStyle('DANGER')
+      .setStyle('PRIMARY')
       .setCustomId('steal')
       .setLabel('Steal')
       .setEmoji('a:pepeRobber:894458233769558096');
