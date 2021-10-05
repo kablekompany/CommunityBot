@@ -1,3 +1,5 @@
-import CommunityBot from './models/Client';
+import { CommunityBot } from '#dmc/client';
 
-new CommunityBot(process.env.DISCORD_TOKEN, { intents: 5711 }).launch();
+const dmc = new CommunityBot({ intents: 5711 });
+
+await dmc.login();

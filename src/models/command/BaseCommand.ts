@@ -130,15 +130,11 @@ export class Command {
       input: '',
     },
   ) {
-    const body = new URLSearchParams();
-    body.set('raw', 'false');
-    body.set('ext', options.ext);
-    body.set(
-      'text',
-      encodeURIComponent(
-        (options.input ? `${options.input}\n\n` : '') + content,
-      ),
-    );
+    const body = new URLSearchParams({
+      raw: 'false',
+      ext: options.ext,
+      text: encodeURIComponent(options.input ? `${options.input}\n\n` : '') + content
+    });
 
     return fetch('https://hastepaste.com/api/create', {
       method: 'POST',
@@ -153,7 +149,7 @@ export class Command {
    * Resolve a user client-wise.
    */
   public static resolveUser(ctx: Bot, user: string) {
-    const users = ctx.bot.users.cache;
+    const users = ctx.users.cache;
     let possibleUser: User;
 
     const result = user.match(pingMatch) || user.match(tagMatch);
