@@ -4,8 +4,8 @@ import { Listener } from '@sapphire/framework';
 
 @ApplyOptions<ListenerOptions>({ name: 'error' })
 export default class extends Listener<typeof Events.Error> {
-	public async run(error: Error) {	
-		console.error(error.stack ?? error);
-		return null;
-	}
-} 
+  public async run(error: Error) {
+    console.error(error.stack ?? error);
+    return null;
+  }
+}

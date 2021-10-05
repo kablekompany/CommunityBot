@@ -115,5 +115,4 @@ test.js
 # editors/workspace
 dmc.code-workspace
 package-lock.json
-.prettierrc
 .eslintrc.json

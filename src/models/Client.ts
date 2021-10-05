@@ -8,7 +8,9 @@ export default class CommunityBot extends SapphireClient {
     super(options);
   }
 
-  public async login(token = process.env.DISCORD_TOKEN): ReturnType<SapphireClient['login']> {
+  public async login(
+    token = process.env.DISCORD_TOKEN,
+  ): ReturnType<SapphireClient['login']> {
     return super.login(token);
   }
 }

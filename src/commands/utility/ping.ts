@@ -6,11 +6,15 @@ import { Command } from '@sapphire/framework';
 import { Formatters } from 'discord.js';
 
 @ApplyOptions<CommandOptions>({
-	name: 'ping',
-	aliases: ['pong']
+  name: 'ping',
+  aliases: ['pong'],
 })
 export default class extends Command<Args> {
-	public async run(msg: Message, args: Args) {
-		await msg.channel.send(`My ping is ${Formatters.inlineCode(`${msg.guild!.shard.ping}ms`)} for shard ${msg.guild!.shard.id}`);
-	}
+  public async run(msg: Message, args: Args) {
+    await msg.channel.send(
+      `My ping is ${Formatters.inlineCode(
+        `${msg.guild!.shard.ping}ms`,
+      )} for shard ${msg.guild!.shard.id}`,
+    );
+  }
 }

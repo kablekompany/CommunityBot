@@ -9,10 +9,10 @@ export interface IProps {}
  * The base document interface.
  */
 export interface IBaseDocument extends IProps, Document {
-    /**
-     * The ID of the document.
-     */
-    _id: string;
+  /**
+   * The ID of the document.
+   */
+  _id: string;
 }
 
 /**

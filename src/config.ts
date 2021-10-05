@@ -1,6 +1,7 @@
-const config: Config = {
+export const config: Config = {
   prefix: 'd!',
-  mongoUri: 'mongodb://localhost/CommunityBot',
+  applicationID: '',
+  mongoURI: 'mongodb://localhost/CommunityBot',
   dmc: {
     modRole: '',
     trialMod: '',
@@ -18,6 +19,7 @@ const config: Config = {
     memerCategory: '',
     dramaWatcher: '',
     modlog: '',
+    eventParticipant: '',
   },
   logs: {
     bootLog: {
@@ -33,9 +35,10 @@ const config: Config = {
 
 type LogType = 'boot' | 'dm';
 
-interface Config {
+export interface Config {
   prefix: string;
-  mongoUri: string;
+  applicationID?: string;
+  mongoURI: string;
   logs: Record<`${LogType}Log`, LogConfig>;
   dmc: DMCConfig;
 }
@@ -62,6 +65,5 @@ interface DMCConfig {
   memerCategory: string;
   dramaWatcher: string;
   modlog: string;
+  eventParticipant: string;
 }
-
-export { config, Config };

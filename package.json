@@ -17,7 +17,8 @@
     "@sapphire/decorators": "^3.0.0-next.ae4f5935.0",
     "@sapphire/framework": "^2.0.0-next.cf2e1c42.0",
     "axios": "^0.21.1",
-    "discord.js": "^13.0.0-dev.07017a9.1626869177",
+    "discord-player": "^5.1.0",
+    "discord.js": "^13.2.0",
     "dotenv": "^10.0.0",
     "mongodb": "^3.6.3",
     "mongoose": "^6.0.9",
@@ -40,6 +41,6 @@
   "imports": {
     "#dmc/assets": "./dist/library/assets/index.js",
     "#dmc/client": "./dist/library/client/index.js",
-    "#dmc/db": "./dist/library/database/index.js",
+    "#dmc/db": "./dist/library/database/index.js"
   }
 }

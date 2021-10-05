@@ -133,7 +133,9 @@ export class Command {
     const body = new URLSearchParams({
       raw: 'false',
       ext: options.ext,
-      text: encodeURIComponent(options.input ? `${options.input}\n\n` : '') + content
+      text:
+        encodeURIComponent(options.input ? `${options.input}\n\n` : '') +
+        content,
     });
 
     return fetch('https://hastepaste.com/api/create', {

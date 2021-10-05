@@ -4,10 +4,10 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
 
 @ApplyOptions<CommandOptions>({
-	name: 'eval'
+  name: 'eval',
 })
 export default class extends Command<Args> {
-	public async run(msg: Message, args: Args) {
-		return msg.reply('no');
-	}
+  public async run(msg: Message, args: Args) {
+    return msg.reply('no');
+  }
 }

@@ -5,7 +5,7 @@ import { Listener } from '@sapphire/framework';
 
 @ApplyOptions<ListenerOptions>({ name: 'guildDelete' })
 export default class extends Listener<'interactionCreate'> {
-	public async run(...[int]: ClientEvents['interactionCreate']) {
-		// sapphire said they'll release "slashies" soon:tm:
-	}
+  public async run(...[int]: ClientEvents['interactionCreate']) {
+    // sapphire said they'll release "slashies" soon:tm:
+  }
 }

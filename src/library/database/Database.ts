@@ -1,7 +1,7 @@
 import type { CommunityBot } from '#dmc/client';
 import { GuildCollection, UserCollection } from './collections/index.js';
 import mongoose from 'mongoose';
-const { connect } = mongoose; 
+const { connect } = mongoose;
 
 export class Database {
   public guilds!: GuildCollection;

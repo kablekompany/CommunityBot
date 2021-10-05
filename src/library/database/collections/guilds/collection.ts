@@ -4,7 +4,7 @@ import { BaseCollection } from '../../Collection.js';
 import modelGuild from './model';
 
 export class GuildCollection extends BaseCollection<GuildDocument, GuildModel> {
-	public constructor(db: Database) {
-		super(db, modelGuild);
-	} 
+  public constructor(db: Database) {
+    super(db, modelGuild);
+  }
 }
