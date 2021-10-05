@@ -18,7 +18,7 @@ export class BaseCollection<Model extends BaseModel> {
   public readonly default: Model;
 
   public constructor(collection: Collection, def: Omit<Model, '_id'>) {
-    Object.defineProperty(this, 'default', { value: def });
+    Reflect.defineProperty(this, 'default', { value: def });
     this.collection = collection;
   }
 

@@ -68,7 +68,7 @@ export default new MessageHandler(
     if (lineCheck) {
       await msg.delete();
       reply('your trade-ad was 15 lines or longer, please post a shorter ad.');
-      logMsg('trade as was 15 lines or longer');
+      logMsg('trade was 15 lines or longer');
       return null;
     }
 
