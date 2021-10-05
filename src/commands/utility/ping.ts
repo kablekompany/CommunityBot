@@ -1,16 +1,16 @@
-import { Command } from '../../models/command/BaseCommand';
-import { MessageOptions } from 'discord.js';
+import type { CommandOptions, Args } from '@sapphire/framework';
+import type { Message } from 'discord.js';
+import { ApplyOptions } from '@sapphire/decorators';
+import { Command } from '@sapphire/framework';
 
-export default new Command(
-	async ({ msg }): Promise<MessageOptions> => ({
-		embeds: [{
-			description: `**API Latency:** \`${
-				Math.round(msg.guild.shard.ping)
-			}ms\``
-		}]
-	}),
-	{
-		name: 'ping',
-		aliases: ['ping', 'pong'],
+import { Formatters } from 'discord.js';
+
+@ApplyOptions<CommandOptions>({
+	name: 'ping',
+	aliases: ['pong']
+})
+export default class extends Command<Args> {
+	public async run(msg: Message, args: Args) {
+		await msg.channel.send(`My ping is ${Formatters.inlineCode(`${msg.guild!.shard.ping}ms`)} for shard ${msg.guild!.shard.id}`);
 	}
-);
+}

@@ -1,33 +1,39 @@
-import { Command } from '../../models/command/BaseCommand';
-import { MessageOptions } from 'discord.js';
+import type { CommandOptions, Args } from '@sapphire/framework';
+import type { Message } from 'discord.js';
+import { ApplyOptions } from '@sapphire/decorators';
+import { Command } from '@sapphire/framework';
 
-export default new Command(
-	async ({ ctx, msg, args }): Promise<MessageOptions> => {
-		const user = Command.resolveUser(ctx, args.shift());
-		if (!user) return { content: 'This doesn\'t seem like a real user?' };
+import { Formatters } from 'discord.js';
+
+@ApplyOptions<CommandOptions>({
+	name: 'dm',
+	aliases: ['dm']
+})
+export default class extends Command<Args> {
+	public async run(msg: Message, args: Args) {
+		const user = args.finished ? null : await args.pick('user');
+		if (!user) return msg.reply('That doesnt seem to be a valid user.');
 
 		try {
+			const message = await args.rest('string');
 			const dm = user.dmChannel ?? await user.createDM();
 			await dm.send({
 				embeds: [{
 					author: {
-						name: `You received a message from a server admin in ${msg.guild.name}`,
-						iconURL: msg.guild.iconURL({ dynamic: true, size: 1024 })
+						name: `You received a message from a server admin in ${msg.guild!.name}`,
+						iconURL: msg.guild!.iconURL({ dynamic: true, size: 1024 })!
 					},
-					color: ctx.utils.randomColour(),
-					description: args.join(' '),
+					color: msg.client.util.randomColour(),
+					description: message,
 					timestamp: Date.now()
 				}]
 			});
+			
 			await msg.react('📨');
 		} catch(e) {
 			return await msg.react('❌').then(() => ({
-				content: `An error occured while sending dm:\n${e.message}`
+				content: `An error occured while sending dm:\n${(e as Error).message}`
 			}));
 		}
-	},
-	{
-		name: 'ping',
-		aliases: ['ping', 'pong'],
 	}
-);
+}

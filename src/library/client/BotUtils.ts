@@ -109,12 +109,10 @@ export class BotUtil {
   randomColour = () => Number(this.randomItem(colours).replace('#', '0x'));
 
   /**
-   * Transform something to a codeblock.
-   * @param msg - Could be anything
-   * @param language - The syntax highlighting
+   * Joins the items of the array to newlines.
+   * @param string - The string to join.
    */
-  codeblock = (msg: any, language = '') =>
-    `${'```'}${language}\n${msg}${'```'}`;
+  join = (string: string[]) => string.join('\n');
 
   /**
    * Daunt's pretty date parser making me think im from the future.

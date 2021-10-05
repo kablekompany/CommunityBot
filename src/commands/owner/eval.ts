@@ -1,16 +1,13 @@
-import { Command } from '../../models/command/BaseCommand';
-import { MessageOptions } from 'discord.js';
+import type { CommandOptions, Args } from '@sapphire/framework';
+import type { Message } from 'discord.js';
+import { ApplyOptions } from '@sapphire/decorators';
+import { Command } from '@sapphire/framework';
 
-export default new Command(
-	async ({ msg }): Promise<MessageOptions> => ({
-		embeds: [{
-			description: `**API Latency:** \`${
-				Math.round(msg.guild.shard.ping)
-			}ms\``
-		}]
-	}),
-	{
-		name: 'ping',
-		aliases: ['ping', 'pong'],
+@ApplyOptions<CommandOptions>({
+	name: 'eval'
+})
+export default class extends Command<Args> {
+	public async run(msg: Message, args: Args) {
+		return msg.reply('no');
 	}
-);
+}
