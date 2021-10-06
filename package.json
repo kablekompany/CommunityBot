@@ -15,7 +15,7 @@
   "dependencies": {
     "@discordjs/rest": "^0.1.0-canary.0",
     "@sapphire/decorators": "^3.0.0-next.ae4f5935.0",
-    "@sapphire/framework": "^2.0.0-next.cf2e1c42.0",
+    "@sapphire/framework": "^2.0.0-next.5e915d08.0",
     "axios": "^0.21.1",
     "discord-player": "^5.1.0",
     "discord.js": "^13.2.0",
