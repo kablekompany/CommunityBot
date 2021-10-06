@@ -1,5 +1,4 @@
 export * from '#dmc/client';
-export * from '#dmc/database';
+export * from '#dmc/db';
 export * from '#dmc/assets';
-
-export * from './config.js';
+export * from '#dmc/config';

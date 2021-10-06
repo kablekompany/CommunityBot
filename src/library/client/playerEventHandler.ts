@@ -1,6 +1,7 @@
 import { Player } from 'discord-player';
+import { CommandInteraction } from 'discord.js';
 
-export const registerPlayerEvents = (player: Player) => {
+const handlePlayerEvents = (player: Player) => {
   player.on('error', (queue, error) => {
     console.log(
       `[${queue.guild.name}] Error emitted from the queue: ${error.message}`,
@@ -13,7 +14,7 @@ export const registerPlayerEvents = (player: Player) => {
   });
 
   player.on('trackStart', (queue, track) => {
-    queue.metadata.followUp({
+    (queue.metadata as CommandInteraction as CommandInteraction).followUp({
       embeds: [
         {
           description: `🎶 | Started playing: **${track.title}** in <#${queue.connection.channel.id}>!`,
@@ -23,13 +24,13 @@ export const registerPlayerEvents = (player: Player) => {
   });
 
   player.on('trackAdd', (queue, track) => {
-    queue.metadata.followUp({
+    (queue.metadata as CommandInteraction).followUp({
       embeds: [{ description: `🎶 | Track **${track.title}** queued!` }],
     });
   });
 
   player.on('botDisconnect', (queue) => {
-    queue.metadata.followUp({
+    (queue.metadata as CommandInteraction).followUp({
       embeds: [
         {
           description:
@@ -40,7 +41,7 @@ export const registerPlayerEvents = (player: Player) => {
   });
 
   player.on('channelEmpty', (queue) => {
-    queue.metadata.followUp({
+    (queue.metadata as CommandInteraction).followUp({
       embeds: [
         { description: '❌ | Nobody is in the voice channel, leaving...' },
       ],
@@ -48,8 +49,10 @@ export const registerPlayerEvents = (player: Player) => {
   });
 
   player.on('queueEnd', (queue) => {
-    queue.metadata.followUp({
+    (queue.metadata as CommandInteraction).followUp({
       embeds: [{ description: '✅ | Queue finished!' }],
     });
   });
 };
+
+export default handlePlayerEvents;

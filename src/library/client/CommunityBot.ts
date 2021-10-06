@@ -1,11 +1,11 @@
 import type { ClientOptions } from 'discord.js';
-import type { Config } from '../../config';
+import type { Config } from '../config';
 import { Player } from 'discord-player';
 import { SapphireClient } from '@sapphire/framework';
 import { Database } from '#dmc/db';
 import { BotUtil } from './BotUtils.js';
-import { config } from '../../config.js';
-import { registerPlayerEvents } from '../client/playerEventHandler';
+import { config } from '../config.js';
+import handlePlayerEvents from './playerEventHandler';
 
 export class CommunityBot extends SapphireClient {
   public config: Config;
@@ -25,7 +25,7 @@ export class CommunityBot extends SapphireClient {
   ): ReturnType<SapphireClient['login']> {
     await this.database.bootstrap(this.config.mongoURI);
     await this.stores.load();
-    registerPlayerEvents(this.player);
+    handlePlayerEvents(this.player);
     return super.login(token);
   }
 }

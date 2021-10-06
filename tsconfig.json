@@ -1,10 +1,11 @@
 {
   "compilerOptions": {
-    "target": "ESNext", 
-    "module": "ESNext", 
+    "experimentalDecorators": true,
+    "target": "ESNext",
+    "module": "ESNext",
     "resolveJsonModule": true,
     "outDir": "dist",
-    "strict": true, 
+    "strict": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
@@ -14,7 +15,8 @@
     "paths": {
       "#dmc/assets": ["src/library/assets"],
       "#dmc/client": ["src/library/client"],
-      "#dmc/db": ["src/library/database"]
+      "#dmc/db": ["src/library/database"],
+      "#dmc/config": ["src/library/config"]
     }
   }
 }

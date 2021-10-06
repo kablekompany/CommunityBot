@@ -9,7 +9,6 @@ import {
 } from 'discord.js';
 import { colours } from '../assets/colours';
 import { CommunityBot } from './CommunityBot';
-import { promisify } from 'util';
 
 export class BotUtil {
   /**
@@ -45,7 +44,8 @@ export class BotUtil {
    * Check Whether the author is the context guild owner.
    * @param msg the discord.js message instance
    */
-  isGuildOwner = (msg: Message): Boolean => msg.guild.ownerId === msg.author.id;
+  isGuildOwner = (msg: Message): Boolean =>
+    msg.guild?.ownerId === msg.author.id;
 
   /**
    * Check Whether the user is one of the bot owners.
@@ -152,9 +152,9 @@ export class BotUtil {
    */
   muteMember = async (msg: Message, duration = 1.2e6): Promise<void> => {
     // 20 minutes = default
-    await msg.member.roles.add(this.bot.config.dmc.mutedRole as Snowflake);
+    await msg.member?.roles.add(this.bot.config.dmc.mutedRole as Snowflake);
     await this.sleep(duration);
-    await msg.member.roles.remove(this.bot.config.dmc.mutedRole as Snowflake);
+    await msg.member?.roles.remove(this.bot.config.dmc.mutedRole as Snowflake);
   };
 
   /**
@@ -170,12 +170,11 @@ export class BotUtil {
     `<t:${Math.round(date / 1000)}:R>`;
 
   /**
-   * Sleep.
+   * Timeout for a certain period of time in ms.
    */
-  sleep = async (ms: number): Promise<void> => {
-    const wait = promisify(setTimeout);
-    await wait(ms);
-  };
+  sleep = (ms: number): Promise<void> =>
+    new Promise((res) => setTimeout(res, ms));
+
   /**
    * Log a certain message to some specific log channel.
    * @param msg the context msg

@@ -6,7 +6,7 @@ export default new Command(
     embeds: [
       {
         description: `**API Latency:** \`${Math.round(
-          msg.guild.shard.ping,
+          msg.client.ws.ping,
         )}ms\``,
       },
     ],

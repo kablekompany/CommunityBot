@@ -41,6 +41,7 @@
   "imports": {
     "#dmc/assets": "./dist/library/assets/index.js",
     "#dmc/client": "./dist/library/client/index.js",
-    "#dmc/db": "./dist/library/database/index.js"
+    "#dmc/db": "./dist/library/database/index.js",
+    "#dmc/config": "./dist/library/config.js"
   }
 }
