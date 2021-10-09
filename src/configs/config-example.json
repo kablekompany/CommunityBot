@@ -19,7 +19,8 @@
     "dramaWatcher": "",
     "modlog": "",
     "serverID": "",
-    "eventParticipant": ""
+    "eventParticipant": "",
+    "allStaffRoles": []
   },
   "log": {
     "bootLog": {

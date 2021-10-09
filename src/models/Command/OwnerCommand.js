@@ -13,7 +13,7 @@ class OwnerCommand extends Command {
     try {
       return super.execute({ ctx, msg, args, cleanArgs });
     } catch (err) {
-      console.log(err.stack);
+      console.error(err.stack);
     }
   }
 

@@ -13,7 +13,7 @@ module.exports = {
         searchEngine: QueryType.AUTO,
       })
       .catch((e) => {
-        console.log(e.message);
+        console.error(e.message);
       });
     if (!searchResult || !searchResult.tracks.length) {
       return interaction.editReply({

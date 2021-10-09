@@ -1,6 +1,5 @@
 function error(err) {
-  console.log(err);
-  return null;
+  return console.error(err.stack);
 }
 
 module.exports = error;

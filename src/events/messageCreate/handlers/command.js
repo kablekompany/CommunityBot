@@ -33,7 +33,7 @@ module.exports = new MessageHandler(
         args,
       });
     } catch (err) {
-      console.log(err.stack);
+      console.error(err.stack);
     }
 
     if (possibleMsg) {

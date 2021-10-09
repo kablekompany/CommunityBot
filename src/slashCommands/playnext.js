@@ -31,9 +31,7 @@ module.exports = {
         requestedBy: interaction.user,
         searchEngine: QueryType.AUTO,
       })
-      .catch(() => {
-        console.log('he');
-      });
+      .catch(() => null);
 
     if (!searchResult || !searchResult.tracks.length) {
       return interaction.editReply({

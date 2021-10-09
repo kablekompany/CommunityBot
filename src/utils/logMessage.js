@@ -1,5 +1,5 @@
 module.exports = {
-  logmsg: async (bot, msg, channel) => {
+  logMessage: async (bot, msg, channel) => {
     const logChannel = bot.channels.resolve(channel);
 
     const description = [];

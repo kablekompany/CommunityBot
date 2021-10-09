@@ -5,7 +5,7 @@ module.exports.registerPlayerEvents = (player) => {
     );
   });
   player.on('connectionError', (queue, error) => {
-    console.log(
+    console.error(
       `[${queue.guild.name}] Error emitted from the connection: ${error.message}`,
     );
   });

@@ -15,8 +15,9 @@ module.exports = new MessageHandler(
     }
 
     if (msg.content.match(/(dm me|pm me|msg me)/gi)) {
-      const modRoles = [ctx.config.dmc.trialMod, ctx.config.dmc.modRole];
-      if (modRoles.some((r) => msg.member._roles.includes(r))) {
+      if (
+        ctx.config.dmc.allStaffRoles.some((r) => msg.member._roles.includes(r))
+      ) {
         return null;
       }
       msg.delete();
@@ -47,7 +48,7 @@ module.exports = new MessageHandler(
               '**Responsible moderator:** Community Bot#6333',
             color: 15960130,
             timestamp: new Date(),
-            footer: { text: msg.author.id },
+            footer: { text: `ID: ${msg.author.id}` },
           },
         ],
       });

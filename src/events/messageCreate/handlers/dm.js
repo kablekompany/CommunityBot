@@ -1,14 +1,14 @@
 const MessageHandler = require('../../../models/Handlers/MessageHandler');
+const {
+  log: { dmLog },
+} = require('../../../configs/config.json');
 
 module.exports = new MessageHandler(
-  ({ ctx, msg }) => {
-    if (msg.channel.type !== 'DM') return null;
-    const { dmLog } = ctx.config.log;
-    if (dmLog.enabled) {
-      ctx.utils.logmsg(ctx.bot, msg, dmLog.channel);
+  async ({ ctx, msg }) => {
+    if (msg.channel.type !== 'DM' || !dmLog.enabled) {
       return null;
     }
-    return null;
+    return ctx.utils.logMessage(ctx.bot, msg, dmLog.channel);
   },
   {
     name: 'dm',

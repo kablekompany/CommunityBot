@@ -21,7 +21,7 @@ class MessageHandler {
     try {
       await this.fn({ ctx, msg });
     } catch (err) {
-      console.log(err.stack);
+      console.error(err.stack);
     }
     return null;
   }

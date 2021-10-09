@@ -99,7 +99,7 @@ module.exports = {
         await member.roles.add(dmc.eventParticipant);
         return setTimeout(
           () => member.roles.remove(dmc.eventParticipant),
-          120000,
+          time * 3,
         );
       }),
     );
@@ -217,7 +217,7 @@ module.exports = {
   },
   name: 'splitorsteal',
   description:
-    'Start a split or steal giveaway event, join period is 30s and contestants have 2 minutes to choose!',
+    'Start a split or steal event, contestants have 1 minute 30s to discuss and then 30s to choose!',
   options: [
     {
       name: 'prize',
