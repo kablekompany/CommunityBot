@@ -6,7 +6,7 @@ module.exports = new MessageHandler(
       return null;
     }
 
-    if (!msg.content.toLowerCase().match(/^pls (share|gift|give|yeet)/g)) {
+    if (!msg.content.toLowerCase().match(/^pls (share|gift|give|yeet)/g) && !msg.author.bot) {
       await msg.delete();
     }
 
