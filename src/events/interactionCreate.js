@@ -2,19 +2,38 @@
 /* eslint-disable no-case-declarations */
 const { selfRoles, colourRoles } = require('../../assets/communityRoles');
 
-const buttonChannel = '882509580024840192';
+const selfRolesChannel = '882509580024840192';
+const trialModChannel = '905810056132558970';
+const trialModRole = '755258717276209282';
 /**
  * @param {import('discord.js').Interaction} interaction interaction received by the API
  * @returns {null}
  */
 module.exports = async function oninteraction(interaction) {
-  if (interaction.channelId === buttonChannel) {
+  const reply = (stuff) =>
+    interaction.reply(stuff).catch((e) => console.error(e.message));
+
+  if (
+    interaction.channelId === trialModChannel &&
+    interaction.customId === 'trialmod'
+  ) {
+    if (interaction.member._roles.includes(trialModRole)) {
+      return reply({
+        content: 'You already have the **Trial Moderator** role.',
+        ephemeral: true,
+      });
+    }
+    await interaction.member.roles.add(trialModRole);
+    return reply({
+      content: "You've been given the **Trial Moderator** role!",
+      ephemeral: true,
+    });
+  }
+
+  if (interaction.channelId === selfRolesChannel) {
     const role = interaction.guild.roles.cache.get(
       selfRoles[interaction.customId],
     );
-
-    const reply = (stuff) =>
-      interaction.reply(stuff).catch((e) => console.error(e.message));
 
     await interaction.guild.members.fetch(interaction.member.id);
     if (!role) {

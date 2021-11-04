@@ -52,19 +52,18 @@ class BotModel {
     );
 
     for (const file of commandFiles) {
-      // TODO: refactor / create slash command model
       const command = require(`../../slashCommands/${file}`);
       if (!command.name) {
-        return console.error(`The file \`${file}\` is missing a command name.`);
+        throw new Error(`The file "${file}" is missing a command name.`);
       }
       this.bot.slashCmds.set(command.name, command);
     }
 
     const command = this.bot.slashCmds.map(({ execute, ...data }) => data);
-    const rest = new REST({ version: '9' }).setToken(this.token);
+    const RestAPI = new REST({ version: '9' }).setToken(this.token);
 
     try {
-      await rest.put(Routes.applicationCommands(this.config.applicationID), {
+      await RestAPI.put(Routes.applicationCommands(this.config.applicationID), {
         body: command,
       });
 
