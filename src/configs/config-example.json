@@ -3,6 +3,7 @@
   "applicationID": "",
   "prefix": "d!",
   "dmc": {
+    "communityManagerRole": "",
     "modRole": "",
     "trialMod": "",
     "mutedRole": "",
@@ -11,6 +12,7 @@
     "lottery": "",
     "prestige": "",
     "general": "",
+    "events": "",
     "tradeItems": "",
     "tradeBuying": "",
     "tradeSelling": "",

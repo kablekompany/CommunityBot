@@ -1,22 +1,15 @@
 const MessageHandler = require('../../../models/Handlers/MessageHandler');
-
-// 754405049274204170 admin
-
-// 804123118306197504 community
+const { dmc } = require('../../../configs/config.json');
 
 module.exports = new MessageHandler(
   async ({ msg }) => {
-    const immune = ['754405049274204170', '804123118306197504'];
-    if (msg.channel.id !== '847656883401129995') {
+    const immune = [dmc.adminRole, dmc.communityManagerRole];
+    if (msg.channel.id !== dmc.events) {
       return null;
     }
 
     const isImmune = immune.some((i) => msg.member.roles.cache.has(i));
-    if (
-      !msg.content.match(/^pls (share|gift|give|yeet)/gi) &&
-      !msg.author.bot &&
-      !isImmune
-    ) {
+    if (!msg.content.match(/^pls (share|gift|give|yeet)/gi) && !isImmune) {
       await msg.delete();
     }
 
@@ -25,6 +18,6 @@ module.exports = new MessageHandler(
   {
     name: 'event',
     allowDM: false,
-    allowBot: true,
+    allowBot: false,
   },
 );
