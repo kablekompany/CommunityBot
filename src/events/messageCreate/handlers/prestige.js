@@ -8,7 +8,7 @@ module.exports = new MessageHandler(
 
     const description = msg.embeds[0]?.description || '';
     const filter =
-      description.match(/(endgame|absolute)/g) &&
+      description.match(/(Congratulations|endgame)/g) &&
       msg.author.id === ctx.config.dmc.memerID;
 
     if (!filter) {
