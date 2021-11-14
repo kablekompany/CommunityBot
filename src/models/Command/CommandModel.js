@@ -109,6 +109,13 @@ class Command {
       return null;
     }
 
+    if (
+      this.props.modOnly &&
+      !msg.member._roles.includes(ctx.config.dmc.modRole)
+    ) {
+      return null;
+    }
+
     if (this.props.ownerOnly && !ctx.config.owners.includes(msg.author.id)) {
       return null;
     }
@@ -144,6 +151,7 @@ class Command {
       usage: '<command>',
       ownerOnly: false,
       adminOnly: false,
+      modOnly: false,
       argReq: false,
       minArgs: 0,
       responses: {
