@@ -1,4 +1,5 @@
 const MessageHandler = require('../../../models/Handlers/MessageHandler');
+const { randomColour } = require('../../../utils/misc');
 
 module.exports = new MessageHandler(
   async ({ ctx, msg }) => {
@@ -16,9 +17,9 @@ module.exports = new MessageHandler(
     }
 
     const command = args.shift();
-    const possibleCmd = ctx.cmds.find((c) =>
-      c.triggers.includes(command.toLowerCase()),
-    );
+    const possibleCmd =
+      ctx.cmds.get(command) ||
+      ctx.cmds.find((c) => c.triggers.includes(command.toLowerCase()));
 
     if (!possibleCmd) {
       return null;
@@ -38,9 +39,12 @@ module.exports = new MessageHandler(
 
     if (possibleMsg) {
       if (possibleMsg instanceof Object) {
-        msg.channel.send({ embeds: [possibleMsg] });
+        if (!possibleMsg.color) {
+          possibleMsg.color = randomColour();
+        }
+        await msg.channel.send({ embeds: [possibleMsg] });
       } else {
-        msg.channel.send(possibleMsg);
+        await msg.channel.send(possibleMsg);
       }
     }
     return null;

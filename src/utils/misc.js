@@ -38,9 +38,21 @@ module.exports = {
     await wait(ms);
   },
 
-  muteMember: (msg, duration = 1.2e6) => {
+  muteMember: async (msg, reason = 'N/A', duration = 1.2e6) => {
     // 20 minutes = default
-    msg.member.roles.add(config.dmc.mutedRole);
+    await msg.member.roles.add(config.dmc.mutedRole);
+    await msg.member.send({
+      embeds: [
+        {
+          title: 'You have been muted',
+          description: `Your mute ends <t:${Math.round(
+            (Date.now() + duration) / 1000,
+          )}:R>.\n**Reason**: ${reason}`,
+          timestamp: new Date(),
+          color: 0xf38842,
+        },
+      ],
+    });
     setTimeout(() => msg.member.roles.remove(config.dmc.mutedRole), duration);
   },
 

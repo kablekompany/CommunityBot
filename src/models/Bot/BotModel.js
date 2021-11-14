@@ -10,7 +10,6 @@ const Database = require('../../Database/index');
 class BotModel {
   constructor(token) {
     this.token = token;
-    this.cmds = new Collection();
     this.bot = new Client({
       makeCache: (manager) => {
         if (manager.name === 'MessageManager') {
@@ -20,12 +19,13 @@ class BotModel {
       },
       intents: 4847,
     });
+    this.db = new Database();
+    this.cmds = new Collection();
     this.bot.player = new Player(this.bot);
     this.bot.slashCmds = new Collection();
     this.config = require('../../configs/config.json');
     this.roles = require('../../../assets/communityRoles');
     this.utils = {};
-    this.db = new Database();
   }
 
   loadCommands() {

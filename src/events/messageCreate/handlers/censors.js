@@ -21,12 +21,15 @@ module.exports = new MessageHandler(
       return null;
     }
 
-    msg.delete();
-    ctx.utils.muteMember(msg);
+    await msg.delete();
+    await ctx.utils.muteMember(
+      msg,
+      '"DM me/msg me" in trade/dank memer channels.',
+    );
 
     const drama = ctx.bot.channels.resolve(ctx.config.dmc.dramaWatcher);
     const modlog = ctx.bot.channels.resolve(ctx.config.dmc.modlog);
-    drama.send({
+    const message = await drama.send({
       embeds: [
         {
           title: 'DM Message Deleted',
@@ -40,12 +43,12 @@ module.exports = new MessageHandler(
         },
       ],
     });
-    return modlog.send({
+    await modlog.send({
       embeds: [
         {
           title: 'mute | 20 minutes',
           description:
-            `**Offender:** ${msg.author.username}#${msg.author.discriminator}<@${msg.author.id}>\n` +
+            `**Offender:** ${msg.author.tag} <@${msg.author.id}>\n` +
             '**Reason:** Caught by "dm me" censor in trade/bot channels\n' +
             '**Responsible moderator:** Community Bot#6333',
           color: 15960130,
@@ -54,6 +57,10 @@ module.exports = new MessageHandler(
         },
       ],
     });
+
+    const messageLink = `https://discord.com/channels/${msg.guild.id}/${drama.id}/${message.id}`;
+    await ctx.db.users.addInfraction(msg.author.id, messageLink);
+    return null;
   },
   {
     name: 'censors',

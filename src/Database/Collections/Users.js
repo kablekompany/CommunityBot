@@ -4,8 +4,8 @@ class Users extends BaseCollection {
   constructor(collection) {
     super(collection);
     this.default = {
-      reminders: {},
-      flags: 0,
+      infractions: [],
+      infractionCount: 0,
     };
   }
 
@@ -22,6 +22,17 @@ class Users extends BaseCollection {
       return this.initUser(id);
     }
     return user;
+  }
+
+  async addInfraction(id, msgLink) {
+    // insert user in db if they're not already there
+    await this.getUser(id);
+    return this.update(id, {
+      $inc: {
+        infractionCount: 1,
+      },
+      $push: { infractions: { $each: [msgLink], $slice: -5 } },
+    });
   }
 }
 

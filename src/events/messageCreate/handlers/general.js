@@ -11,7 +11,7 @@ module.exports = new MessageHandler(
       !msg.member._roles.includes(ctx.config.dmc.modRole);
 
     if (filter) {
-      msg.delete();
+      await msg.delete();
     }
 
     if (msg.content.match(/(dm me|pm me|msg me)/gi)) {
@@ -20,11 +20,11 @@ module.exports = new MessageHandler(
       ) {
         return null;
       }
-      msg.delete();
-      ctx.utils.muteMember(msg);
+      await msg.delete();
+      await ctx.utils.muteMember(msg, '"DM me/msg me" in general-chat.');
       const drama = ctx.bot.channels.resolve(ctx.config.dmc.dramaWatcher);
       const modlog = ctx.bot.channels.resolve(ctx.config.dmc.modlog);
-      drama.send({
+      const message = await drama.send({
         embeds: [
           {
             title: 'DM Message Deleted',
@@ -38,7 +38,7 @@ module.exports = new MessageHandler(
           },
         ],
       });
-      return modlog.send({
+      await modlog.send({
         embeds: [
           {
             title: 'mute | 20 minutes',
@@ -52,6 +52,9 @@ module.exports = new MessageHandler(
           },
         ],
       });
+
+      const messageLink = `https://discord.com/channels/${msg.guild.id}/${drama.id}/${message.id}`;
+      await this.db.users.addInfraction(msg.author.id, messageLink);
     }
     return null;
   },
