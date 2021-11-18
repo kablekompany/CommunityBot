@@ -19,7 +19,7 @@ module.exports = new Command(
 
       return {
         title: 'Highest Infraction Counts',
-        description: data.join('\n'),
+        description: data.reverse().join('\n'),
         color: ctx.utils.randomColour(),
       };
     }
