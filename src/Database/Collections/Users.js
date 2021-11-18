@@ -7,6 +7,10 @@ class Users extends BaseCollection {
       infractions: [],
       infractionCount: 0,
     };
+    this.infractionsCache = {
+      cachedAt: 0,
+      data: [],
+    };
   }
 
   async initUser(id) {
@@ -33,6 +37,29 @@ class Users extends BaseCollection {
       },
       $push: { infractions: { $each: [msgLink], $slice: -5 } },
     });
+  }
+
+  _getGenericTop(field, limit = 10) {
+    return this.collection
+      .find({})
+      .sort({
+        [field]: -1,
+      })
+      .limit(limit)
+      .toArray();
+  }
+
+  async getTopModlogs(forced = false) {
+    let cache = this.infractionsCache;
+    if (Date.now() - cache.cachedAt > 5 * 60 * 1000 || forced) {
+      const topModlogs = await this._getGenericTop();
+      cache = {
+        data: topModlogs,
+        cachedAt: Date.now(),
+      };
+    }
+
+    return cache.data;
   }
 }
 
