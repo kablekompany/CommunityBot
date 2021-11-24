@@ -1,18 +1,18 @@
 function arrayMoveMutable(array, fromIndex, toIndex) {
-	const startIndex = fromIndex < 0 ? array.length + fromIndex : fromIndex;
+  const startIndex = fromIndex < 0 ? array.length + fromIndex : fromIndex;
 
-	if (startIndex >= 0 && startIndex < array.length) {
-		const endIndex = toIndex < 0 ? array.length + toIndex : toIndex;
+  if (startIndex >= 0 && startIndex < array.length) {
+    const endIndex = toIndex < 0 ? array.length + toIndex : toIndex;
 
-		const [item] = array.splice(fromIndex, 1);
-		array.splice(endIndex, 0, item);
-	}
+    const [item] = array.splice(fromIndex, 1);
+    array.splice(endIndex, 0, item);
+  }
 }
 
 function arrayMove(array, fromIndex, toIndex) {
-	array = [...array];
-	arrayMoveMutable(array, fromIndex, toIndex);
-	return array;
+  array = [...array];
+  arrayMoveMutable(array, fromIndex, toIndex);
+  return array;
 }
 module.exports = {
   /**
@@ -44,6 +44,20 @@ module.exports = {
         '<:biker:894540237684998174>', //https://cdn.discordapp.com/emojis/894540237684998174.png?size=80
         '<:bikev:894540401149612032>', //https://cdn.discordapp.com/emojis/894540401149612032.png?size=80
         '<:bikey:894540342878142484>' //https://cdn.discordapp.com/emojis/894540342878142484.png?size=80
+      ],
+      run: [
+        '<a:runr:912750248886145024>', //https://cdn.discordapp.com/emojis/912750248886145024.gif?size=80
+        '<a:runy:912750199846363176>', //https://cdn.discordapp.com/emojis/912750199846363176.gif?size=80
+        '<a:rung:912750131206565908>', //https://cdn.discordapp.com/emojis/912750131206565908.gif?size=80
+        '<a:runc:912750087606796298>', //https://cdn.discordapp.com/emojis/912750087606796298.gif?size=80
+        '<a:runb:912750316418650183>' //https://cdn.discordapp.com/emojis/912750316418650183.gif?size=80
+      ],
+      pokemon: [
+        '<a:poke1:912973860381532181>',//https://cdn.discordapp.com/emojis/912973860381532181.gif?size=40
+        '<a:poke2:912973802135240734>',//https://cdn.discordapp.com/emojis/912973802135240734.gif?size=40
+        '<a:poke3:912973755809165342>',//https://cdn.discordapp.com/emojis/912973755809165342.gif?size=40
+        '<a:poke4:912973713740292126>',//https://cdn.discordapp.com/emojis/912973713740292126.gif?size=40
+        '<a:poke5:912973673823084554>',//https://cdn.discordapp.com/emojis/912973673823084554.gif?size=40
       ]
     };
     const userEmos = {};
@@ -162,6 +176,12 @@ module.exports = {
     }, {
       name: 'horse',
       value: 'horse'
+    }, {
+      name: 'run',
+      value: 'run'
+    }, {
+      name: 'pokemon',
+      value: 'pokemon'
     }]
   },
   {
