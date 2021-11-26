@@ -14,12 +14,13 @@ function arrayMove(array, fromIndex, toIndex) {
   arrayMoveMutable(array, fromIndex, toIndex);
   return array;
 }
+const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js')
 module.exports = {
   /**
    * @param {import('discord.js').CommandInteraction} interaction interaction received by the API
    */
   async execute(interaction) {
-    const Discord = require('discord.js')
+
     let gamemode = interaction.options.getString('gamemode')
     let prize = interaction.options.getString('prize')
     //You need to change the emote ids (and name if you rename them) after stealing them in another server
@@ -63,7 +64,7 @@ module.exports = {
     const userEmos = {};
     let winner = []
     const move = function (racemsg, interval) {
-      var race_msg = racemsg.split("\n")
+      race_msg = racemsg.split("\n")
 
       if (!race_msg.every(e => {
         if (e.includes('🚩')) return true
@@ -71,7 +72,7 @@ module.exports = {
         race_msg = race_msg.map(thing => {
           if (!thing.includes('🚩')) {
             const movement_number = Math.round(Math.random() * 3)
-            var _obj = thing.split(' ')
+            let _obj = thing.split(' ')
             carrotindex = _obj.indexOf(userEmos[_obj[13]])
             if (carrotindex - movement_number < 2) {
               _obj = arrayMove(_obj, carrotindex, 1)
@@ -90,7 +91,7 @@ module.exports = {
       } else {
         clearInterval(interval)
         interaction.followUp({
-          embeds: [new Discord.MessageEmbed().setTitle('Game over').setDescription(winner[2] ? `<:neo_first:876912509255290920> - ${winner[0]}\n<:neo_second:876912663995772948> - ${winner[1]}\n<:neo_third:876912595767033907> - ${winner[2]}` : `<:neo_first:876912509255290920> - ${winner[0]}\n<:neo_second:876912663995772948> - ${winner[1]}`)]
+          embeds: [new MessageEmbed().setTitle('Game over').setDescription(winner[2] ? `<:neo_first:876912509255290920> - ${winner[0]}\n<:neo_second:876912663995772948> - ${winner[1]}\n<:neo_third:876912595767033907> - ${winner[2]}` : `<:neo_first:876912509255290920> - ${winner[0]}\n<:neo_second:876912663995772948> - ${winner[1]}`)]
         })
         //First - https://cdn.discordapp.com/emojis/876912509255290920.png?size=80
         //Second - https://cdn.discordapp.com/emojis/876912663995772948.png?size=80
@@ -98,16 +99,16 @@ module.exports = {
         return race_msg.join('\n')
       }
     }
-    const joinon = new Discord.MessageActionRow().addComponents(new Discord.MessageButton().setCustomId('join').setLabel('Join race').setStyle('SUCCESS'))
-    const joinoff = new Discord.MessageActionRow().addComponents(new Discord.MessageButton().setCustomId('join').setLabel('Join race').setStyle('SUCCESS').setDisabled(true))
+    const joinon = new MessageActionRow().addComponents(new MessageButton().setCustomId('join').setLabel('Join race').setStyle('SUCCESS'))
+    const joinoff = new MessageActionRow().addComponents(new MessageButton().setCustomId('join').setLabel('Join race').setStyle('SUCCESS').setDisabled(true))
     const m = await interaction.followUp({
-      embeds: [new Discord.MessageEmbed().setTitle('Race!').setDescription('Click the button on this message to enter the race. There\'s limited space so hurry!').setFooter('Starts in 60 seconds').addField('Prize', prize)],
+      embeds: [new MessageEmbed().setTitle('Race!').setDescription('Click the button on this message to enter the race. There\'s limited space so hurry!').setFooter('Starts in 60 seconds').addField('Prize', prize)],
       components: [joinon]
     })
     const collector = m.createMessageComponentCollector({
       time: 60000
     });
-    var participants = [];
+    let participants = [];
     collector.on('collect', i => {
       if (!participants.includes(i.user.id)) {
         participants.push(i.user.id);
@@ -135,17 +136,17 @@ module.exports = {
       })
       const players = participants.join(', ')
       interaction.followUp({
-        embeds: [new Discord.MessageEmbed().setTitle(`${interaction.user.tag} started a new race!`).addField('Participants:', `${players}`).addField('Race type:', gamemode).addField('Prize:', `${prize}`).addField('No. of participants:', `${participants.length}`, true)],
+        embeds: [new MessageEmbed().setTitle(`${interaction.user.tag} started a new race!`).addField('Participants:', `${players}`).addField('Race type:', gamemode).addField('Prize:', `${prize}`).addField('No. of participants:', `${participants.length}`, true)],
       })
 
-      var race_msg = []
+      let race_msg = []
       participants.forEach(player => {
         race_msg.push(`🏁 ● ● ● ● ● ● ● ● ● ● ● ${userEmos[player]} ${player}`)
       })
       let racemsg = race_msg.join('\n')
       let e = racemsg
       const msg = await interaction.followUp({
-        embeds: [new Discord.MessageEmbed().setTitle('Race started by ' + interaction.user.tag).setDescription(racemsg).setFooter(`Participants - ${participants.length}`)]
+        embeds: [new MessageEmbed().setTitle('Race started by ' + interaction.user.tag).setDescription(racemsg).setFooter(`Participants - ${participants.length}`)]
       })
       const interval = setInterval(function () {
         e = move(e, interval)
