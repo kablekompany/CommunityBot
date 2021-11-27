@@ -4,7 +4,7 @@ import { Player } from 'discord-player';
 import { SapphireClient } from '@sapphire/framework';
 import { Database } from '#dmc/db';
 import { BotUtil } from './BotUtils.js';
-import { config } from '../config.js';
+import { config } from '#dmc/config';
 import handlePlayerEvents from './playerEventHandler';
 
 export class CommunityBot extends SapphireClient {

@@ -9,7 +9,6 @@ import type { Message } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener } from '@sapphire/framework';
 
-@ApplyOptions<ListenerOptions>({ name: 'commandFinished' })
 export default class extends Listener<typeof Events.CommandFinish> {
   public async run(
     message: Message,
