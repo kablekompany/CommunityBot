@@ -59,15 +59,21 @@ class BotModel {
       this.bot.slashCmds.set(command.name, command);
     }
 
-    const command = this.bot.slashCmds.map(({ execute, ...data }) => data);
+    const command = this.bot.slashCmds.map(({ _, ...data }) => data);
     const RestAPI = new REST({ version: '9' }).setToken(this.token);
 
     try {
-      await RestAPI.put(Routes.applicationCommands(this.config.applicationID), {
-        body: command,
-      });
+      await RestAPI.put(
+        Routes.applicationGuildCommands(
+          this.config.applicationID,
+          this.config.dmc.guildID,
+        ),
+        {
+          body: command,
+        },
+      );
 
-      return console.log('[REST] Reloaded global slash commands.');
+      return console.log('[REST] Reloaded guild slash commands.');
     } catch (error) {
       return console.error(`[REST Error] ${error.message}`);
     }

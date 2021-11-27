@@ -19,7 +19,7 @@ module.exports = new OwnerCommand(
         });
       }
     } catch (e) {
-      result = e.message;
+      result = e.stack;
     }
 
     const tokenRegex = new RegExp(ctx.token, 'gi');
