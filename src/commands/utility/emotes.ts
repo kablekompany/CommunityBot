@@ -1,62 +1,65 @@
-import {
-  MessageEmbedOptions,
-  MessageOptions,
-  Client,
-  Snowflake,
-} from 'discord.js';
-import { Command } from '../../models/command/BaseCommand';
+import type { CommandOptions, Args } from '@sapphire/framework';
+import type { Message } from 'discord.js';
+import { ApplyOptions } from '@sapphire/decorators';
+import { Command } from '@sapphire/framework';
 
-function resolveGuild(this: Client, guildId: Snowflake) {
-  return this.guilds.cache.get(guildId);
-}
+import { type Awaitable, type Guild, Formatters } from 'discord.js';
+import { ok } from '@sapphire/framework';
 
-export default new Command(
-  async ({ ctx, msg, args }): Promise<MessageOptions> => {
-    let { guild } = msg;
-    let [page = 1] = args;
+const { bold, inlineCode } = Formatters;
 
-    if (!Number.isInteger(Number(page))) {
-      return { content: 'Invalid page number, buddy' };
-    }
-    if (ctx.config.owners.includes(msg.author.id)) {
-      guild = resolveGuild.call(
-        ctx.bot,
-        (args[1] ? args[0] : guild.id) as Snowflake,
-      );
-      page = args[1] ?? args[0];
+@ApplyOptions<CommandOptions>({
+  aliases: ['emotes'],
+  requiredUserPermissions: ['ADMINISTRATOR']
+})
+export default class extends Command<Args> {
+  public async messageRun(msg: Message, args: Args) {
+    const page = args.finished ? 1 : await args.pick('number');
+    let guild = await this.resolveGuild(msg, args);
+    if (!this.container.util.isBotOwner(msg.author)) {
+      guild = msg.guild!;
     }
 
-    const emojis = await guild.emojis.fetch().then((emjs) => {
-      return emjs.map(
-        (e) => `<${e.animated ? 'a' : ''}:${e.name}:${e.id}> \`:${e.name}:\``,
-      );
+    const emotes = await guild.emojis.fetch().then(emojis => {
+      return emojis.map(e => `<${e.animated ? 'a' : ''}:${e.name}:${e.id}> ${inlineCode(`:${e.name}:`)}`);
     });
 
-    const pages = ctx.utils.paginate(emojis);
-    if (Number(page) > pages.length) {
-      return {
-        content: `Page **${page}** doesn't exist you dingus, there are only ${pages.length} total pages.`,
-      };
+    const itemsPerPage = 30;
+    const pages = this.container.util.paginate(emotes, itemsPerPage);
+    if (pages.length < 1) {
+      return msg.reply('This server doesn\'t have emojis!');
+    }
+    if (!pages[page - 1]) {
+      return msg.reply(`Page ${bold(page.toString())} doesn't exist you dingus, there are only ${pages.length} pages.`);
     }
 
-    const color = ctx.utils.randomColour();
-    const embeds: MessageEmbedOptions[] = pages.map((p, i, a) => ({
-      title: `Server Emotes — ${guild.name}`,
-      color,
-      description: p,
-      footer: {
-        text: `Page ${i + 1} of ${a.length}`,
-      },
-    }));
+    const randomColor = this.container.util.randomColour();
+    if (args.getFlags('all')) {
+      return msg.channel.send({
+        embeds: pages.map((page, idx) => ({
+          description: page.join('\n'),
+          color: randomColor,
+          title: `Showing ${page.length} Emojis`,
+          footer: {
+            text: `Page ${idx} of ${pages.length}`
+          }
+        }))
+      })
+    }
 
-    return !['-all', '-a'].includes(msg.content)
-      ? { embeds: [embeds[Number(page) - 1]] }
-      : { embeds };
-  },
-  {
-    name: 'emotes',
-    aliases: ['le', 'listemotes'],
-    adminOnly: true,
-    usage: '{command" [page] [guildId]',
-  },
-);
+    return msg.channel.send({
+      embeds: [{
+        title: `Showing ${pages[0].length} Emojis`,
+        color: randomColor,
+        description: pages[0].join('\n'),
+        footer: {
+          text: 'Including --all will show all emojis'
+        }
+      }]
+    })
+  }
+
+  private resolveGuild(msg: Message, args: Args): Awaitable<Guild> {
+    return args.finished ? msg.guild! : args.pick('guild').catch(() => msg.guild!);
+  }
+}

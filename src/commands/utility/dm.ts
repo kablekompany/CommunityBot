@@ -6,11 +6,11 @@ import { Command } from '@sapphire/framework';
 import { Formatters } from 'discord.js';
 
 @ApplyOptions<CommandOptions>({
-  name: 'dm',
   aliases: ['dm'],
+  requiredUserPermissions: ['ADMINISTRATOR'],
 })
 export default class extends Command<Args> {
-  public async run(msg: Message, args: Args) {
+  public async messageRun(msg: Message, args: Args) {
     const user = args.finished ? null : await args.pick('user');
     if (!user) return msg.reply('That doesnt seem to be a valid user.');
 
@@ -26,7 +26,7 @@ export default class extends Command<Args> {
               }`,
               iconURL: msg.guild!.iconURL({ dynamic: true, size: 1024 })!,
             },
-            color: msg.client.util.randomColour(),
+            color: this.container.util.randomColour(),
             description: message,
             timestamp: Date.now(),
           },

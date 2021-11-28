@@ -127,19 +127,16 @@ export class BotUtils {
    * Pages the contents in data.
    * @template T - The data type.
    * @param data - The values to paginate.
-   * @param separator - The separator.
+   * @param size - The number of items per page.
    */
-  paginate = <T>(data: T[], separator = '\n'): string[] => {
-    let counter = 0;
-    const pages = [];
-    pages[counter] = '';
-    for (const parts of data) {
-      if (pages[counter].length > 1900) {
-        counter++;
-        pages[counter] = '';
-      }
-      pages[counter] += parts + separator;
+  paginate = <T>(data: T[], size?: number): T[][] => {
+    const pages: T[][] = [];
+
+    for (let i = 0, j = 0; i < Math.ceil(data.length / (size || 5)); i++) {
+      pages.push(data.slice(j, j + (size || 5)));
+      j += size || 5;
     }
+
     return pages;
   };
 
@@ -152,9 +149,9 @@ export class BotUtils {
     msg: Message,
     duration = 1.2e6 /* 20min */,
   ): Promise<void> => {
-    await msg.member?.roles.add(this.bot.config.dmc.mutedRole);
+    await msg.member?.roles.add(config.dmc.mutedRole);
     await this.sleep(duration);
-    await msg.member?.roles.remove(this.bot.config.dmc.mutedRole);
+    await msg.member?.roles.remove(config.dmc.mutedRole);
   };
 
   /**
@@ -184,7 +181,7 @@ export class BotUtils {
    * @param channel - The channel id to log into.
    */
   logMsg = (msg: Message, channel: Snowflake): Promise<Message> => {
-    const logs = this.bot.channels.resolve(channel);
+    const logs = msg.client.channels.resolve(channel);
     const description: string[] = [];
 
     if (msg.content) description.push(`**Content:**\n${msg.content}`);
