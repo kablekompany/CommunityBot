@@ -3,7 +3,6 @@ import type { Guild, TextChannel } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener } from '@sapphire/framework';
 
-@ApplyOptions<ListenerOptions>({ name: 'guildDelete' })
 export default class extends Listener<typeof Events.GuildDelete> {
   public async run(guild: Guild) {
     const { bootLog } = guild.client.config.logs;

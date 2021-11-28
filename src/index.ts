@@ -1,5 +1,6 @@
 import { container, SapphireClient } from '@sapphire/framework';
 import { type Config, config } from '#dmc/config';
+import { BotUtils } from '#dmc/client';
 import { Database } from '#dmc/db';
 import { Player } from 'discord-player';
 import { join } from 'path';
@@ -9,15 +10,8 @@ declare module '@sapphire/pieces' {
 		config: Config;
 		db: Database;
 		player: Player;
+		util: BotUtils;
 	}
-}
-
-declare global {
-  namespace NodeJS {
-    interface ProcessEnv {
-      DISCORD_TOKEN: string;
-    }
-  }
 }
 
 const dmc = new SapphireClient({ 
@@ -28,5 +22,6 @@ const dmc = new SapphireClient({
 container.config = config;
 container.db = new Database(dmc);
 container.player = new Player(dmc);
+container.util = new BotUtils();
 
 await dmc.login();

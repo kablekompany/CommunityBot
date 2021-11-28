@@ -3,7 +3,6 @@ import type { Client, Guild, TextChannel } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener } from '@sapphire/framework';
 
-@ApplyOptions<ListenerOptions>({ name: 'ready' })
 export default class extends Listener<typeof Events.ClientReady> {
   public async run(client: Client<true>) {
     client.logger.info(`${client.user!.tag} is now up and running.`);

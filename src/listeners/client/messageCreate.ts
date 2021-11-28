@@ -4,15 +4,16 @@ import { ApplyOptions } from '@sapphire/decorators';
 import { Formatters } from 'discord.js';
 import { Listener } from '@sapphire/framework';
 
-@ApplyOptions<ListenerOptions>({ name: 'messageCreate' })
 export default class extends Listener<typeof Events.MessageCreate> {
   public async run(message: Message) {
-    await this.censors(message);
-    await this.crossposts(message);
-    await this.dms(message);
-    await this.general(message);
-    await this.prestiges(message);
-    await this.trades(message);
+    await Promise.all([
+      this.censors(message),
+      this.crossposts(message),
+      this.dms(message),
+      this.general(message),
+      this.prestiges(message),
+      this.trades(message),
+    ]);
   }
 
   /**

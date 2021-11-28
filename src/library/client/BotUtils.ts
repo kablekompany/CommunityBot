@@ -9,57 +9,49 @@ import {
 } from 'discord.js';
 import { colours } from '../assets/colours';
 import { CommunityBot } from './CommunityBot';
+import { config } from '#dmc/config';
 
-export class BotUtil {
-  /**
-   * Construct this bot utility.
-   * @param bot the community bot instance
-   */
-  public constructor(public bot: CommunityBot) {}
-
+export class BotUtils {
   /**
    * Check if the member has the permissions in the channel.
-   * @param member the member to be checked
-   * @param channel the guild channel to check for
-   * @param perms array of permission bits or strings
+   * @param member - The member to be checked.
+   * @param channel - The guild channel to check for.
+   * @param perms - Array of permission bits or strings.
    */
   checkUserPerms = (
     member: GuildMember,
     channel: GuildChannel,
     perms: PermissionResolvable,
-  ): Boolean => {
+  ): boolean => {
     return member.permissionsIn(channel).has(perms);
   };
 
   /**
    * Check if the member's highest role is higher than the target's highest role.
-   * @param member the context member
-   * @param target the user to compare
+   * @param member - The context member for.
+   * @param target - The user to compare with.
    */
-  checkHierarchy = (member: GuildMember, target: GuildMember): Boolean => {
+  checkHierarchy = (member: GuildMember, target: GuildMember): boolean => {
     return member.roles.highest.position > target.roles.highest.position;
   };
 
   /**
-   * Check Whether the author is the context guild owner.
-   * @param msg the discord.js message instance
+   * Check whether the author is the context guild owner.
+   * @param msg - The context message.
    */
-  isGuildOwner = (msg: Message): Boolean =>
-    msg.guild?.ownerId === msg.author.id;
+  isGuildOwner = (msg: Message): boolean => msg.guild!.ownerId === msg.author.id;
 
   /**
-   * Check Whether the user is one of the bot owners.
-   * @param config the config of this bot
-   * @param user the user to be checked for
+   * Check whether the user is one of the bot owners.
+   * @param user - The user to check for.
    */
-  isBotOwner = (config: CommunityBot['config'], user: User): Boolean =>
-    config.owners.includes(user.id);
+  isBotOwner = (user: User): boolean => config.owners.includes(user.id);
 
   /**
    * Parse a date object to a readable date.
-   * @param date the date instance
+   * @param date - A date instance.
    */
-  parseDate = (date: Date): string =>
+  parseDate = (date = new Date()): string =>
     date.toLocaleString('utc', {
       hour: 'numeric',
       minute: 'numeric',
@@ -70,8 +62,8 @@ export class BotUtil {
     });
 
   /**
-   * Parse the time to short readables.
-   * @param time the time in seconds
+   * Parse the time to short readable ones.
+   * @param time - The time in seconds.
    */
   parseTime = (time: number): string => {
     const methods = [
@@ -97,7 +89,8 @@ export class BotUtil {
 
   /**
    * Random item from the array
-   * @param array the array to get the random item from.
+   * @template T - The array's type.
+   * @param array - The array to get the random item from.
    */
   randomItem = <T>(array: T[]): T =>
     array[Math.floor(Math.random() * array.length)];
@@ -109,29 +102,24 @@ export class BotUtil {
     Number(this.randomItem(colours).replace('#', '0x'));
 
   /**
-   * Transform something to a codeblock.
-   * @param msg could be anything
-   * @param language the syntax highlighting
-   */
-  codeblock = (msg: any, language = ''): string =>
-    `${'```'}${language}\n${msg}${'```'}`;
-
-  /**
-   * Daunt's pretty date parser making me think im from the future.
+   * Daunt's pretty date parser.
    */
   prettyDate = (): string => {
     const date = new Date(Date.now() - 1.44e7); // UTC to UTC -4
     const times = [date.getHours(), date.getMinutes(), date.getSeconds()];
-    const formattedDate = `${times
+
+    return `${times
       .map((t) => t.toString().padStart(2, '0'))
       .join(':')} — ${date.toLocaleDateString()}`;
-    return formattedDate;
   };
 
   /**
-   * Paginator.
+   * Pages the contents in data.
+   * @template T - The data type.
+   * @param data - The values to paginate.
+   * @param separator - The separator.
    */
-  paginate = (data: any[], separator = '\n'): string[] => {
+  paginate = <T>(data: T[], separator = '\n'): string[] => {
     let counter = 0;
     const pages = [];
     pages[counter] = '';
@@ -147,18 +135,19 @@ export class BotUtil {
 
   /**
    * Mute a member from DMC.
-   * @TODO Extend GuildMember and apply this method.
-   * @param msg the message context
+   * @param msg - The message context.
+   * @param duration - The duration of the mute.
    */
-  muteMember = async (msg: Message, duration = 1.2e6): Promise<void> => {
-    // 20 minutes = default
-    await msg.member?.roles.add(this.bot.config.dmc.mutedRole as Snowflake);
+  muteMember = async (msg: Message, duration = 1.2e6 /* 20min */): Promise<void> => {
+    await msg.member?.roles.add(this.bot.config.dmc.mutedRole);
     await this.sleep(duration);
-    await msg.member?.roles.remove(this.bot.config.dmc.mutedRole as Snowflake);
+    await msg.member?.roles.remove(this.bot.config.dmc.mutedRole);
   };
 
   /**
    * Remove duplicates from an array.
+   * @template T - The array's type.
+   * @param array - The array to remove the dupes from.
    */
   removeDuplicates = <T>(array: T[]): T[] =>
     Array.from(new Set(array).values());
@@ -171,14 +160,15 @@ export class BotUtil {
 
   /**
    * Timeout for a certain period of time in ms.
+   * @param ms - The tiemout in ms format.
    */
   sleep = (ms: number): Promise<void> =>
     new Promise((res) => setTimeout(res, ms));
 
   /**
    * Log a certain message to some specific log channel.
-   * @param msg the context msg
-   * @param channel the channel id to log for
+   * @param msg - The context message.
+   * @param channel - The channel id to log into.
    */
   logMsg = (msg: Message, channel: Snowflake): Promise<Message> => {
     const logs = this.bot.channels.resolve(channel);
@@ -207,5 +197,3 @@ export class BotUtil {
     });
   };
 }
-
-// Oops! - Yung Gravy
