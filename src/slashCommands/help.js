@@ -1,6 +1,7 @@
 module.exports = {
   name: 'help',
   description: 'Show all slash commands for music.',
+  default_permission: false,
 
   async execute(interaction) {
     await interaction.deferReply();

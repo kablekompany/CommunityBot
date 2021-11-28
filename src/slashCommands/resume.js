@@ -1,6 +1,7 @@
 module.exports = {
   name: 'resume',
   description: 'Resume the current song',
+  default_permission: false,
 
   async execute(interaction) {
     const { client } = interaction;

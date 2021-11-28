@@ -1,6 +1,7 @@
 module.exports = {
   name: 'pause',
   description: 'Pause the current song',
+  default_permission: false,
 
   async execute(interaction) {
     const { client } = interaction;

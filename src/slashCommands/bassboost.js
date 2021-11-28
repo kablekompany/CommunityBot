@@ -1,6 +1,7 @@
 module.exports = {
   name: 'bassboost',
   description: 'Toggle bassboost filter',
+  default_permission: false,
 
   async execute(interaction) {
     const { client } = interaction;

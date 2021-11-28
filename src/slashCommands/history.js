@@ -11,6 +11,7 @@ module.exports = {
       required: false,
     },
   ],
+  default_permission: false,
 
   async execute(interaction) {
     const { client } = interaction;

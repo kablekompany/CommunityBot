@@ -32,6 +32,7 @@ module.exports = {
       ],
     },
   ],
+  default_permission: false,
 
   async execute(interaction) {
     const { client } = interaction;

@@ -1,6 +1,7 @@
 module.exports = {
   name: 'np',
   description: "See what's currently being played",
+  default_permission: false,
 
   async execute(interaction) {
     const { client } = interaction;

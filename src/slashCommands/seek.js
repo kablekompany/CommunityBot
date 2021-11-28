@@ -10,6 +10,7 @@ module.exports = {
       type: CommandOptionType.Integer,
     },
   ],
+  default_permission: false,
 
   async execute(interaction) {
     const { client } = interaction;

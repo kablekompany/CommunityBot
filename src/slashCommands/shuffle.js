@@ -1,6 +1,7 @@
 module.exports = {
   name: 'shuffle',
   description: 'Shuffle the queue',
+  default_permission: false,
 
   async execute(interaction) {
     const { client } = interaction;

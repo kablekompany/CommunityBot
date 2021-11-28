@@ -72,4 +72,5 @@ module.exports = {
       required: true,
     },
   ],
+  default_permission: false,
 };

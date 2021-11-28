@@ -1,6 +1,7 @@
 module.exports = {
   name: 'stop',
   description: 'Stop the player',
+  default_permission: false,
 
   async execute(interaction) {
     const { client } = interaction;

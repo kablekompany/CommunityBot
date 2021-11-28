@@ -1,6 +1,7 @@
 module.exports = {
   name: 'back',
   description: 'Play the previous track',
+  default_permission: false,
 
   async execute(interaction) {
     const { client } = interaction;

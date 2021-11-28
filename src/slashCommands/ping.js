@@ -1,6 +1,8 @@
 module.exports = {
   name: 'ping',
   description: "pong, get the latency to Discord's API",
+  default_permission: false,
+
   async execute(interaction) {
     await interaction.reply({
       embeds: [
