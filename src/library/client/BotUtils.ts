@@ -8,7 +8,6 @@ import {
   Snowflake,
 } from 'discord.js';
 import { colours } from '../assets/colours';
-import { CommunityBot } from './CommunityBot';
 import { config } from '#dmc/config';
 
 export class BotUtils {
