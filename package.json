@@ -1,6 +1,6 @@
 {
   "name": "community-bot",
-  "version": "2.1.0-dev",
+  "version": "2.0.0",
   "description": "Custom utility bot for Dank Memer Community",
   "main": "./dist/index.js",
   "scripts": {
