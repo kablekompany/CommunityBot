@@ -8,7 +8,7 @@ import {
   Store,
   type PieceContext,
   type PieceOptions,
-  type SapphireClient
+  type SapphireClient,
 } from '@sapphire/framework';
 import { type BotUtils } from '#dmc/client';
 
@@ -20,7 +20,7 @@ export class SlashStore extends Store<Slash> {
   }
 
   public async registerCommands(client: SapphireClient<true>) {
-    await client.application.commands.set(this.map(slash => slash.data));
+    await client.application.commands.set(this.map((slash) => slash.data));
   }
 }
 
