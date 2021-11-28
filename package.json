@@ -42,6 +42,20 @@
     "#dmc/assets": "./dist/library/assets/index.js",
     "#dmc/client": "./dist/library/client/index.js",
     "#dmc/db": "./dist/library/database/index.js",
+    "#dmc/structures": "./dist/library/index.js",
     "#dmc/config": "./dist/library/config.js"
+  },
+  "prettier": {
+    "tabWidth": 2,
+    "useTabs": false,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "bracketSpacing": true,
+    "jsxBracketSameLine": true,
+    "arrowParens": "always",
+    "requirePragma": false,
+    "insertPragma": false,
+    "proseWrap": "preserve"
   }
 }

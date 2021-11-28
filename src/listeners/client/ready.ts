@@ -26,7 +26,7 @@ export default class extends Listener<typeof Events.ClientReady> {
       .send({
         embeds: pages.map((page, idx, arr) => ({
           author: {
-            name: `${client.user!.tag} is onling`,
+            name: `${client.user.tag} is online`,
           },
           color: 'BLURPLE',
           title: 'Servers:',

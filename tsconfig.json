@@ -16,7 +16,8 @@
       "#dmc/assets": ["src/library/assets"],
       "#dmc/client": ["src/library/client"],
       "#dmc/db": ["src/library/database"],
-      "#dmc/config": ["src/library/config"]
+      "#dmc/config": ["src/library/config"],
+      "#dmc/structures": ["src/library/structures"]
     }
   }
 }

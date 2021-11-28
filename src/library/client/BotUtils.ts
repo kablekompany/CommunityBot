@@ -10,6 +10,14 @@ import {
 import { colours } from '../assets/colours';
 import { config } from '#dmc/config';
 
+export namespace BotUtils {
+  /**
+   * Asserts a class constructor as an instantiable function regardless of it's abstract status.
+   * @template T - The type to assert.
+   */
+  export type Constructor<T> = T extends new (...args: infer A) => T ? new (...args: A) => T : never;
+}
+
 export class BotUtils {
   /**
    * Check if the member has the permissions in the channel.
