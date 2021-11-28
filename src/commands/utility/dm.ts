@@ -1,11 +1,10 @@
-import type { CommandOptions, Args } from '@sapphire/framework';
-import type { Message } from 'discord.js';
+import { type Args, Command } from '@sapphire/framework';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Command } from '@sapphire/framework';
+import { type Message } from 'discord.js';
 
 import { Formatters } from 'discord.js';
 
-@ApplyOptions<CommandOptions>({
+@ApplyOptions<Command.Options>({
   aliases: ['dm'],
   requiredUserPermissions: ['ADMINISTRATOR'],
 })

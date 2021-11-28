@@ -1,13 +1,3 @@
-import type { CommandOptions, Args } from '@sapphire/framework';
-import type { Message } from 'discord.js';
+import { type Args, Command } from '@sapphire/framework';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Command } from '@sapphire/framework';
-
-@ApplyOptions<CommandOptions>({
-  name: 'eval',
-})
-export default class extends Command<Args> {
-  public async run(msg: Message, args: Args) {
-    return msg.reply('no');
-  }
-}
+import { type Message } from 'discord.js';

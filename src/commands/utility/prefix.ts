@@ -1,22 +1,21 @@
-import type { CommandOptions, Args } from '@sapphire/framework';
-import type { Message } from 'discord.js';
+import { type Args, Command } from '@sapphire/framework';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Command } from '@sapphire/framework';
+import { type Message } from 'discord.js';
 
 import { Formatters } from 'discord.js';
 
-@ApplyOptions<CommandOptions>({
+@ApplyOptions<Command.Options>({
   name: 'prefix',
   aliases: ['setprefix'],
 })
 export default class extends Command<Args> {
-  public async run(msg: Message, args: Args) {
+  public async messageRun(msg: Message, args: Args) {
     const newPrefix = args.finished ? null : await args.rest('string');
     if (!newPrefix) return msg.reply('You actually need a prefix to set, smh');
 
     const m = await msg.reply('Changing prefix...');
     try {
-      const db = await msg.client.database.guilds.fetch(msg.guild!.id);
+      const db = await this.container.db.guilds.fetch(msg.guild!.id);
       if (newPrefix === db.prefix) {
         return m.edit(
           'U really want me to change to the same prefix over again? Okay, changed, as you would notice.',

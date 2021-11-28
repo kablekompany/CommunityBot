@@ -1,14 +1,13 @@
-import type { CommandOptions, Args } from '@sapphire/framework';
-import type { Message } from 'discord.js';
+import { type Args, Command } from '@sapphire/framework';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Command } from '@sapphire/framework';
+import { type Message } from 'discord.js';
 
 import { type Awaitable, type Guild, Formatters } from 'discord.js';
 import { ok } from '@sapphire/framework';
 
 const { bold, inlineCode } = Formatters;
 
-@ApplyOptions<CommandOptions>({
+@ApplyOptions<Command.Options>({
   aliases: ['emotes'],
   requiredUserPermissions: ['ADMINISTRATOR']
 })

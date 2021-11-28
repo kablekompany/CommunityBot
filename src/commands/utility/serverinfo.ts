@@ -1,17 +1,16 @@
-import type { CommandOptions, Args } from '@sapphire/framework';
-import type { Message } from 'discord.js';
+import { type Args, Command } from '@sapphire/framework';
 import { ApplyOptions } from '@sapphire/decorators';
-import { Command } from '@sapphire/framework';
+import { type Message } from 'discord.js';
 
 import type { Guild, Base, EmbedFieldData } from 'discord.js';
 import { Collection, Formatters } from 'discord.js';
 
-@ApplyOptions<CommandOptions>({
+@ApplyOptions<Command.Options>({
   name: 'serverinfo',
   aliases: ['si'],
 })
 export default class extends Command<Args> {
-  public async run(msg: Message, args: Args) {
+  public async messageRun(msg: Message, args: Args) {
     return msg.channel.send({
       embeds: [
         {
