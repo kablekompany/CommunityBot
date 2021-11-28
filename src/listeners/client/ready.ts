@@ -1,13 +1,16 @@
 import type { ListenerOptions, Events } from '@sapphire/framework';
-import type { Client, Guild, TextChannel } from 'discord.js';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener } from '@sapphire/framework';
 
+import type { Guild, TextChannel } from 'discord.js';
+import type { SapphireClient } from '@sapphire/framework';
+
 export default class extends Listener<typeof Events.ClientReady> {
-  public async run(client: Client<true>) {
-    client.logger.info(`${client.user!.tag} is now up and running.`);
-    client.user!.setActivity({ type: 'WATCHING', name: 'you' });
-    client.user!.setStatus('dnd');
+  public async run(client: SapphireClient<true>) {
+    await this.container.db.bootstrap(this.container.config.mongoURI);
+    client.logger.info(`${client.user.tag} is now up and running.`);
+    client.user.setActivity({ type: 'WATCHING', name: 'you' });
+    client.user.setStatus('dnd');
 
     const { bootLog } = client.config.logs;
     if (!bootLog.enabled) return null;
@@ -17,7 +20,7 @@ export default class extends Listener<typeof Events.ClientReady> {
     const guilds = client.guilds.cache.map(
       (g: Guild) => `[\`${g.id}\`] - ${g.name}`,
     );
-    const pages = client.util.paginate(guilds);
+    const pages = this.container.util.paginate(guilds);
 
     return await storage
       .send({
