@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "experimentalDecorators": true,
-    "target": "ESnext",
+    "target": "ESNext",
     "module": "ESNext",
     "resolveJsonModule": true,
     "outDir": "dist",

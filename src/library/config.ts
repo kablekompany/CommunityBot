@@ -1,41 +1,3 @@
-const dmcConfig: Config.DMC = {
-  modRole: '',
-  trialMod: '',
-  mutedRole: '',
-  adminRole: '',
-  memerID: '',
-  sales: '',
-  lottery: '',
-  prestige: '',
-  general: '',
-  tradeItems: '',
-  tradeBuying: '',
-  tradeSelling: '',
-  tradeCategory: '',
-  memerCategory: '',
-  dramaWatcher: '',
-  modlog: '',
-  eventParticipant: '',
-};
-
-const config: Config = {
-  prefix: 'd!',
-  applicationID: '',
-  owners: [''],
-  mongoURI: 'mongodb://localhost/CommunityBot',
-  dmc: dmcConfig,
-  logs: {
-    bootLog: {
-      enabled: false,
-      channel: '',
-    },
-    dmLog: {
-      enabled: false,
-      channel: '',
-    },
-  },
-};
-
 interface Config {
   prefix: string;
   owners: string[];
@@ -76,5 +38,42 @@ namespace Config.Log {
   export type Types = 'boot' | 'dm';
 }
 
-export { config };
-export type { Config };
+const dmcConfig: Config.DMC = {
+  modRole: '',
+  trialMod: '',
+  mutedRole: '',
+  adminRole: '',
+  memerID: '',
+  sales: '',
+  lottery: '',
+  prestige: '',
+  general: '',
+  tradeItems: '',
+  tradeBuying: '',
+  tradeSelling: '',
+  tradeCategory: '',
+  memerCategory: '',
+  dramaWatcher: '',
+  modlog: '',
+  eventParticipant: '',
+};
+
+const config: Config = {
+  prefix: 'd!',
+  applicationID: '',
+  owners: [''],
+  mongoURI: 'mongodb://localhost/CommunityBot',
+  dmc: dmcConfig,
+  logs: {
+    bootLog: {
+      enabled: false,
+      channel: '',
+    },
+    dmLog: {
+      enabled: false,
+      channel: '',
+    },
+  },
+};
+
+export { config, type Config };

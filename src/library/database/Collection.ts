@@ -4,6 +4,11 @@ import type { Database } from './Database';
 import type { Model } from 'mongoose';
 import { Collection } from 'discord.js';
 
+/**
+ * The main structure for db collections.
+ * @template D - The document's interface.
+ * @template M - The document's model.
+ */
 export class BaseCollection<
   D extends IDocument,
   M extends IModel<D>,
@@ -40,7 +45,7 @@ export class BaseCollection<
    * @param _id - The id of the document to delete.
    */
   public async remove(_id: string) {
-    const doc = await this.get(_id);
+    const doc = await this.fetch(_id);
     await doc.delete();
     super.delete(_id);
     return doc;
@@ -52,10 +57,11 @@ export class BaseCollection<
    */
   public async fetchAll(cache = false): Promise<D[]> {
     const docs = await this.model.find({}).exec();
-    if (cache)
+    if (cache) {
       for (const doc of docs) {
         super.set(doc._id, doc);
       }
+    }
 
     return docs;
   }

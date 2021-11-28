@@ -1,6 +1,5 @@
 import type { ApplicationCommandData, Awaitable, CommandInteraction } from 'discord.js';
-import type { PieceContext, PieceOptions } from '@sapphire/framework';
-import { Piece, Store } from '@sapphire/framework';
+import { Piece, Store, type PieceContext, type PieceOptions } from '@sapphire/framework';
 
 export class Slash extends Piece<Slash.Options> {
 	public data: ApplicationCommandData;

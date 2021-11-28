@@ -1,4 +1,4 @@
-import { Document, Schema, Model } from 'mongoose';
+import type { Document, Schema, Model } from 'mongoose';
 
 /**
  * Where all properties and stuff are declared.
@@ -22,5 +22,6 @@ export interface IDocument extends IBaseDocument {}
 
 /**
  * The model interface where static methods can be declared.
+ * @template T - The document type.
  */
 export interface IModel<T extends IDocument> extends Model<T> {}

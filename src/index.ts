@@ -20,7 +20,6 @@ declare global {
   }
 }
 
-
 const dmc = new SapphireClient({ 
 	baseUserDirectory: join(process.cwd(), 'src'),
 	intents: 5711,
