@@ -5,9 +5,7 @@ export default new Command(
   async ({ msg }): Promise<MessageOptions> => ({
     embeds: [
       {
-        description: `**API Latency:** \`${Math.round(
-          msg.client.ws.ping,
-        )}ms\``,
+        description: `**API Latency:** \`${Math.round(msg.client.ws.ping)}ms\``,
       },
     ],
   }),

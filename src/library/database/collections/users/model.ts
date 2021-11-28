@@ -13,5 +13,8 @@ export default (collection: UserCollection): UserModel => {
     },
   });
 
-  return model<UserDocument, UserModel>('user', UserSchema.loadClass(UserManager));
+  return model<UserDocument, UserModel>(
+    'user',
+    UserSchema.loadClass(UserManager),
+  );
 };

@@ -7,13 +7,13 @@ import type { Queue } from 'discord-player';
 import { container } from '@sapphire/framework';
 
 @ApplyOptions<ListenerOptions>({
-	emitter: container.player,
-	event: 'queueEnd',
+  emitter: container.player,
+  event: 'queueEnd',
 })
 export default class extends Listener {
-	public async run(queue: Queue<CommandInteraction>) {
-		await queue.metadata?.followUp({
-			embeds: [{ description: '✅ | Queue finished!' }]
-		});
-	}
+  public async run(queue: Queue<CommandInteraction>) {
+    await queue.metadata?.followUp({
+      embeds: [{ description: '✅ | Queue finished!' }],
+    });
+  }
 }

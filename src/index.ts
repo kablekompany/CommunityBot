@@ -7,18 +7,18 @@ import { Player } from 'discord-player';
 import { join } from 'path';
 
 declare module '@sapphire/pieces' {
-	interface Container {
-		config: Config;
-		db: Database;
-		player: Player;
-		util: BotUtils;
-	}
+  interface Container {
+    config: Config;
+    db: Database;
+    player: Player;
+    util: BotUtils;
+  }
 }
 
-const dmc = new SapphireClient({ 
-	defaultPrefix: config.prefix,
-	baseUserDirectory: join(process.cwd(), 'src'),
-	intents: 5711,
+const dmc = new SapphireClient({
+  defaultPrefix: config.prefix,
+  baseUserDirectory: join(process.cwd(), 'src'),
+  intents: 5711,
 });
 
 container.config = config;

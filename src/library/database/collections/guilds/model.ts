@@ -18,5 +18,8 @@ export default (collection: GuildCollection): GuildModel => {
     },
   });
 
-  return model<GuildDocument, GuildModel>('guild', GuildSchema.loadClass(GuildManager));
+  return model<GuildDocument, GuildModel>(
+    'guild',
+    GuildSchema.loadClass(GuildManager),
+  );
 };

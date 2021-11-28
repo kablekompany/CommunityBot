@@ -7,15 +7,19 @@ import type { Queue, Track } from 'discord-player';
 import { container } from '@sapphire/framework';
 
 @ApplyOptions<ListenerOptions>({
-	emitter: container.player,
-	event: 'trackStart',
+  emitter: container.player,
+  event: 'trackStart',
 })
 export default class extends Listener {
-	public async run(queue: Queue<CommandInteraction>, track: Track) {
-		await queue.metadata?.followUp({
-			embeds: [{
-				description: `🎶 | Started playing: ${Formatters.bold(track.title)} in ${queue.connection.channel.name}!`
-			}]
-		});
-	}
+  public async run(queue: Queue<CommandInteraction>, track: Track) {
+    await queue.metadata?.followUp({
+      embeds: [
+        {
+          description: `🎶 | Started playing: ${Formatters.bold(
+            track.title,
+          )} in ${queue.connection.channel.name}!`,
+        },
+      ],
+    });
+  }
 }

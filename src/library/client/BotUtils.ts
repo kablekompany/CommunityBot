@@ -15,7 +15,9 @@ export namespace BotUtils {
    * Asserts a class constructor as an instantiable function regardless of it's abstract status.
    * @template T - The type to assert.
    */
-  export type Constructor<T> = T extends new (...args: infer A) => T ? new (...args: A) => T : never;
+  export type Constructor<T> = T extends new (...args: infer A) => T
+    ? new (...args: A) => T
+    : never;
 }
 
 export class BotUtils {
@@ -46,7 +48,8 @@ export class BotUtils {
    * Check whether the author is the context guild owner.
    * @param msg - The context message.
    */
-  isGuildOwner = (msg: Message): boolean => msg.guild!.ownerId === msg.author.id;
+  isGuildOwner = (msg: Message): boolean =>
+    msg.guild!.ownerId === msg.author.id;
 
   /**
    * Check whether the user is one of the bot owners.
@@ -145,7 +148,10 @@ export class BotUtils {
    * @param msg - The message context.
    * @param duration - The duration of the mute.
    */
-  muteMember = async (msg: Message, duration = 1.2e6 /* 20min */): Promise<void> => {
+  muteMember = async (
+    msg: Message,
+    duration = 1.2e6 /* 20min */,
+  ): Promise<void> => {
     await msg.member?.roles.add(this.bot.config.dmc.mutedRole);
     await this.sleep(duration);
     await msg.member?.roles.remove(this.bot.config.dmc.mutedRole);

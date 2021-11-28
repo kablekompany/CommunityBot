@@ -1,4 +1,4 @@
 module.exports = class {
-	name = 'ping';
-	fn = () => 'ping'
+  name = 'ping';
+  fn = () => 'ping';
 };

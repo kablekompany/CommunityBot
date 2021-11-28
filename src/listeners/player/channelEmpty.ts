@@ -7,13 +7,15 @@ import type { Queue } from 'discord-player';
 import { container } from '@sapphire/framework';
 
 @ApplyOptions<ListenerOptions>({
-	emitter: container.player,
-	event: 'channelEmpty',
+  emitter: container.player,
+  event: 'channelEmpty',
 })
 export default class extends Listener {
-	public async run(queue: Queue<CommandInteraction>) {
-		await queue.metadata?.followUp({
-			embeds: [{ description: '❌ | Nobody is in the voice channel, leaving...' }]
-		});
-	}
+  public async run(queue: Queue<CommandInteraction>) {
+    await queue.metadata?.followUp({
+      embeds: [
+        { description: '❌ | Nobody is in the voice channel, leaving...' },
+      ],
+    });
+  }
 }
