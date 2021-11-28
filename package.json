@@ -43,7 +43,7 @@
     "#dmc/client": "./dist/library/client/index.js",
     "#dmc/db": "./dist/library/database/index.js",
     "#dmc/structures": "./dist/library/index.js",
-    "#dmc/config": "./dist/library/config.js"
+    "#dmc/config": "./dist/library/config/index.js"
   },
   "prettier": {
     "tabWidth": 2,

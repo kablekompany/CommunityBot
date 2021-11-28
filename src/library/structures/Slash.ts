@@ -27,7 +27,7 @@ export class SlashStore extends Store<Slash> {
 export abstract class Slash extends Piece<Slash.Options> {
   public data: ApplicationCommandData;
   public constructor(ctx: PieceContext, options: Slash.Options) {
-    super(ctx, options);
+    super(ctx, { ...options, name: options.data.name });
     this.data = options.data;
   }
 
