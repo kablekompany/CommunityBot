@@ -19,7 +19,7 @@ export class SlashStore extends Store<Slash> {
     });
   }
 
-  public async registerCommands(client = this.container.client as SapphireClient<true>) {
+  public async registerCommands(client: SapphireClient<true>) {
     await client.application.commands.set(this.map(slash => slash.data));
   }
 }
