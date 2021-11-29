@@ -4,7 +4,8 @@
   "description": "Custom utility bot for Dank Memer Community",
   "main": "./dist/index.js",
   "scripts": {
-    "run": "npm run build && npm start"
+    "run": "npm run build && npm start",
+    "format": "prettier --write ."
   },
   "repository": {
     "type": "git",
