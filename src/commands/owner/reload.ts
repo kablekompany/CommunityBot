@@ -21,6 +21,8 @@ export default class extends Command {
     }
 
     await store.value.loadAll();
-    await msg.reply(`Reloaded the ${ic(store.value.Constructor.name.toLowerCase())} store.`);
+    await msg.reply(
+      `Reloaded the ${ic(store.value.Constructor.name.toLowerCase())} store.`,
+    );
   }
 }

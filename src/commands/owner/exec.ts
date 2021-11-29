@@ -21,10 +21,13 @@ export default class extends Command {
 
     exec(cmd.value, async (err, stdout, stderr) => {
       if (stdout.length + stderr.length > 1990) {
-        const haste = await this.container.util.haste(`${stdout}\n\n${stderr}`, { 
-          ext: 'javascript', 
-          input: cmd.value 
-        });
+        const haste = await this.container.util.haste(
+          `${stdout}\n\n${stderr}`,
+          {
+            ext: 'javascript',
+            input: cmd.value,
+          },
+        );
 
         return msg.channel.send({
           embeds: [
@@ -37,11 +40,11 @@ export default class extends Command {
               footer: {
                 text: `Executed in ${hrDiff[0] > 0 ? `${hrDiff[0]}s ` : ''}${
                   hrDiff[1] / 10000
-                }ms`
-              }
-            }
-          ]
-        })
+                }ms`,
+              },
+            },
+          ],
+        });
       }
 
       const embed = new MessageEmbed();
@@ -60,12 +63,12 @@ export default class extends Command {
               description: `
                 ${Formatters.bold('Code')}: ${err.code}
                 ${Formatters.bold('Message')} ${err.message}
-              `
-            }
-          ]
+              `,
+            },
+          ],
         });
       }
-      if ([stderr, stdout].map(isNullOrUndefined).every(v => v)) {
+      if ([stderr, stdout].map(isNullOrUndefined).every((v) => v)) {
         await msg.react('❌');
       }
       if (embed.fields.length < 1) {

@@ -7,7 +7,7 @@ const { bold } = Formatters;
 
 @ApplyOptions<Command.Options>({
   aliases: ['userinfo', 'ui'],
-  requiredUserPermissions: ['ADMINISTRATOR']
+  requiredUserPermissions: ['ADMINISTRATOR'],
 })
 export default class extends Command {
   public async messageRun(msg: Message, args: Args) {
@@ -20,7 +20,9 @@ export default class extends Command {
             name: 'User Info',
           },
           thumbnail: {
-            url: member.user.avatarURL({ dynamic: true }) ?? member.user.defaultAvatarURL,
+            url:
+              member.user.avatarURL({ dynamic: true }) ??
+              member.user.defaultAvatarURL,
           },
           color: this.container.util.randomColour(),
           fields: [
@@ -42,11 +44,13 @@ export default class extends Command {
             },
             {
               name: bold('Joined At:'),
-              value: this.container.util.parseDate(new Date(member.joinedTimestamp!))
-            }
-          ]
-        }
-      ]
-    })
+              value: this.container.util.parseDate(
+                new Date(member.joinedTimestamp!),
+              ),
+            },
+          ],
+        },
+      ],
+    });
   }
 }

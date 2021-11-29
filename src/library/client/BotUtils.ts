@@ -117,17 +117,17 @@ export class BotUtils {
       ext: opts.ext ?? 'javascript',
       text: encodeURIComponent(
         (opts.input ? `${opts.input}\n\n` : '') + content,
-      )
+      ),
     });
 
     const res = await fetch('https://hastepaste.com/api/create', {
       method: 'POST',
       body: body,
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     });
 
     return res.text();
-  }
+  };
 
   /**
    * Random item from the array

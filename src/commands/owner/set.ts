@@ -18,17 +18,26 @@ type SupportedActivityTypes = Exclude<ActivityType, 'CUSTOM' | 'STREAMING'>;
 })
 export default class extends Command {
   public async messageRun(msg: Message, args: Args) {
-    const action = await args.pickResult('string') as Result<SetAction, UserError>;
-    if (action.error || !this.actions.includes(action.value.toLowerCase() as SetAction)) {
+    const action = (await args.pickResult('string')) as Result<
+      SetAction,
+      UserError
+    >;
+    if (
+      action.error ||
+      !this.actions.includes(action.value.toLowerCase() as SetAction)
+    ) {
       return msg.reply(`
         What exactly do you want me to set?
         ${ic(this.actions.join(ic(', ')))}
       `);
     }
 
-    switch(this.actions.find(a => a === action.value.toLowerCase())!) {
+    switch (this.actions.find((a) => a === action.value.toLowerCase())!) {
       case 'activity': {
-        const type = await args.pickResult('string') as Result<SupportedActivityTypes, UserError>;
+        const type = (await args.pickResult('string')) as Result<
+          SupportedActivityTypes,
+          UserError
+        >;
         if (type.error || !this.activityTypes.includes(type.value)) {
           return msg.reply(`
             Activity type can only be one of the following: 
@@ -46,19 +55,26 @@ export default class extends Command {
           return msg.reply('You need an image link for your avatar.');
         }
 
-        await msg.client.user!.setAvatar(av.value).catch(this.handleError.bind(msg));
+        await msg.client
+          .user!.setAvatar(av.value)
+          .catch(this.handleError.bind(msg));
         break;
       }
 
       case 'username': {
         const un = await args.pickResult('string');
         if (un.error) return msg.reply('Give me a username smh');
-        await msg.client.user!.setUsername(un.value).catch(this.handleError.bind(msg));
+        await msg.client
+          .user!.setUsername(un.value)
+          .catch(this.handleError.bind(msg));
         break;
       }
 
       case 'status': {
-        const st = await args.pickResult('string') as Result<ClientPresenceStatus, UserError>;
+        const st = (await args.pickResult('string')) as Result<
+          ClientPresenceStatus,
+          UserError
+        >;
         if (st.error || !this.presenceTypes.includes(st.value)) {
           return msg.reply(`
             Status type can only be from one of the following:
@@ -70,7 +86,6 @@ export default class extends Command {
         break;
       }
     }
-
 
     return msg.reply(`Changed ${action}, maybe`);
   }

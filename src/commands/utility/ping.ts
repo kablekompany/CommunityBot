@@ -12,6 +12,8 @@ export default class extends Command<Args> {
     const { bold, inlineCode } = Formatters;
     const ping = msg.client.ws.ping;
 
-    await msg.channel.send(`${bold('API Latency:')} ${inlineCode(ping.toString())}`);
+    await msg.channel.send(
+      `${bold('API Latency:')} ${inlineCode(ping.toString())}`,
+    );
   }
 }

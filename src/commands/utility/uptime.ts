@@ -7,17 +7,19 @@ const { bold } = Formatters;
 
 @ApplyOptions<Command.Options>({
   aliases: ['uptime'],
-  requiredUserPermissions: ['ADMINISTRATOR']
+  requiredUserPermissions: ['ADMINISTRATOR'],
 })
 export default class extends Command {
   public messageRun(msg: Message, args: Args) {
-  	const { parseTime } = this.container.util;
+    const { parseTime } = this.container.util;
 
-  	return msg.reply({
-  		content: `${bold(`${msg.client.user!.tag}'s`)} uptime: ${parseTime(process.uptime())}`,
-  		allowedMentions: {
-  			repliedUser: false,
-  		}
-  	})
+    return msg.reply({
+      content: `${bold(`${msg.client.user!.tag}'s`)} uptime: ${parseTime(
+        process.uptime(),
+      )}`,
+      allowedMentions: {
+        repliedUser: false,
+      },
+    });
   }
 }

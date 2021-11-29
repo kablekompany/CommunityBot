@@ -29,7 +29,9 @@ export default class extends Command<Args> {
             url: msg.guild!.iconURL({ dynamic: true, size: 1024 }) ?? undefined,
           },
           footer: {
-            text: `Created: ${this.container.util.parseDate(msg.guild!.createdAt)}`,
+            text: `Created: ${this.container.util.parseDate(
+              msg.guild!.createdAt,
+            )}`,
           },
           color: this.container.util.randomColour(),
         },

@@ -20,7 +20,11 @@ export default class extends Command {
     if (input.error) return;
 
     if (input.value.match(codeBlockRegex)) {
-      input = ok(input.value.replace(codeBlockHeadRegex, '').replace(codeBlockTailRegex, ''));
+      input = ok(
+        input.value
+          .replace(codeBlockHeadRegex, '')
+          .replace(codeBlockTailRegex, ''),
+      );
     }
 
     let result: string;
@@ -29,7 +33,7 @@ export default class extends Command {
       if (typeof result !== 'string') {
         result = inspect(result, { depth: 1 });
       }
-    } catch(e) {
+    } catch (e) {
       result = (e as Error).message;
     }
 
@@ -41,12 +45,19 @@ export default class extends Command {
 
     if (exceed) {
       result = await this.container.util.haste(result, { input: input.value });
-      embed.setDescription(`Result exceeded 2000 chars. Click ${Formatters.hyperlink('this', result)} for the full result.`);
+      embed.setDescription(
+        `Result exceeded 2000 chars. Click ${Formatters.hyperlink(
+          'this',
+          result,
+        )} for the full result.`,
+      );
     } else {
       embed.addField('Input', Formatters.codeBlock('js', input.value));
       embed.addField('Output', Formatters.codeBlock('js', result));
     }
 
-    return msg.channel.send({ embeds: [embed.setColor(exceed ? 'RED' : 'DEFAULT')] });
+    return msg.channel.send({
+      embeds: [embed.setColor(exceed ? 'RED' : 'DEFAULT')],
+    });
   }
 }

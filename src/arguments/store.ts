@@ -8,7 +8,9 @@ import { type Guild } from 'discord.js';
 export default class extends Argument {
   public async run(parameter: string, ctx: Argument.Context) {
     const store = this.container.stores.get(parameter);
-    return store ? this.ok(store) : this.error({ parameter, message: 'Unknown store.' });
+    return store
+      ? this.ok(store)
+      : this.error({ parameter, message: 'Unknown store.' });
   }
 }
 
