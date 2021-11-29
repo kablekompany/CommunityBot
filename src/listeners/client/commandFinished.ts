@@ -15,7 +15,8 @@ export default class extends Listener<typeof Events.CommandFinish> {
     command: Command,
     payload: CommandFinishPayload<Args>,
   ) {
-    const cc = await this.container.db.guilds.fetch(message.guild?.id);
+    if (!message.inGuild()) return;
+    const cc = await this.container.db.guilds.fetch(message.guild!.id);
     await cc.incCommands().save();
   }
 }

@@ -6,7 +6,7 @@ import mongoose from 'mongoose';
 const { model, Schema } = mongoose;
 
 export default (collection: UserCollection): UserModel => {
-  const GuildSchema = new Schema<UserDocument, UserModel, UserDocument>({
+  const UserSchema = new Schema<UserDocument, UserModel, UserDocument>({
     flags: {
       type: Number,
       default: 0,

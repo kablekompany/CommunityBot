@@ -1,5 +1,4 @@
 import type { IDocument, IModel } from './Interface';
-import type { CommunityBot } from '#dmc/client';
 import type { Database } from './Database';
 import type { Model } from 'mongoose';
 import { Collection } from 'discord.js';

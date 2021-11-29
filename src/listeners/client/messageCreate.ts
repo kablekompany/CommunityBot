@@ -22,7 +22,7 @@ export default class extends Listener<typeof Events.MessageCreate> {
    */
   private async censors(msg: Message) {
     const { trialMod, modRole, tradeCategory, memerCategory, dramaWatcher } =
-      msg.client.config.dmc;
+      this.container.config.dmc;
     const categories = [tradeCategory, memerCategory];
     const modRoles = [trialMod, modRole];
 
@@ -33,7 +33,7 @@ export default class extends Listener<typeof Events.MessageCreate> {
     if (!msg.content.match(/(dm me|pm me|msg me)/gi)) return null;
 
     await msg.delete();
-    msg.client.util.muteMember(msg);
+    this.container.util.muteMember(msg);
 
     const dramaChan = (await msg.client.channels.fetch(
       dramaWatcher,
@@ -62,12 +62,12 @@ export default class extends Listener<typeof Events.MessageCreate> {
    * @param msg - The discord message received by the client.
    */
   private async crossposts(msg: Message) {
-    const { sales, lottery } = msg.client.config.dmc;
+    const { sales, lottery } = this.container.config.dmc;
     if (![sales, lottery].includes(msg.channel.id)) return null;
 
     await msg.crosspost();
     return msg.client.logger.info(
-      `Message from sales/lotto channels have been crossposted at ${msg.client.util.prettyDate()}`,
+      `Message from sales/lotto channels have been crossposted at ${this.container.util.prettyDate()}`,
     );
   }
 
@@ -78,10 +78,10 @@ export default class extends Listener<typeof Events.MessageCreate> {
   private async dms(msg: Message) {
     if (msg.channel.type !== 'DM') return null;
 
-    const { dmLog } = msg.client.config.logs;
+    const { dmLog } = this.container.config.log;
     if (!dmLog.enabled) return null;
 
-    await msg.client.util.logMsg(msg, dmLog.channel);
+    await this.container.util.logMsg(msg, dmLog.channel);
     return null;
   }
 
@@ -90,7 +90,7 @@ export default class extends Listener<typeof Events.MessageCreate> {
    * @param msg - The discord message received by the client.
    */
   private async general(msg: Message) {
-    const { general, modRole, trialMod, dramaWatcher } = msg.client.config.dmc;
+    const { general, modRole, trialMod, dramaWatcher } = this.container.config.dmc;
     const modRoles = [modRole, trialMod];
     const hasRole = (id: string) => msg.member!.roles.cache.has(id);
     const filter =
@@ -105,7 +105,7 @@ export default class extends Listener<typeof Events.MessageCreate> {
     if (modRoles.some(hasRole)) return null;
 
     await msg.delete();
-    msg.client.util.muteMember(msg);
+    this.container.util.muteMember(msg);
     return dramas
       .send({
         embeds: [
@@ -130,14 +130,14 @@ export default class extends Listener<typeof Events.MessageCreate> {
    * @param msg - The discord message received by the client.
    */
   private async prestiges(msg: Message) {
-    const { prestige, memerID } = msg.client.config.dmc;
+    const { prestige, memerID } = this.container.config.dmc;
     if (msg.channel.id !== prestige) return null;
 
     const filter =
       msg.content.split(' ')[2] === 'Congraulations' &&
       msg.author.id === memerID;
 
-    if (filter) await msg.client.util.sleep(3000).then(msg.delete);
+    if (filter) await this.container.util.sleep(3000).then(msg.delete);
     return null;
   }
 
@@ -147,7 +147,7 @@ export default class extends Listener<typeof Events.MessageCreate> {
    */
   private async trades(msg: Message) {
     const { trialMod, modRole, tradeCategory, memerCategory, dramaWatcher } =
-      msg.client.config.dmc;
+      this.container.config.dmc;
     const categories = [tradeCategory, memerCategory];
     const modRoles = [trialMod, modRole];
 
@@ -159,7 +159,7 @@ export default class extends Listener<typeof Events.MessageCreate> {
     if (!msg.content.match(/(dm me|pm me|msg me)/gi)) return null;
 
     await msg.delete();
-    msg.client.util.muteMember(msg);
+    this.container.util.muteMember(msg);
 
     const dramaChan = (await msg.client.channels.fetch(
       dramaWatcher,

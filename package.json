@@ -5,6 +5,7 @@
   "main": "./dist/index.js",
   "scripts": {
     "run": "npm run build && npm start",
+    "build": "rimraf ./dist && tsc --project tsconfig.json",
     "format": "prettier --write ."
   },
   "repository": {
@@ -37,6 +38,7 @@
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.1",
     "prettier": "^2.3.0",
+    "rimraf": "^3.0.2",
     "typescript": "^4.3.5"
   },
   "imports": {

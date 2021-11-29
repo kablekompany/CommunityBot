@@ -7,13 +7,13 @@ import type { SapphireClient } from '@sapphire/framework';
 
 export default class extends Listener<typeof Events.ClientReady> {
   public async run(client: SapphireClient<true>) {
-    await this.container.db.bootstrap(this.container.config.mongoURI);
+    await this.container.db.bootstrap(this.container.config.mongo);
     await client.stores.get('slashes').registerCommands(client);
     client.logger.info(`${client.user.tag} is now up and running.`);
     client.user.setActivity({ type: 'WATCHING', name: 'you' });
     client.user.setStatus('dnd');
 
-    const { bootLog } = this.container.config.logs;
+    const { bootLog } = this.container.config.log;
     if (!bootLog.enabled) return null;
     const storage = (await client.channels.fetch(
       bootLog.channel,
@@ -31,7 +31,7 @@ export default class extends Listener<typeof Events.ClientReady> {
           },
           color: 'BLURPLE',
           title: 'Servers:',
-          description: page,
+          description: page.join('\n'),
           footer: {
             text: `Page ${idx + 1} of ${arr.length}`,
           },

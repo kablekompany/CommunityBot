@@ -1,4 +1,4 @@
-import type { CommunityBot } from '#dmc/client';
+import type { SapphireClient } from '@sapphire/framework';
 import { GuildCollection, UserCollection } from './collections/index.js';
 import mongoose from 'mongoose';
 const { connect } = mongoose;
@@ -10,7 +10,7 @@ export class Database {
   /**
    * @param client - A discord.js client instance.
    */
-  public constructor(public client: CommunityBot) {}
+  public constructor(public client: SapphireClient) {}
 
   /**
    * Establishes a connection to our database.

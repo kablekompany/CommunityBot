@@ -5,7 +5,7 @@ import { Listener } from '@sapphire/framework';
 
 export default class extends Listener<typeof Events.GuildDelete> {
   public async run(guild: Guild) {
-    const { bootLog } = guild.client.config.logs;
+    const { bootLog } = this.container.config.log;
     if (!bootLog.enabled) return null;
 
     const joinChannel = (await guild.client.channels.fetch(
