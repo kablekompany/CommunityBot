@@ -6,7 +6,7 @@ import type { Guild, Base, EmbedFieldData } from 'discord.js';
 import { Collection, Formatters } from 'discord.js';
 
 @ApplyOptions<Command.Options>({
-  aliases: ['si'],
+  aliases: ['serverinfo', 'si'],
 })
 export default class extends Command<Args> {
   public async messageRun(msg: Message, args: Args) {

@@ -8,7 +8,7 @@ import { ok } from '@sapphire/framework';
 const { bold, inlineCode } = Formatters;
 
 @ApplyOptions<Command.Options>({
-  aliases: ['emotes'],
+  aliases: ['emotes', 'listemotes', 'emojis'],
   requiredUserPermissions: ['ADMINISTRATOR'],
 })
 export default class extends Command<Args> {

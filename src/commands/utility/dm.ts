@@ -5,7 +5,7 @@ import { type Message } from 'discord.js';
 import { Formatters } from 'discord.js';
 
 @ApplyOptions<Command.Options>({
-  aliases: ['dm'],
+  aliases: ['dm', 'pm', 'msg'],
   requiredUserPermissions: ['ADMINISTRATOR'],
 })
 export default class extends Command<Args> {

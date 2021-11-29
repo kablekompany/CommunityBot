@@ -5,8 +5,7 @@ import { type Message } from 'discord.js';
 import { Formatters } from 'discord.js';
 
 @ApplyOptions<Command.Options>({
-  name: 'ping',
-  aliases: ['pong'],
+  aliases: ['ping', 'pong'],
 })
 export default class extends Command<Args> {
   public async messageRun(msg: Message, args: Args) {
