@@ -69,7 +69,7 @@ export default class extends Command {
         await msg.react('❌');
       }
       if (embed.fields.length < 1) {
-        embed.setDescription('Neither the result nor an error exists.');
+        embed.setDescription('Neither a result nor an error exists.');
       }
       return msg.channel.send({ embeds: [embed] });
     });
