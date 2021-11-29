@@ -9,11 +9,10 @@ import { Formatters } from 'discord.js';
   aliases: ['pong'],
 })
 export default class extends Command<Args> {
-  public async run(msg: Message, args: Args) {
-    await msg.channel.send(
-      `My ping is ${Formatters.inlineCode(
-        `${msg.guild!.shard.ping}ms`,
-      )} for shard ${msg.guild!.shard.id}`,
-    );
+  public async messageRun(msg: Message, args: Args) {
+    const { bold, inlineCode } = Formatters;
+    const ping = msg.client.ws.ping;
+
+    await msg.channel.send(`${bold('API Latency:')} ${inlineCode(ping.toString())}`);
   }
 }

@@ -6,7 +6,6 @@ import type { Guild, Base, EmbedFieldData } from 'discord.js';
 import { Collection, Formatters } from 'discord.js';
 
 @ApplyOptions<Command.Options>({
-  name: 'serverinfo',
   aliases: ['si'],
 })
 export default class extends Command<Args> {
@@ -30,9 +29,9 @@ export default class extends Command<Args> {
             url: msg.guild!.iconURL({ dynamic: true, size: 1024 }) ?? undefined,
           },
           footer: {
-            text: `Created: ${msg.client.util.parseDate(msg.guild!.createdAt)}`,
+            text: `Created: ${this.container.util.parseDate(msg.guild!.createdAt)}`,
           },
-          color: msg.client.util.randomColour(),
+          color: this.container.util.randomColour(),
         },
       ],
     });
@@ -47,7 +46,7 @@ export default class extends Command<Args> {
     ];
 
     const m = k.map((k, i) => `${Formatters.bold(k)}: ${v[i]}`);
-    return guild.client.util.join(m);
+    return m.join('\n');
   }
 
   private async getOwner(guild: Guild): Promise<string> {
@@ -57,10 +56,10 @@ export default class extends Command<Args> {
     });
 
     const k = ['Tag', 'Nickname', 'ID'];
-    const v = [user.tag, nickname ?? 'No nickname', id];
+    const v = [user.tag, nickname ?? user.username, id];
 
     const m = k.map((k, i) => `${Formatters.bold(k)}: ${v[i]}`);
-    return guild.client.util.join(m);
+    return m.join('\n');
   }
 
   private getStats(guild: Guild): string {
@@ -73,6 +72,6 @@ export default class extends Command<Args> {
     );
 
     const m = k.map((k, i) => `${Formatters.bold(k)}: ${v[i]}`);
-    return guild.client.util.join(m);
+    return m.join('\n');
   }
 }
