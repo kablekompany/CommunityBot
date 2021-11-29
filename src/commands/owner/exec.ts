@@ -21,7 +21,7 @@ export default class extends Command {
 
     exec(cmd.value, async (err, stdout, stderr) => {
       if (stdout.length + stderr.length > 1990) {
-        const haste = await this.uploadResult(`${stdout}\n\n${stderr}`, { 
+        const haste = await this.container.util.haste(`${stdout}\n\n${stderr}`, { 
           ext: 'javascript', 
           input: cmd.value 
         });
@@ -65,7 +65,7 @@ export default class extends Command {
           ]
         });
       }
-      if ([stderr, stdout].map(isNullOrUndefined).every(v => v === true)) {
+      if ([stderr, stdout].map(isNullOrUndefined).every(v => v)) {
         await msg.react('❌');
       }
       if (embed.fields.length < 1) {
@@ -73,23 +73,5 @@ export default class extends Command {
       }
       return msg.channel.send({ embeds: [embed] });
     });
-  }
-
-  private async uploadResult(content: string, opts = { ext: 'javascript', input: '' }) {
-    const body = new URLSearchParams({
-      raw: 'false',
-      ext: opts.ext ?? 'javascript',
-      text: encodeURIComponent(
-        (opts.input ? `${opts.input}\n\n` : '') + content,
-      )
-    });
-
-    const res = await node('https://hastepaste.com/api/create', {
-      method: 'POST',
-      body: body,
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-    });
-
-    return res.text();
   }
 }

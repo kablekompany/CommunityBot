@@ -9,6 +9,7 @@ import {
 } from 'discord.js';
 import { colours } from '../assets/colours';
 import { config } from '#dmc/config';
+import fetch from 'node-fetch';
 
 export namespace BotUtils {
   /**
@@ -18,6 +19,14 @@ export namespace BotUtils {
   export type Constructor<T> = T extends new (...args: infer A) => T
     ? new (...args: A) => T
     : never;
+
+  /**
+   * Represents the options to haste.
+   */
+  export interface HasteOptions {
+    ext?: string;
+    input: string;
+  }
 }
 
 export class BotUtils {
@@ -96,6 +105,29 @@ export class BotUtils {
 
     return timeStr.filter((t) => !t.startsWith('0')).join(' ');
   };
+
+  /**
+   * Hastes something.
+   * @param content - The content to haste.
+   * @param opts - The options to haste something.
+   */
+  haste = async (content: string, opts: BotUtils.HasteOptions) => {
+    const body = new URLSearchParams({
+      raw: 'false',
+      ext: opts.ext ?? 'javascript',
+      text: encodeURIComponent(
+        (opts.input ? `${opts.input}\n\n` : '') + content,
+      )
+    });
+
+    const res = await fetch('https://hastepaste.com/api/create', {
+      method: 'POST',
+      body: body,
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    });
+
+    return res.text();
+  }
 
   /**
    * Random item from the array
