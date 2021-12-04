@@ -165,7 +165,7 @@ module.exports = {
       }
       participants = participants.map((item) => `<@${item}>`);
       const players = participants.join(', ');
-      interaction.followUp({
+      await interaction.followUp({
         embeds: [
           new MessageEmbed()
             .setTitle(`${interaction.user.tag} started a new race!`)
@@ -190,10 +190,10 @@ module.exports = {
             .setFooter(`Participants - ${participants.length}`),
         ],
       });
-      const interval = setInterval(() => {
+      const interval = setInterval(async () => {
         e = move(e, interval);
         msg.embeds[0].description = e;
-        msg.edit({
+        await msg.edit({
           embeds: [msg.embeds[0]],
         });
       }, 3000);

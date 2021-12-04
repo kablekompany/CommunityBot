@@ -4,8 +4,8 @@ module.exports = new Command(
   async ({ ctx, args }) => {
     const [id] = args;
 
-    if (id?.toLowerCase() === 'highscores') {
-      const topModlogs = await ctx.db.users.getTopModlogs();
+    if (id?.toLowerCase() === 'highest') {
+      const topModlogs = await ctx.db.users.getTopInfractions();
       const data = [];
 
       for await (const user of topModlogs) {
@@ -31,7 +31,7 @@ module.exports = new Command(
       return "I couldn't find that user in the database :(";
     }
 
-    await Promise.all(
+    Promise.all(
       db.infractions.map((i) => infractions.push(`- **[Link](${i})**`)),
     );
 

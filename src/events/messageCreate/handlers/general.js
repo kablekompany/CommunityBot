@@ -54,7 +54,7 @@ module.exports = new MessageHandler(
       });
 
       const messageLink = `https://discord.com/channels/${msg.guild.id}/${drama.id}/${message.id}`;
-      await this.db.users.addInfraction(msg.author.id, messageLink);
+      await ctx.db.users.addInfraction(msg.author.id, messageLink);
     }
     return null;
   },

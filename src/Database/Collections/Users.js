@@ -39,22 +39,12 @@ class Users extends BaseCollection {
     });
   }
 
-  _getGenericTop(field, limit = 10) {
-    return this.collection
-      .find({})
-      .sort({
-        [field]: -1,
-      })
-      .limit(limit)
-      .toArray();
-  }
-
-  async getTopModlogs(forced = false) {
+  async getTopInfractions(forced = false) {
     let cache = this.infractionsCache;
     if (Date.now() - cache.cachedAt > 5 * 60 * 1000 || forced) {
-      const topModlogs = await this._getGenericTop();
+      const topInfractions = await this._getGenericTop('infractionCount');
       cache = {
-        data: topModlogs,
+        data: topInfractions,
         cachedAt: Date.now(),
       };
     }

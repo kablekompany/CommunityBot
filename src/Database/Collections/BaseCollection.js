@@ -67,6 +67,16 @@ class BaseCollection {
   del(_id) {
     return this.collection.deleteOne({ _id });
   }
+
+  _getGenericTop(field, limit = 10) {
+    return this.collection
+      .find({})
+      .sort({
+        [field]: -1,
+      })
+      .limit(limit)
+      .toArray();
+  }
 }
 
 module.exports = BaseCollection;
