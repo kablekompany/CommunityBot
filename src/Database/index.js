@@ -1,6 +1,7 @@
 const { MongoClient } = require('mongodb');
 const Users = require('./Collections/Users');
 const Guilds = require('./Collections/Guilds');
+const Submissions = require('./Collections/Submissions');
 
 class Database {
   constructor() {
@@ -16,6 +17,7 @@ class Database {
     this.db = dbConn.db();
     this.users = new Users(this.db.collection('users'));
     this.guilds = new Guilds(this.db.collection('guilds'));
+    this.submissions = new Submissions(this.db.collection('submissions'));
   }
 }
 

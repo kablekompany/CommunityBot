@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+// const fetch = require('node-fetch'); use axios, getting start-up error bc of this
 
 class Command {
   constructor(func, props) {
@@ -75,7 +75,7 @@ class Command {
     return possibleRole;
   }
 
-  static async uploadResult(
+  /* static async uploadResult(
     content,
     opts = {
       ext: 'javascript',
@@ -95,7 +95,7 @@ class Command {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     });
     return res.text();
-  }
+  } */
 
   async execute({ ctx, msg, args, cleanArgs }) {
     if (this.props.development) {

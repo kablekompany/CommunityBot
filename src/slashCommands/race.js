@@ -206,7 +206,7 @@ module.exports = {
     {
       name: 'gamemode',
       description: 'Choose what you want to race as',
-      type: 'STRING',
+      type: 3,
       required: true,
       choices: [
         {
@@ -234,7 +234,7 @@ module.exports = {
     {
       name: 'prize',
       description: 'Enter the prize for the game',
-      type: 'STRING',
+      type: 3,
       required: true,
     },
   ],

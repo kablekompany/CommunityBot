@@ -1,6 +1,7 @@
 class BaseCollection {
   constructor(collection) {
     this.collection = collection;
+    this.currentID = 0;
   }
 
   async get(_id) {
@@ -66,6 +67,34 @@ class BaseCollection {
 
   del(_id) {
     return this.collection.deleteOne({ _id });
+  }
+
+  async _exists(query) {
+    return !!(await this.collection.findOne({ ...query }));
+  }
+
+  async exists(userID) {
+    return this._exists({ userID });
+  }
+
+  async getIncrementingID() {
+    if (!this.currentID) {
+      const currentIDResult = await this.collection.findOne({
+        currentID: { $exists: true },
+      });
+      if (currentIDResult) {
+        this.currentID = currentIDResult.currentID;
+      } else {
+        this.collection.insertOne({ currentID: 0 });
+        this.currentID = 0;
+      }
+    }
+
+    this.collection.updateOne(
+      { currentID: { $exists: true } },
+      { $inc: { currentID: 1 } },
+    );
+    return ++this.currentID;
   }
 
   _getGenericTop(field, limit = 10) {

@@ -1,31 +1,139 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-case-declarations */
+const { MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
 const { selfRoles, colourRoles } = require('../../assets/communityRoles');
 
 const selfRolesChannel = '882509580024840192';
-const trialModChannel = '905810056132558970';
-const trialModRole = '755258717276209282';
+const submissions = '919419831760085042';
 /**
- * @param {import('discord.js').Interaction} interaction interaction received by the API
- * @returns {null}
+ * @param {import('discord.js').MessageComponentInteraction} interaction interaction received by the gateway
  */
 module.exports = async function oninteraction(interaction) {
   const reply = (stuff) =>
     interaction.reply(stuff).catch((e) => console.error(e.message));
 
+  if (interaction.isButton() && interaction.customId.startsWith('approve')) {
+    const submission = {
+      link: interaction.message.embeds[0].image.url,
+      userID: interaction.message.embeds[0].footer.text,
+    };
+
+    const emb = interaction.message.embeds[0];
+    emb.color = 8519546; // green
+    await interaction.message.edit({
+      content: `Approved by **${interaction.user.tag}**`,
+      embeds: [emb],
+      components: [],
+    });
+    const submissionChannel = this.bot.channels.resolve(submissions);
+    const submissionID = await this.db.submissions.addSubmission(
+      submission.userID,
+      submission.link,
+    );
+
+    const components = [
+      new MessageActionRow({
+        components: [
+          new MessageButton({
+            emoji: {
+              id: '919609115129569350',
+              name: 'upvote',
+            },
+            style: 'SUCCESS',
+            customId: `upvotes_${submission.userID}_${submissionID}`,
+          }),
+          new MessageButton({
+            emoji: {
+              id: '919609066442063952',
+              name: 'downvote',
+            },
+            style: 'DANGER',
+            customId: `downvotes_${submission.userID}_${submissionID}`,
+          }),
+        ],
+      }),
+    ];
+    const embed = new MessageEmbed()
+      .setTitle(`Art Submission #${submissionID}`)
+      .setColor('0x2f3136')
+      .setImage(submission.link);
+    await submissionChannel.send({
+      embeds: [embed],
+      components,
+    });
+    return reply({
+      embeds: [
+        {
+          description: `**Submission #${submissionID}** has been posted! See <#${submissions}> for the message.`,
+          color: 8519546, // green
+        },
+      ],
+      ephemeral: true,
+    });
+  }
+
+  if (interaction.isButton() && interaction.customId.includes('deny')) {
+    const emb = interaction.message.embeds[0];
+    emb.color = 16711680; // red
+    await interaction.message.edit({
+      content: `Denied by **${interaction.user.tag}**`,
+      embeds: [emb],
+      components: [],
+    });
+    return reply({
+      embeds: [
+        {
+          description: 'Submission denied',
+        },
+      ],
+      ephemeral: true,
+    });
+  }
+
   if (
-    interaction.channelId === trialModChannel &&
-    interaction.customId === 'trialmod'
+    interaction.isButton() &&
+    ['upvotes', 'downvotes'].some((a) => interaction.customId.startsWith(a))
   ) {
-    if (interaction.member._roles.includes(trialModRole)) {
+    // eslint-disable-next-line no-unused-vars
+    const [type, userID, submissionID] = interaction.customId.split('_');
+    const hasVoted = await this.db.submissions.hasVoted(
+      interaction.user.id,
+      submissionID,
+    );
+
+    if (hasVoted === true) {
       return reply({
-        content: 'You already have the **Trial Moderator** role.',
+        embeds: [
+          {
+            title: 'You can only vote once per submission',
+            description: `You've already voted for **submission #${submissionID}** ${interaction.user.username}.`,
+            color: 16711680, // red
+          },
+        ],
         ephemeral: true,
       });
     }
-    await interaction.member.roles.add(trialModRole);
+
+    if (type === 'upvotes') {
+      await this.db.submissions.addVote(
+        submissionID,
+        interaction.user.id,
+        'upvotes',
+      );
+    } else if (type === 'downvotes') {
+      await this.db.submissions.addVote(
+        submissionID,
+        interaction.user.id,
+        'downvotes',
+      );
+    }
     return reply({
-      content: "You've been given the **Trial Moderator** role!",
+      embeds: [
+        {
+          description: `You've successfully voted for **submission #${submissionID}** ${interaction.user.username}.`,
+          color: 8519546, // green
+        },
+      ],
       ephemeral: true,
     });
   }
@@ -123,7 +231,7 @@ module.exports = async function oninteraction(interaction) {
     }
     await interaction.client.slashCmds
       .get(interaction.commandName)
-      .execute(interaction);
+      .execute(interaction, this);
   } catch (error) {
     console.error(`[Application Command Interaction] ${error.stack}`);
   }
