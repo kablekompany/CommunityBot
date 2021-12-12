@@ -39,7 +39,6 @@ class Submissions extends BaseCollection {
   async hasVoted(userID, submissionID) {
     const submission = await this.get(+submissionID);
     const votes = submission.upvotes.concat(submission.downvotes);
-    console.log(votes.includes(userID));
     if (votes.includes(userID)) {
       return true;
     }

@@ -14,16 +14,16 @@ module.exports = {
   async execute(interaction, ctx) {
     const link = interaction.options.getString('link');
 
+    const errorEmbed = {
+      title: 'Invalid image URL',
+      description:
+        'Please ensure the link is a _direct_ link to the image. Direct links should end in **.png**, **.jpg** OR **.jpeg**.\n\nExample: https://i.imgur.com/wDPDj3T.png',
+      color: 16711680, // red
+    };
+
     if (!link.match(imageURLRegex)) {
       return interaction.reply({
-        embeds: [
-          {
-            title: 'Invalid image URL',
-            description:
-              'Please ensure the link is a _direct_ link to the image. Direct links should end in **.png**, **.jpg** OR **.jpeg**.\n\nExample: https://i.imgur.com/wDPDj3T.png',
-            color: 16711680, // red
-          },
-        ],
+        embeds: [errorEmbed],
         ephemeral: true,
       });
     }
@@ -31,6 +31,15 @@ module.exports = {
     const alreadySubmitted = await ctx.db.submissions.exists(
       interaction.user.id,
     );
+
+    const { pathname } = new URL(link);
+
+    if (['.jpeg', '.png', 'jpg'].some((e) => !pathname.endsWith(e))) {
+      return interaction.reply({
+        embeds: [errorEmbed],
+        ephemeral: true,
+      });
+    }
 
     if (alreadySubmitted) {
       return interaction
