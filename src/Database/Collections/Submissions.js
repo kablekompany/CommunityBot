@@ -9,6 +9,7 @@ class Submissions extends BaseCollection {
       link: '',
       upvotes: [],
       downvotes: [],
+      createdAt: 0,
     };
     this.leaderboardCache = {
       cachedAt: 0,
@@ -16,7 +17,7 @@ class Submissions extends BaseCollection {
     };
   }
 
-  async addSubmission(userID, link) {
+  async addSubmission(userID, link, createdAt = Date.now()) {
     const latestID = await this.getIncrementingID();
     await this.collection.insertOne({
       _id: latestID,
@@ -24,6 +25,7 @@ class Submissions extends BaseCollection {
       link,
       upvotes: [],
       downvotes: [],
+      createdAt,
     });
     return latestID;
   }
@@ -54,10 +56,10 @@ class Submissions extends BaseCollection {
     };
   }
 
-  async getLeaderboards(forced = false, type = 'upvotes') {
+  async getLeaderboards(forced = false, type = 'upvotes', limit = 5) {
     let cache = this.leaderboardCache;
     if (Date.now() - cache.cachedAt > 5 * 60 * 1000 || forced) {
-      const leaderboards = await this._getGenericTop(type);
+      const leaderboards = await this._getGenericTop(type, limit);
       cache = {
         data: leaderboards,
         cachedAt: Date.now(),

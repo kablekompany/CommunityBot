@@ -83,7 +83,7 @@ module.exports = async function oninteraction(interaction) {
     return reply({
       embeds: [
         {
-          description: 'Submission denied',
+          description: 'Submission Denied',
         },
       ],
       ephemeral: true,
@@ -106,7 +106,7 @@ module.exports = async function oninteraction(interaction) {
         embeds: [
           {
             title: 'You can only vote once per submission',
-            description: `You've already voted for **submission #${submissionID}** ${interaction.user.username}.`,
+            description: `You've already voted for **submission #${submissionID}** ${interaction.user.username}`,
             color: 16711680, // red
           },
         ],
@@ -130,7 +130,7 @@ module.exports = async function oninteraction(interaction) {
     return reply({
       embeds: [
         {
-          description: `You've successfully voted for **submission #${submissionID}** ${interaction.user.username}.`,
+          description: `You've successfully voted for **submission #${submissionID}** ${interaction.user.username}`,
           color: 8519546, // green
         },
       ],

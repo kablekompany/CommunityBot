@@ -32,15 +32,6 @@ module.exports = {
       interaction.user.id,
     );
 
-    const { pathname } = new URL(link);
-
-    if (['.jpeg', '.png', 'jpg'].some((e) => !pathname.endsWith(e))) {
-      return interaction.reply({
-        embeds: [errorEmbed],
-        ephemeral: true,
-      });
-    }
-
     if (alreadySubmitted) {
       return interaction
         .reply({
