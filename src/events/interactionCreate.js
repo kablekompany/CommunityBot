@@ -4,7 +4,7 @@ const { MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
 const { selfRoles, colourRoles } = require('../../assets/communityRoles');
 
 const selfRolesChannel = '882509580024840192';
-const submissions = '919419831760085042';
+const submissions = '919635043201204314';
 /**
  * @param {import('discord.js').MessageComponentInteraction} interaction interaction received by the gateway
  */
