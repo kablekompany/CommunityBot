@@ -56,7 +56,7 @@ class Submissions extends BaseCollection {
     };
   }
 
-  async getLeaderboards(forced = false, type = 'upvotes', limit = 5) {
+  async getLeaderboards(forced = false, type = 'upvotes', limit = 10) {
     let cache = this.leaderboardCache;
     if (Date.now() - cache.cachedAt > 5 * 60 * 1000 || forced) {
       const leaderboards = await this._getGenericTop(type, limit);
