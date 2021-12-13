@@ -1,9 +1,11 @@
 /* eslint-disable indent */
+const { MessageActionRow, MessageButton } = require('discord.js');
 const Command = require('../../models/Command/CommandModel');
 const { relativeTime } = require('../../utils/misc');
 
+const submissionQueue = '914382828186255391';
 module.exports = new Command(
-  async ({ ctx, args }) => {
+  async ({ ctx, msg, args }) => {
     const [arg] = args;
 
     if (arg?.toLowerCase() === 'top') {
@@ -45,6 +47,49 @@ module.exports = new Command(
         image: {
           url: db.link,
         },
+      };
+    }
+
+    if (arg?.toLowercase() === 'fix') {
+      const potentialMessage = args[1];
+      const channel = await msg.guild.channels.cache.get(submissionQueue); // submission queue
+      const message = await channel.messages.cache.get(potentialMessage);
+
+      if (!message) {
+        return `I couldn't find this message in ${channel.toString()}`;
+      }
+
+      if (msg.author.id !== ctx.bot.user.id) {
+        return "Invalid message, this isn't a submission";
+      }
+
+      const components = [
+        new MessageActionRow({
+          components: [
+            new MessageButton({
+              emoji: {
+                id: '919416789266497596',
+                name: 'approve',
+              },
+              style: 'SECONDARY',
+              customId: `approve_${msg.author.id}`,
+            }),
+            new MessageButton({
+              emoji: {
+                id: '919416821428412517',
+                name: 'deny',
+              },
+              style: 'SECONDARY',
+              customId: `deny_${msg.author.id}`,
+            }),
+          ],
+        }),
+      ];
+
+      await message.edit({ components });
+      const messageLink = `https://discord.com/channels/${msg.guild.id}/${channel.id}/${message.id}`;
+      return {
+        description: `Buttons re-added! See the message with **[this link](${messageLink})** to approve it.`,
       };
     }
     const db = await ctx.db.submissions.get(+arg);
