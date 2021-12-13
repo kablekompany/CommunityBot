@@ -1,4 +1,4 @@
-// const fetch = require('node-fetch'); use axios, getting start-up error bc of this
+const axios = require('axios');
 
 class Command {
   constructor(func, props) {
@@ -75,27 +75,22 @@ class Command {
     return possibleRole;
   }
 
-  /* static async uploadResult(
-    content,
-    opts = {
-      ext: 'javascript',
-      input: '',
-    },
-  ) {
-    const body =
-      'raw=false&' +
-      `ext=${opts.ext || 'javascript'}&` +
-      `text=${encodeURIComponent(
-        (opts.input ? `${opts.input}\n\n` : '') + content,
-      )}`;
+  static async uploadResult(content) {
+    const parseQueryString = (obj) => {
+      let res = '';
+      for (const key of Object.keys(obj)) {
+        res += `${res === '' ? '' : '&'}${key}=${obj[key]}`;
+      }
+      return res;
+    };
 
-    const res = await fetch('https://hastepaste.com/api/create', {
-      method: 'POST',
-      body,
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    });
-    return res.text();
-  } */
+    const res = await axios.post(
+      'https://hastepaste.com/api/create',
+      parseQueryString({ raw: false, text: encodeURIComponent(content) }),
+      { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } },
+    );
+    return res.data;
+  }
 
   async execute({ ctx, msg, args, cleanArgs }) {
     if (this.props.development) {
