@@ -50,7 +50,7 @@ module.exports = new Command(
       };
     }
 
-    if (arg?.toLowercase() === 'fix') {
+    if (arg?.toLowerCase() === 'fix') {
       const potentialMessage = args[1];
       const channel = await msg.guild.channels.cache.get(submissionQueue); // submission queue
       const message = await channel.messages.cache.get(potentialMessage);
