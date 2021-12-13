@@ -53,7 +53,9 @@ module.exports = new Command(
     if (arg?.toLowerCase() === 'fix') {
       const potentialMessage = args[1];
       const channel = await msg.guild.channels.cache.get(submissionQueue); // submission queue
-      const message = await channel.messages.cache.get(potentialMessage);
+      const message = await channel.messages.fetch(potentialMessage, {
+        force: true,
+      });
 
       if (!message) {
         return `I couldn't find this message in ${channel.toString()}`;
