@@ -10,9 +10,12 @@ module.exports = new Command(
 
     if (arg?.toLowerCase() === 'top') {
       const leaderboards = await ctx.db.submissions.getLeaderboards();
+      const sorted = leaderboards.sort(
+        (a, b) => b.upvotes.length - a.upvotes.length,
+      );
       const data = [];
 
-      for await (const db of leaderboards) {
+      for await (const db of sorted) {
         const user = await ctx.bot.users.fetch(db.userID).catch(() => null);
         data.push(
           db.userID
