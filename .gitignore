@@ -107,11 +107,7 @@ dist
 .vscode-test
 
 # config and secrets and old code and tests
-src/configs/secrets.json
-src/configs/config.json
-old
 test.js
 
 # editors/workspace
 dmc.code-workspace
-.eslintrc.json
