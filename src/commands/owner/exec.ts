@@ -1,11 +1,8 @@
 import { type Args, Command } from '@sapphire/framework';
 import { ApplyOptions } from '@sapphire/decorators';
-import { type Message } from 'discord.js';
-
-import { Formatters, MessageEmbed } from 'discord.js';
+import { type Message, Formatters, MessageEmbed } from 'discord.js';
 import { isNullOrUndefined } from '@sapphire/utilities';
-import { exec } from 'node:child_process';
-import node from 'node-fetch';
+import { exec } from 'child_process';
 
 @ApplyOptions<Command.Options>({
   aliases: ['exec'],
@@ -14,20 +11,14 @@ import node from 'node-fetch';
 export default class extends Command {
   public async messageRun(msg: Message, args: Args) {
     const cmd = await args.restResult('string');
-    if (cmd.error) return msg.reply('U gotta type something to execute smh');
+    if (cmd.error) return msg.reply('you gotta type something to execute smh');
 
     const hrStart = process.hrtime();
     const hrDiff = process.hrtime(hrStart);
 
     exec(cmd.value, async (err, stdout, stderr) => {
       if (stdout.length + stderr.length > 1990) {
-        const haste = await this.container.util.haste(
-          `${stdout}\n\n${stderr}`,
-          {
-            ext: 'javascript',
-            input: cmd.value,
-          },
-        );
+        const haste = await this.container.util.haste(`${stdout}\n\n${stderr}`);
 
         return msg.channel.send({
           embeds: [

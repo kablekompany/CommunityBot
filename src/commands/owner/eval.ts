@@ -1,7 +1,6 @@
 import { type Args, Command } from '@sapphire/framework';
 import { ApplyOptions } from '@sapphire/decorators';
 import { type Message } from 'discord.js';
-
 import { MessageEmbed, Formatters } from 'discord.js';
 import { inspect } from 'util';
 import { ok } from '@sapphire/framework';
@@ -9,6 +8,7 @@ import { ok } from '@sapphire/framework';
 const codeBlockRegex = /^```(js)?(.|\n)*```$/g;
 const codeBlockHeadRegex = /^```(js)?\n/g;
 const codeBlockTailRegex = /```$/g;
+const { hyperlink, codeBlock } = Formatters;
 
 @ApplyOptions<Command.Options>({
   aliases: ['eval', 'e'],
@@ -44,16 +44,16 @@ export default class extends Command {
     const exceed = result.length >= 1901;
 
     if (exceed) {
-      result = await this.container.util.haste(result, { input: input.value });
+      result = await this.container.util.haste(result);
       embed.setDescription(
-        `Result exceeded 2000 chars. Click ${Formatters.hyperlink(
+        `Result exceeded 2000 chars. Click ${hyperlink(
           'this',
           result,
         )} for the full result.`,
       );
     } else {
-      embed.addField('Input', Formatters.codeBlock('js', input.value));
-      embed.addField('Output', Formatters.codeBlock('js', result));
+      embed.addField('Input', codeBlock('js', input.value));
+      embed.addField('Output', codeBlock('js', result));
     }
 
     return msg.channel.send({

@@ -9,7 +9,7 @@ import {
 } from 'discord.js';
 import { colours } from '../assets/colours';
 import { config } from '#dmc/config';
-import fetch from 'node-fetch';
+import axios from 'axios';
 
 export namespace BotUtils {
   /**
@@ -19,14 +19,6 @@ export namespace BotUtils {
   export type Constructor<T> = T extends new (...args: infer A) => T
     ? new (...args: A) => T
     : never;
-
-  /**
-   * Represents the options to haste.
-   */
-  export interface HasteOptions {
-    ext?: string;
-    input: string;
-  }
 }
 
 export class BotUtils {
@@ -108,25 +100,23 @@ export class BotUtils {
 
   /**
    * Hastes something.
-   * @param content - The content to haste.
-   * @param opts - The options to haste something.
+   * @param content - The content to upload to hastepaste.
    */
-  haste = async (content: string, opts: BotUtils.HasteOptions) => {
-    const body = new URLSearchParams({
-      raw: 'false',
-      ext: opts.ext ?? 'javascript',
-      text: encodeURIComponent(
-        (opts.input ? `${opts.input}\n\n` : '') + content,
-      ),
-    });
+  haste = async (content: string) => {
+    const parseQueryString = (obj: any) => {
+      let res = '';
+      for (const key of Object.keys(obj)) {
+        res += `${res === '' ? '' : '&'}${key}=${obj[key]}`;
+      }
+      return res;
+    };
 
-    const res = await fetch('https://hastepaste.com/api/create', {
-      method: 'POST',
-      body: body,
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    });
-
-    return res.text();
+    const res = await axios.post(
+      'https://hastepaste.com/api/create',
+      parseQueryString({ raw: false, text: encodeURIComponent(content) }),
+      { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } },
+    );
+    return res.data;
   };
 
   /**
