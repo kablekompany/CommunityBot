@@ -3,9 +3,10 @@ import type { User } from 'discord.js';
 
 export interface UserProfile extends IProps {
   /**
-   * Represents the user's flags.
+   * Represents the user's infraction info.
    */
-  flags: number;
+  infractions: string[];
+  infractionCount: number;
 }
 
 export interface UserBaseDocument extends IBaseDocument, UserProfile {
@@ -17,10 +18,11 @@ export interface UserBaseDocument extends IBaseDocument, UserProfile {
 
 export interface UserDocument extends IDocument, UserBaseDocument {
   /**
-   * Sets the user flags.
-   * @param flags - The flags idk.
+   * Logs an infraction for the user.
+   * @param id The user's id
+   * @param msgLink The message link of the infraction.
    */
-  setFlags: (flags: number) => this;
+  addInfraction: (id: string, msgLink: string) => this;
 }
 
 export interface UserModel extends IModel<UserDocument> {
