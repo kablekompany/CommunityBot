@@ -5,6 +5,7 @@ const { join } = require('path');
 const { readdirSync } = require('fs');
 const { Player } = require('discord-player');
 const { registerPlayerEvents } = require('../../utils/playerEventHandler');
+const { mongo } = require('../../configs/secrets.json');
 const Database = require('../../Database/index');
 
 class BotModel {
@@ -104,7 +105,7 @@ class BotModel {
   }
 
   async launch() {
-    await this.db.bootstrap(this.config);
+    await this.db.bootstrap(mongo);
     await this.loadSlashCommands();
     registerPlayerEvents(this.bot.player);
     this.loadCommands();

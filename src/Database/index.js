@@ -10,8 +10,8 @@ class Database {
     this.guilds = null;
   }
 
-  async bootstrap(config) {
-    const dbConn = await MongoClient.connect(config.mongo, {
+  async bootstrap(mongoURI) {
+    const dbConn = await MongoClient.connect(mongoURI, {
       useUnifiedTopology: true,
     });
     this.db = dbConn.db();

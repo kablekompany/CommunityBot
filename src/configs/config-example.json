@@ -33,6 +33,5 @@
       "enabled": false,
       "channel": ""
     }
-  },
-  "mongo": "mongodb://localhost/CommunityBot"
+  }
 }
