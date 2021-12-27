@@ -120,7 +120,7 @@ module.exports = {
         .setDisabled(true),
     );
 
-    const m = await interaction.channel.send({
+    await interaction.reply({
       embeds: [
         new MessageEmbed()
           .setTitle('Race!')
@@ -132,7 +132,7 @@ module.exports = {
       ],
       components: [joinon],
     });
-
+    const m = await interaction.fetchReply()
     const collector = m.createMessageComponentCollector({
       time: 60000,
     });
