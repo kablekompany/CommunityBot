@@ -63,4 +63,29 @@ module.exports = {
       .join(':')} — ${date.toLocaleDateString()}`;
     return formattedDate;
   },
+
+  parseTime: (time) => {
+    if (time === 0) {
+      return '0s';
+    }
+    const methods = [
+      { name: 'd', count: 86400 },
+      { name: 'h', count: 3600 },
+      { name: 'm', count: 60 },
+      { name: 's', count: 1 },
+    ];
+
+    const timeStr = [
+      Math.floor(time / methods[0].count).toString() + methods[0].name,
+    ];
+    for (let i = 0; i < 3; i += 1) {
+      timeStr.push(
+        Math.floor(
+          (time % methods[i].count) / methods[i + 1].count,
+        ).toString() + methods[i + 1].name,
+      );
+    }
+
+    return timeStr.filter((t) => !t.startsWith('0')).join(', ');
+  },
 };
