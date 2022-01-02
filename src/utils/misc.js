@@ -1,6 +1,5 @@
 const { promisify } = require('util');
 const colours = require('../../assets/colours.json');
-const config = require('../configs/config.json');
 
 module.exports = {
   paginate: (data, separator = '\n') => {
@@ -38,14 +37,14 @@ module.exports = {
     await wait(ms);
   },
 
-  muteMember: async (msg, reason = 'N/A', duration = 1.2e6) => {
+  timeoutMember: async (msg, reason = 'N/A', duration = 1.2e6) => {
     // 20 minutes = default
-    await msg.member.roles.add(config.dmc.mutedRole);
+    await msg.member.timeout(duration);
     await msg.member.send({
       embeds: [
         {
-          title: 'You have been muted',
-          description: `Your mute ends <t:${Math.round(
+          title: 'You have been timed out',
+          description: `Your timeout ends <t:${Math.round(
             (Date.now() + duration) / 1000,
           )}:R>.\n**Reason**: ${reason}`,
           timestamp: new Date(),
@@ -53,7 +52,6 @@ module.exports = {
         },
       ],
     });
-    setTimeout(() => msg.member.roles.remove(config.dmc.mutedRole), duration);
   },
 
   prettyDate: () => {

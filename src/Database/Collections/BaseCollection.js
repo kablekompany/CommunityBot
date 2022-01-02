@@ -97,7 +97,7 @@ class BaseCollection {
     return ++this.currentID;
   }
 
-  _getGenericTop(field, limit = 10) {
+  _getGenericTop(field, limit = 25) {
     return this.collection
       .find({})
       .sort({

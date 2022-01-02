@@ -21,7 +21,7 @@ module.exports = new MessageHandler(
         return null;
       }
       await msg.delete();
-      await ctx.utils.muteMember(msg, '"DM me/msg me" in general-chat.');
+      await ctx.utils.timeoutMember(msg, '"DM me/msg me" in general-chat.');
       const drama = ctx.bot.channels.resolve(ctx.config.dmc.dramaWatcher);
       const modlog = ctx.bot.channels.resolve(ctx.config.dmc.modlog);
       const message = await drama.send({
@@ -32,7 +32,7 @@ module.exports = new MessageHandler(
               msg.author.id
             }\`) said:\n${ctx.utils.codeblock(msg.content)}\nChannel: <#${
               msg.channel.id
-            }>\nUser has been muted for **20 minutes**.`,
+            }>\nUser has been timed out for **20 minutes**.`,
             timestamp: new Date(),
             color: 15705088,
           },
@@ -41,7 +41,7 @@ module.exports = new MessageHandler(
       await modlog.send({
         embeds: [
           {
-            title: 'mute | 20 minutes',
+            title: 'timeout | 20 minutes',
             description:
               `**Offender:** ${msg.author.username}#${msg.author.discriminator}<@${msg.author.id}>\n` +
               `**Reason:** Caught by "dm me" censor in <#${ctx.config.dmc.general}>\n` +

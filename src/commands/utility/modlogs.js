@@ -4,11 +4,14 @@ module.exports = new Command(
   async ({ ctx, args }) => {
     const [id] = args;
 
-    if (id?.toLowerCase() === 'highest') {
+    if (['highest', 'top'].includes(id?.toLowerCase())) {
       const topModlogs = await ctx.db.users.getTopInfractions();
+      const sorted = topModlogs.sort(
+        (a, b) => b.infractionCount - a.infractionCount,
+      );
       const data = [];
 
-      for await (const user of topModlogs) {
+      for await (const user of sorted) {
         const userInfo = await ctx.bot.users.fetch(user._id);
         data.push(
           `- **${user.infractionCount.toLocaleString()}** for ${
@@ -31,10 +34,7 @@ module.exports = new Command(
       return "I couldn't find that user in the database :(";
     }
 
-    Promise.all(
-      db.infractions.map((i) => infractions.push(`- **[Link](${i})**`)),
-    );
-
+    db.infractions.map((i) => infractions.push(`- **[Link](${i})**`));
     return {
       title: `User Modlogs for ${user.tag}`,
       description: `Total: **${db.infractionCount.toLocaleString()}**\n\nLast 5 Infractions:\n${infractions.join(
@@ -49,7 +49,8 @@ module.exports = new Command(
     modOnly: true,
     argReq: true,
     responses: {
-      noArg: "I'm gonna need a user ID to check",
+      noArg:
+        "I'm gonna need a user ID to check, or pass `top`/`highest` to see the users with the highest infractions.",
     },
   },
 );

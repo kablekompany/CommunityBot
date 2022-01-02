@@ -22,7 +22,7 @@ module.exports = new MessageHandler(
     }
 
     await msg.delete();
-    await ctx.utils.muteMember(
+    await ctx.utils.timeoutMember(
       msg,
       '"DM me/msg me" in trade/dank memer channels.',
     );
@@ -37,7 +37,7 @@ module.exports = new MessageHandler(
             msg.author.id
           }\`) said:\n${ctx.utils.codeblock(msg.content)}\nChannel: <#${
             msg.channel.id
-          }>\nUser has been muted for **20 minutes**.`,
+          }>\nUser has been timed out for **20 minutes**.`,
           timestamp: new Date(),
           color: 15705088,
         },
@@ -46,7 +46,7 @@ module.exports = new MessageHandler(
     await modlog.send({
       embeds: [
         {
-          title: 'mute | 20 minutes',
+          title: 'timeout | 20 minutes',
           description:
             `**Offender:** ${msg.author.tag} <@${msg.author.id}>\n` +
             '**Reason:** Caught by "dm me" censor in trade/bot channels\n' +
