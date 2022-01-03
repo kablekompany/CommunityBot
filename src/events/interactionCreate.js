@@ -5,12 +5,32 @@ const { selfRoles, colourRoles } = require('../../assets/communityRoles');
 
 const selfRolesChannel = '882509580024840192';
 const submissions = '919635043201204314';
+const trialModChannel = '927620705653231616';
+const trialModRole = '587913036648546305';
+
 /**
  * @param {import('discord.js').MessageComponentInteraction} interaction interaction received by the gateway
  */
 module.exports = async function oninteraction(interaction) {
   const reply = (stuff) =>
     interaction.reply(stuff).catch((e) => console.error(e.message));
+
+  if (
+    interaction.channelId === trialModChannel &&
+    interaction.customId === 'trialmod'
+  ) {
+    if (interaction.member.roles.cache.has(trialModRole)) {
+      return reply({
+        content: 'You already have the **Trial Moderator** role.',
+        ephemeral: true,
+      });
+    }
+    await interaction.member.roles.add(trialModRole);
+    return reply({
+      content: "You've been given the **Trial Moderator** role!",
+      ephemeral: true,
+    });
+  }
 
   if (interaction.isButton() && interaction.customId.startsWith('approve')) {
     const submission = {
