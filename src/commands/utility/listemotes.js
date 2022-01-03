@@ -20,7 +20,7 @@ module.exports = new Command(
     if (msg.content.includes('--all')) {
       const color = ctx.utils.randomColour();
       await Promise.all(
-        pages.map(async (page, index, arr) => {
+        pages.map((page, index, arr) =>
           msg.channel.send({
             embeds: [
               {
@@ -32,8 +32,8 @@ module.exports = new Command(
                 },
               },
             ],
-          });
-        }),
+          }),
+        ),
       );
     } else {
       return {

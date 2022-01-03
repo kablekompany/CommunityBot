@@ -26,8 +26,7 @@ class Guilds extends BaseCollection {
   }
 
   async updatePrefix(id, prefix) {
-    const res = await this.update(id, { $set: { prefix } });
-    return res.result;
+    return this.set(id, 'prefix', prefix);
   }
 }
 

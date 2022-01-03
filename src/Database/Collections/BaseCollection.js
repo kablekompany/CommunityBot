@@ -39,10 +39,10 @@ class BaseCollection {
     });
   }
 
-  set(_id, field, amount) {
+  set(_id, field, value) {
     return this.update(_id, {
       $set: {
-        [field]: amount,
+        [field]: value,
       },
     });
   }

@@ -1,32 +1,4 @@
-const ms = require('ms');
 const CommandOptionType = require('../utils/CommandOptionType');
-
-function validateTime(input) {
-  let temp = '';
-  let sum = 0;
-  const occurrences = {
-    d: 0,
-    h: 0,
-    m: 0,
-    s: 0,
-  };
-  for (const c of input) {
-    if (['d', 'h', 'm', 's'].includes(c)) {
-      occurrences[c]++;
-      temp += c;
-      sum += ms(temp.trim());
-      temp = '';
-    } else {
-      temp += c;
-    }
-  }
-
-  const hasRepeat = Object.values(occurrences).some((e) => e > 1);
-  if (temp !== '' || Number.isNaN(sum) || hasRepeat) {
-    throw new Error('Invalid time inputted.');
-  }
-  return sum;
-}
 
 module.exports = {
   /**
@@ -47,11 +19,10 @@ module.exports = {
     let milliseconds;
 
     try {
-      milliseconds = validateTime(time);
+      milliseconds = ctx.utils.validateTime(time);
     } catch (err) {
       return interaction.reply({
-        content:
-          "You've entered an invalid time it seems like, try again maybe?",
+        content: 'This seems like an invalid time, try again maybe?',
         ephemeral: true,
       });
     }
@@ -103,7 +74,7 @@ module.exports = {
       embeds: [
         {
           title: 'Timeout Successful',
-          description: `**${member.user.tag}**'s timeout ends ${endTime}`,
+          description: `**${member.user.tag}**'s timeout ends **${endTime}**`,
           color: 0x89ff7a, // green
         },
       ],

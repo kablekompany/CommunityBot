@@ -22,7 +22,7 @@ module.exports = new Command(
 
       return {
         title: 'Highest Infraction Counts',
-        description: data.reverse().join('\n'),
+        description: data.join('\n'),
         color: ctx.utils.randomColour(),
       };
     }
@@ -43,9 +43,9 @@ module.exports = new Command(
     };
   },
   {
-    name: 'modlogs',
-    usage: 'modlogs <id>',
-    aliases: ['modlog', 'ml'],
+    name: 'logs',
+    usage: 'logs <id>',
+    aliases: ['logs'],
     modOnly: true,
     argReq: true,
     responses: {

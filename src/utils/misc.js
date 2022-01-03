@@ -1,4 +1,5 @@
 const { promisify } = require('util');
+const ms = require('ms');
 const colours = require('../../assets/colours.json');
 
 module.exports = {
@@ -32,9 +33,9 @@ module.exports = {
 
   randomInArray: (array) => array[Math.floor(Math.random() * array.length)],
 
-  sleep: async (ms) => {
+  sleep: async (milliseconds) => {
     const wait = promisify(setTimeout);
-    await wait(ms);
+    await wait(milliseconds);
   },
 
   timeoutMember: async (msg, reason = 'N/A', duration = 1.2e6) => {
@@ -85,5 +86,32 @@ module.exports = {
     }
 
     return timeStr.filter((t) => !t.startsWith('0')).join(', ');
+  },
+
+  validateTime: (input) => {
+    let temp = '';
+    let sum = 0;
+    const occurrences = {
+      d: 0,
+      h: 0,
+      m: 0,
+      s: 0,
+    };
+    for (const c of input) {
+      if (['d', 'h', 'm', 's'].includes(c)) {
+        occurrences[c]++;
+        temp += c;
+        sum += ms(temp.trim());
+        temp = '';
+      } else {
+        temp += c;
+      }
+    }
+
+    const hasRepeat = Object.values(occurrences).some((e) => e > 1);
+    if (temp !== '' || Number.isNaN(sum) || hasRepeat) {
+      throw new Error('Invalid time inputted.');
+    }
+    return sum;
   },
 };
