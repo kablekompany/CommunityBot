@@ -51,7 +51,7 @@ module.exports = new Command(
       id: msg.author.id,
       tag: msg.author.tag,
     };
-    await ctx.db.logs.add(member.id, reason, moderator, 'unmute');
+    await ctx.db.logs.add(member.id, reason, moderator, null, 'unmute');
     const m = await msg.reply({
       embeds: [
         {
