@@ -10,8 +10,7 @@ module.exports = new MessageHandler(
       guild = await ctx.db.guilds.initGuild(guildID);
     }
 
-    const args = MessageHandler.argify(msg, guild.prefix);
-
+    const args = MessageHandler.argify(msg, guild.prefixes);
     if (!args) {
       return null;
     }

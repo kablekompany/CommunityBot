@@ -4,8 +4,14 @@ class MessageHandler {
     this._props = props;
   }
 
-  static argify(msg, prefix, separator = / /g) {
-    if (!msg.content.toLowerCase().startsWith(prefix.toLowerCase())) {
+  static argify(msg, prefixes, separator = / /g) {
+    const prefix = prefixes.find((p) =>
+      msg.content
+        .toLowerCase()
+        .split(' ')
+        .find((a) => a.startsWith(p)),
+    );
+    if (!prefix) {
       return null;
     }
     return msg.content

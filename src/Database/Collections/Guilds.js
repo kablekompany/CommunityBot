@@ -4,7 +4,7 @@ class Guilds extends BaseCollection {
   constructor(collection) {
     super(collection);
     this.default = {
-      prefix: '!',
+      prefixes: ['d!'],
       commands: 0,
     };
   }
@@ -25,8 +25,20 @@ class Guilds extends BaseCollection {
     return guild;
   }
 
-  async updatePrefix(id, prefix) {
-    return this.set(id, 'prefix', prefix);
+  async addPrefix(id, prefix) {
+    await this.update(id, {
+      $addToSet: {
+        prefixes: prefix,
+      },
+    });
+  }
+
+  async removePrefix(id, prefix) {
+    await this.update(id, {
+      $pull: {
+        prefixes: prefix,
+      },
+    });
   }
 }
 

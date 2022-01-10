@@ -8,14 +8,16 @@ module.exports = new Command(
     const member =
       msg.guild.members.cache.get(user) ||
       msg.guild.members.cache.find(
-        (m) => m.tag === user || m.username === user,
+        (m) =>
+          m.tag === user ||
+          m.username === user ||
+          m.id === msg.mentions.users.first().id,
       );
 
     if (!member) {
       return "Not a valid user ID (or this user isn't cached).";
     }
 
-    console.log(member.user.tag);
     if (!time) {
       time = '15m';
     }
