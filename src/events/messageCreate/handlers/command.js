@@ -41,9 +41,13 @@ module.exports = new MessageHandler(
         if (!possibleMsg.color) {
           possibleMsg.color = randomColour();
         }
-        await msg.channel.send({ embeds: [possibleMsg] });
+        await msg.reply({
+          embeds: [possibleMsg],
+        });
+      } else if (typeof possibleMsg === 'string') {
+        await msg.reply(possibleMsg);
       } else {
-        await msg.channel.send(possibleMsg);
+        await msg.reply('how did this even happen');
       }
     }
     return null;

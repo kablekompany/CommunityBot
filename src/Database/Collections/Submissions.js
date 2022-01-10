@@ -65,7 +65,6 @@ class Submissions extends BaseCollection {
         cachedAt: Date.now(),
       };
     }
-
     return cache.data;
   }
 }

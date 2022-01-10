@@ -43,9 +43,9 @@ module.exports = new Command(
     };
   },
   {
-    name: 'logs',
-    usage: 'logs <id>',
-    aliases: ['log'],
+    name: 'tradelogs',
+    usage: 'tradelogs [<id>|highest]',
+    aliases: ['tradelog', 'tl'],
     modOnly: true,
     argReq: true,
     responses: {
