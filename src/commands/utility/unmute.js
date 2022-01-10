@@ -1,3 +1,4 @@
+/* eslint-disable no-confusing-arrow */
 const Command = require('../../models/Command/CommandModel');
 
 module.exports = new Command(
@@ -6,8 +7,10 @@ module.exports = new Command(
     const reason = args.slice(1).join(' ') || 'N/A';
     const member =
       msg.guild.members.cache.get(user) ||
-      msg.guild.members.cache.find(
-        (m) => m.tag === user || m.username === user,
+      msg.guild.members.cache.find((m) =>
+        m.tag === user || m.username === user || msg.mentions.users.size > 0
+          ? m.id === msg.mentions.users.first().id
+          : false,
       );
 
     if (!member) {
@@ -44,6 +47,11 @@ module.exports = new Command(
       ],
     });
 
+    const moderator = {
+      id: msg.author.id,
+      tag: msg.author.tag,
+    };
+    await ctx.db.logs.add(member.id, reason, moderator, 'unmute');
     const m = await msg.reply({
       embeds: [
         {

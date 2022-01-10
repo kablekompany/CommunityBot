@@ -1,3 +1,4 @@
+/* eslint-disable no-confusing-arrow */
 const Command = require('../../models/Command/CommandModel');
 
 module.exports = new Command(
@@ -7,12 +8,11 @@ module.exports = new Command(
     const reason = args.slice(2).join(' ') || 'N/A';
     const member =
       msg.guild.members.cache.get(user) ||
-      msg.guild.members.cache.find(
-        (m) =>
-          m.tag === user ||
-          m.username === user ||
-          m.id === msg.mentions.users.first().id,
-      );
+      msg.guild.members.cache.find((m) =>
+        m.tag === user || m.username === user || msg.mentions.users.size > 0
+          ? m.id === msg.mentions.users.first().id
+          : false,
+      ); // move this to the command class or smth
 
     if (!member) {
       return "Not a valid user ID (or this user isn't cached).";
@@ -79,6 +79,11 @@ module.exports = new Command(
       ],
     });
 
+    const moderator = {
+      id: msg.author.id,
+      tag: msg.author.tag,
+    };
+    await ctx.db.logs.add(member.id, reason, moderator);
     const m = await msg.reply({
       embeds: [
         {
@@ -96,7 +101,7 @@ module.exports = new Command(
   {
     name: 'mute',
     usage: 'mute <user> <time> <reason>',
-    aliases: ['m'],
+    aliases: ['m', 'timeout'],
     modOnly: true,
     argReq: true,
     responses: {
