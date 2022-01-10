@@ -4,6 +4,7 @@ const { Routes } = require('discord-api-types/v9');
 const { join } = require('path');
 const { readdirSync } = require('fs');
 const { Player } = require('discord-player');
+const { schedule } = require('node-cron');
 const { registerPlayerEvents } = require('../../utils/playerEventHandler');
 const { mongo } = require('../../configs/secrets.json');
 const Database = require('../../Database/index');
@@ -104,6 +105,27 @@ class BotModel {
     }
   }
 
+  loadCronJob() {
+    const roleColourChange = schedule('0 12 * * *', async () => {
+      const guild = this.bot.guilds.cache.get(this.config.dmc.guildID);
+      const randomColour = Math.floor(Math.random() * 0xffffff);
+      await guild.roles.edit(this.config.dmc.randomColourRole, {
+        color: randomColour,
+      });
+      return guild.channels.resolve(this.config.dmc.adminCmds).send({
+        embeds: [
+          {
+            title: 'Role Edited',
+            description: `The colour of <@&${this.config.dmc.randomColourRole}> has been changed successfully.`,
+            color: randomColour,
+          },
+        ],
+      });
+    });
+    roleColourChange.start();
+    this.utils.log('Started cron job for changing random colour once per day.');
+  }
+
   async launch() {
     await this.db.bootstrap(mongo);
     await this.loadSlashCommands();
@@ -111,6 +133,7 @@ class BotModel {
     this.loadCommands();
     this.loadListeners();
     this.loadUtils();
+    this.loadCronJob();
     this.bot.login(this.token);
   }
 }

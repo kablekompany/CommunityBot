@@ -1,4 +1,4 @@
-const { promisify } = require('util');
+const { promisify, inspect } = require('util');
 const ms = require('ms');
 const colours = require('../../assets/colours.json');
 
@@ -56,11 +56,17 @@ module.exports = {
   },
 
   prettyDate: () => {
-    const date = new Date(Date.now() - 1.44e7); // UTC to UTC -4
+    const date = new Date();
     const formattedDate = `${['getHours', 'getMinutes', 'getSeconds']
       .map((t) => date[t]().toString().padStart(2, '0'))
       .join(':')} — ${date.toLocaleDateString()}`;
     return formattedDate;
+  },
+
+  log: (message) => {
+    const date = new Date().toLocaleString();
+    const msg = message instanceof Object ? inspect(message) : message;
+    console.log(`[${date}] ${msg}`);
   },
 
   parseTime: (time) => {
