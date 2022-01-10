@@ -160,7 +160,7 @@ module.exports = async function oninteraction(interaction) {
     }
 
     try {
-      if (interaction.member.roles.cache.includes(role.id)) {
+      if (interaction.member._roles.includes(role.id)) {
         await interaction.member.roles.remove(role.id);
         await reply({
           embeds: [
@@ -176,10 +176,10 @@ module.exports = async function oninteraction(interaction) {
         for (const colour of colourRoles) {
           if (
             colourRoles.includes(role.id) &&
-            interaction.member.roles.cache.includes(colour)
+            interaction.member._roles.includes(colour)
           ) {
             const toRemove = [];
-            interaction.member.roles.cache.forEach((r) => {
+            interaction.member._roles.forEach((r) => {
               if (colourRoles.includes(r)) {
                 toRemove.push(r);
               }
