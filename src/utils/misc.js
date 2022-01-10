@@ -38,9 +38,14 @@ module.exports = {
     await wait(milliseconds);
   },
 
-  timeoutMember: async (msg, reason = 'N/A', duration = 1.2e6) => {
+  timeoutMember: async (ctx, msg, reason = 'N/A', duration = 1.2e6) => {
     // 20 minutes = default
     await msg.member.timeout(duration);
+    const moderator = {
+      id: '549210020622106625',
+      tag: 'Community Bot#6333',
+    };
+    await ctx.db.logs.add(msg.author.id, reason, moderator, '20m');
     await msg.member.send({
       embeds: [
         {
@@ -102,9 +107,10 @@ module.exports = {
       h: 0,
       m: 0,
       s: 0,
+      y: 0,
     };
     for (const c of input) {
-      if (['d', 'h', 'm', 's'].includes(c)) {
+      if (['y', 'd', 'h', 'm', 's'].includes(c)) {
         occurrences[c]++;
         temp += c;
         sum += ms(temp.trim());

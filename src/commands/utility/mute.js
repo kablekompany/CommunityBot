@@ -83,7 +83,7 @@ module.exports = new Command(
       id: msg.author.id,
       tag: msg.author.tag,
     };
-    await ctx.db.logs.add(member.id, reason, moderator);
+    await ctx.db.logs.add(member.id, reason, moderator, time);
     const m = await msg.reply({
       embeds: [
         {

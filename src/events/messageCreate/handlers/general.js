@@ -21,7 +21,11 @@ module.exports = new MessageHandler(
         return null;
       }
       await msg.delete();
-      await ctx.utils.timeoutMember(msg, '"DM me/msg me" in general-chat.');
+      await ctx.utils.timeoutMember(
+        ctx,
+        msg,
+        '"DM me/msg me" in general-chat.',
+      );
       const drama = ctx.bot.channels.resolve(ctx.config.dmc.dramaWatcher);
       const modlog = ctx.bot.channels.resolve(ctx.config.dmc.modlog);
       const message = await drama.send({

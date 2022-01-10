@@ -15,13 +15,13 @@ class Logs extends BaseCollection {
     };
   }
 
-  // eslint-disable-next-line default-param-last
-  async add(userID, reason, moderator, type) {
+  async add(userID, reason, moderator, duration = null, type = 'mute') {
     const latestID = await this.getIncrementingID();
     await this.collection.insertOne({
       case: latestID,
       userID,
-      type: type || 'mute',
+      type,
+      duration: ['mute', 'tempban'].includes(type) ? duration : null,
       reason,
       moderator: {
         tag: moderator.tag,

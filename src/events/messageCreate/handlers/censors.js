@@ -23,6 +23,7 @@ module.exports = new MessageHandler(
 
     await msg.delete();
     await ctx.utils.timeoutMember(
+      ctx,
       msg,
       '"DM me/msg me" in trade/dank memer channels.',
     );

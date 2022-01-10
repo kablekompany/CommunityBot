@@ -24,7 +24,9 @@ module.exports = new Command(
       const date = d.toLocaleDateString('de-DE').replaceAll('.', '-');
       embed.fields.push({
         name: `#${entry.case} | ${entry.type} | ${date}`,
-        value: `Responsible Moderator: ${entry.moderator.tag}\nReason: ${entry.reason}`,
+        value: `Responsible Moderator: ${entry.moderator.tag}\nReason: ${
+          entry.reason
+        }\n${entry.duration ? `Duration: ${entry.duration}` : ''}`,
         inline: true,
       });
     }
