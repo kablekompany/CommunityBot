@@ -134,19 +134,7 @@ module.exports = async function oninteraction(interaction) {
       });
     }
 
-    if (type === 'upvotes') {
-      await this.db.submissions.addVote(
-        submissionID,
-        interaction.user.id,
-        'upvotes',
-      );
-    } else if (type === 'downvotes') {
-      await this.db.submissions.addVote(
-        submissionID,
-        interaction.user.id,
-        'downvotes',
-      );
-    }
+    await this.db.submissions.addVote(submissionID, interaction.user.id, type);
     return reply({
       embeds: [
         {
@@ -158,7 +146,7 @@ module.exports = async function oninteraction(interaction) {
     });
   }
 
-  if (interaction.channelId === selfRolesChannel) {
+  if (interaction.channelId === selfRolesChannel && interaction.isButton()) {
     const role = interaction.guild.roles.cache.get(
       selfRoles[interaction.customId],
     );
@@ -172,7 +160,7 @@ module.exports = async function oninteraction(interaction) {
     }
 
     try {
-      if (interaction.member._roles.includes(role.id)) {
+      if (interaction.member.roles.cache.includes(role.id)) {
         await interaction.member.roles.remove(role.id);
         await reply({
           embeds: [
@@ -188,10 +176,10 @@ module.exports = async function oninteraction(interaction) {
         for (const colour of colourRoles) {
           if (
             colourRoles.includes(role.id) &&
-            interaction.member._roles.includes(colour)
+            interaction.member.roles.cache.includes(colour)
           ) {
             const toRemove = [];
-            interaction.member._roles.forEach((r) => {
+            interaction.member.roles.cache.forEach((r) => {
               if (colourRoles.includes(r)) {
                 toRemove.push(r);
               }
