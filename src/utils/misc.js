@@ -40,24 +40,42 @@ module.exports = {
 
   timeoutMember: async (ctx, msg, reason = 'N/A', duration = 1.2e6) => {
     // 20 minutes = default
+    if (!msg.member) {
+      return null;
+    }
+    let dmSent = false;
     await msg.member.timeout(duration);
     const moderator = {
       id: '549210020622106625',
       tag: 'Community Bot#6333',
     };
-    await ctx.db.logs.add(msg.author.id, reason, moderator, '20m');
-    await msg.member.send({
-      embeds: [
-        {
-          title: 'You have been timed out',
-          description: `Your timeout ends <t:${Math.round(
-            (Date.now() + duration) / 1000,
-          )}:R>.\n**Reason**: ${reason}`,
-          timestamp: new Date(),
-          color: 0xf38842,
-        },
-      ],
-    });
+    const caseNumber = await ctx.db.logs.add(
+      msg.author.id,
+      reason,
+      moderator,
+      '20m',
+    );
+    try {
+      await msg.member.send({
+        embeds: [
+          {
+            title: `You have been timed out in ${msg.guild.name}`,
+            description: `Your timeout ends <t:${Math.round(
+              (Date.now() + duration) / 1000,
+            )}:R>.\n**Reason**: ${reason}`,
+            timestamp: new Date(),
+            color: 0xf38842,
+          },
+        ],
+      });
+      dmSent = true;
+    } catch (err) {
+      console.error(err.message);
+    }
+    return {
+      dmSent,
+      caseNumber,
+    };
   },
 
   prettyDate: () => {

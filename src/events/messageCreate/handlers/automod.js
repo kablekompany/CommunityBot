@@ -1,44 +1,62 @@
 const MessageHandler = require('../../../models/Handlers/MessageHandler');
 
+function testCensor(string, censors) {
+  const re = new RegExp(censors.join('|'), 'gi');
+  const match = string.match(re);
+
+  if (match === null) {
+    return false;
+  }
+  return match[0];
+}
+
+const [yesTick, noTick] = [
+  '<:yesTick:931242491007606795>',
+  '<:noTick:931242523685449818>',
+];
+
 module.exports = new MessageHandler(
   async ({ ctx, msg }) => {
-    const categories = [
-      ctx.config.dmc.tradeCategory,
-      ctx.config.dmc.memerCategory,
-    ];
-
+    if (msg.guild && msg.guild.id !== ctx.config.dmc.guildID) {
+      return null;
+    }
     if (
       ctx.config.dmc.allStaffRoles.some((r) => msg.member._roles.includes(r))
     ) {
       return null;
     }
 
-    if (!categories.includes(msg.channel.parentId)) {
+    const { censors } = await ctx.db.automod.get(msg.guild.id);
+    if (!censors.length) {
       return null;
     }
 
-    if (!msg.content.match(/(dm me|pm me|msg me)/gi)) {
+    const censorTest = testCensor(msg.content, censors);
+    if (!censorTest) {
       return null;
     }
 
     await msg.delete();
-    await ctx.utils.timeoutMember(
+    const reason = `Automatic action carried out for using a blacklisted word (${censorTest}).`;
+    const { dmSent, caseNumber } = await ctx.utils.timeoutMember(
       ctx,
       msg,
-      '"DM me/msg me" in trade/dank memer channels.',
+      reason,
     );
 
-    const drama = ctx.bot.channels.resolve(ctx.config.dmc.dramaWatcher);
+    const dramaWatcher = ctx.bot.channels.resolve(ctx.config.dmc.dramaWatcher);
     const modlog = ctx.bot.channels.resolve(ctx.config.dmc.modlog);
-    const message = await drama.send({
+    await dramaWatcher.send({
       embeds: [
         {
-          title: 'DM Message Deleted',
+          title: 'Censor Automod',
           description: `**${msg.author.tag}** (\`${
             msg.author.id
           }\`) said:\n${ctx.utils.codeblock(msg.content)}\nChannel: <#${
             msg.channel.id
-          }>\nUser has been timed out for **20 minutes**.`,
+          }>\nUser has been timed out for **20 minutes**.\nDM Sent: ${
+            dmSent === true ? yesTick : noTick
+          }`,
           timestamp: new Date(),
           color: 15705088,
         },
@@ -47,10 +65,10 @@ module.exports = new MessageHandler(
     await modlog.send({
       embeds: [
         {
-          title: 'timeout | 20 minutes',
+          title: `timeout | case #${caseNumber} | 20 minutes`,
           description:
             `**Offender:** ${msg.author.tag} <@${msg.author.id}>\n` +
-            '**Reason:** Caught by "dm me" censor in trade/bot channels\n' +
+            `**Reason:** ${reason}\n` +
             '**Responsible moderator:** Community Bot#6333',
           color: 15960130,
           timestamp: new Date(),
@@ -58,13 +76,10 @@ module.exports = new MessageHandler(
         },
       ],
     });
-
-    const messageLink = `https://discord.com/channels/${msg.guild.id}/${drama.id}/${message.id}`;
-    await ctx.db.users.addInfraction(msg.author.id, messageLink);
     return null;
   },
   {
-    name: 'censors',
+    name: 'automod',
     allowDM: false,
     allowBot: false,
   },
