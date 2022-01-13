@@ -22,8 +22,8 @@ class BotModel {
       intents: 4847,
       allowedMentions: {
         repliedUser: false,
-        parse: ['users'],
-      },
+        parse: ['users']
+      }
     });
     this.db = new Database();
     this.cmds = new Collection();
@@ -43,7 +43,7 @@ class BotModel {
         '..',
         '..',
         'commands',
-        category,
+        category
       ));
 
       for (const command of commands) {
@@ -54,7 +54,7 @@ class BotModel {
 
   async loadSlashCommands() {
     const commandFiles = readdirSync(
-      join(__dirname, '..', '..', 'slashCommands'),
+      join(__dirname, '..', '..', 'slashCommands')
     );
 
     for (const file of commandFiles) {
@@ -72,11 +72,11 @@ class BotModel {
       await RestAPI.put(
         Routes.applicationGuildCommands(
           this.config.applicationID,
-          this.config.dmc.guildID,
+          this.config.dmc.guildID
         ),
         {
-          body: command,
-        },
+          body: command
+        }
       );
 
       return console.log('[REST] Reloaded guild slash commands.');
@@ -94,7 +94,7 @@ class BotModel {
         '..',
         '..',
         'events',
-        listener,
+        listener
       ));
 
       const boundListener = fnListener.bind(this);
@@ -114,20 +114,32 @@ class BotModel {
       const guild = this.bot.guilds.cache.get(this.config.dmc.guildID);
       const randomColour = Math.floor(Math.random() * 0xffffff);
       await guild.roles.edit(this.config.dmc.randomColourRole, {
-        color: randomColour,
+        color: randomColour
       });
       return guild.channels.resolve(this.config.dmc.adminCmds).send({
         embeds: [
           {
             title: 'Role Edited',
             description: `The colour of <@&${this.config.dmc.randomColourRole}> has been changed successfully.`,
-            color: randomColour,
-          },
-        ],
+            color: randomColour
+          }
+        ]
       });
     });
+    const cacheMembers = schedule('0 0 * * *', async () => {
+      try {
+        const { members, name } = this.bot.guilds.cache.get(
+          this.config.dmc.guildID
+        );
+        await members.fetch();
+        this.utils.log(`Successfully cached all members of ${name}`);
+      } catch (err) {
+        this.utils.log(`Error while fetching all members:\n${err.message}`);
+      }
+    });
     roleColourChange.start();
-    this.utils.log('Started cron job for changing random colour once per day.');
+    cacheMembers.start();
+    this.utils.log('Scheduled both cron jobs.');
   }
 
   async launch() {

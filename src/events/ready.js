@@ -1,10 +1,8 @@
 async function ready() {
-  console.log(
-    `${this.bot.user.tag} is up and running at ${this.utils.prettyDate()}`,
-  );
+  this.utils.log(`${this.bot.user.tag} is online`);
   const { log } = this.config;
   this.bot.user.setActivity('you', {
-    type: 'WATCHING',
+    type: 'WATCHING'
   });
   this.bot.user.setStatus('dnd');
 
@@ -23,17 +21,17 @@ async function ready() {
           {
             title: 'Servers:',
             author: {
-              name: `${this.bot.user.tag} is online`,
+              name: `${this.bot.user.tag} is online`
             },
             description: page,
             footer: {
-              text: `Page ${index + 1} of ${array.length}`,
+              text: `Page ${index + 1} of ${array.length}`
             },
-            timestamp: new Date(),
-          },
-        ],
+            timestamp: new Date()
+          }
+        ]
       });
-    }),
+    })
   );
   return null;
 }
