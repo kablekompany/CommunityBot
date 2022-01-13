@@ -10,12 +10,12 @@ module.exports = {
     const queue = client.player.getQueue(interaction.guildId);
     if (!queue || !queue.playing) {
       return interaction.editReply({
-        embeds: [{ description: '❌ | No music is being played!' }],
+        embeds: [{ description: '❌ | No music is being played!' }]
       });
     }
     queue.destroy();
     return interaction.editReply({
-      embeds: [{ description: '🛑 | Stopped the player!' }],
+      embeds: [{ description: '🛑 | Stopped the player!' }]
     });
-  },
+  }
 };

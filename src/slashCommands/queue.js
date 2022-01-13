@@ -8,8 +8,8 @@ module.exports = {
       name: 'page',
       type: CommandOptionType.Integer,
       description: 'Specify page number in queue',
-      required: false,
-    },
+      required: false
+    }
   ],
   default_permission: false,
 
@@ -22,9 +22,9 @@ module.exports = {
       return interaction.editReply({
         embeds: [
           {
-            description: '❌ | No music is being played!',
-          },
-        ],
+            description: '❌ | No music is being played!'
+          }
+        ]
       });
     }
     let pageStart;
@@ -48,11 +48,11 @@ module.exports = {
           fields: [
             {
               name: 'Now Playing',
-              value: `🎶 | **${currentTrack.title}** ([link](${currentTrack.url}))`,
-            },
-          ],
-        },
-      ],
+              value: `🎶 | **${currentTrack.title}** ([link](${currentTrack.url}))`
+            }
+          ]
+        }
+      ]
     });
-  },
+  }
 };

@@ -7,7 +7,7 @@ const flagHelp = [
   '`-tm <user> w` - to mute a user for posting huge/wallspam ads',
   '`-tm <user> a` - to mute a user for auctioning/bidding *(for 3 hours)*',
   '`-tm <user> s` - to mute a user for troll/shitposting ads',
-  '`-tm <user> f` - to mute a user for excessively formatting in ads`',
+  '`-tm <user> f` - to mute a user for excessively formatting in ads`'
 ];
 const startOfReason =
   'If you wish to continue trading here, please refrain from';
@@ -17,7 +17,7 @@ const reasons = {
   w: `${startOfReason} posting ads above 15 lines in any channel.`,
   a: `${startOfReason} participating or starting auctions/bidding, which is against our trade guidelines.`,
   s: `${startOfReason} posting troll/shitposting ads and posting irrelevant messages in the channels.`,
-  f: `${startOfReason} formatting in ads excessively. This includes excessive code blocks, spoilers, strikethroughs, bold, italic and special fonts`,
+  f: `${startOfReason} formatting in ads excessively. This includes excessive code blocks, spoilers, strikethroughs, bold, italic and special fonts`
 };
 
 module.exports = new Command(
@@ -29,7 +29,7 @@ module.exports = new Command(
       msg.guild.members.cache.find((m) =>
         m.tag === user || m.username === user || msg.mentions.users.size > 0
           ? m.id === msg.mentions.users.first().id
-          : false,
+          : false
       ); // move this to the command class or smth
 
     if (user === 'help' || !reason) {
@@ -37,7 +37,7 @@ module.exports = new Command(
         title: 'Trade Mute Flags',
         description: `\`-tm <user> <flag>\` to mute a user for breaking trade rules.\n(Note: Mute durations are preset to 3h for auctioning and 1h for all others)\n\n${flagHelp
           .map((a) => `> ${a}`)
-          .join('\n')}`,
+          .join('\n')}`
       };
     }
 
@@ -53,9 +53,9 @@ module.exports = new Command(
       await msg.reply({
         embeds: [
           {
-            description: 'This seems like an invalid time, try again maybe?',
-          },
-        ],
+            description: 'This seems like an invalid time, try again maybe?'
+          }
+        ]
       });
       return null;
     }
@@ -67,9 +67,9 @@ module.exports = new Command(
         embeds: [
           {
             description: `I was unable to timeout this member.\n\nError: ${err.message}`,
-            color: 0xd3403d, // red
-          },
-        ],
+            color: 0xd3403d // red
+          }
+        ]
       });
       return null;
     }
@@ -81,9 +81,9 @@ module.exports = new Command(
           {
             title: `You've been timed out in ${msg.guild.name}`,
             description: `Reason: ${reason}\n\nTimeout ends **${endTime}**`,
-            color: 0xed7438, // orange
-          },
-        ],
+            color: 0xed7438 // orange
+          }
+        ]
       })
       .catch(() => null);
 
@@ -98,14 +98,14 @@ module.exports = new Command(
             `**Responsible moderator:** ${msg.author.tag}`,
           color: 15960130,
           timestamp: new Date(),
-          footer: { text: `ID: ${member.id}` },
-        },
-      ],
+          footer: { text: `ID: ${member.id}` }
+        }
+      ]
     });
 
     const moderator = {
       id: msg.author.id,
-      tag: msg.author.tag,
+      tag: msg.author.tag
     };
     await ctx.db.logs.add(member.id, reason, moderator, time);
     const m = await msg.reply({
@@ -113,9 +113,9 @@ module.exports = new Command(
         {
           title: 'Timeout Successful',
           description: `**${member.user.tag}**'s timeout ends ${endTime}`,
-          color: 0x89ff7a, // green
-        },
-      ],
+          color: 0x89ff7a // green
+        }
+      ]
     });
     setTimeout(async () => {
       await m.delete();
@@ -130,7 +130,7 @@ module.exports = new Command(
     argReq: true,
     responses: {
       noArg:
-        'Pass `help` as the first argument to see available flags for trade mutes.',
-    },
-  },
+        'Pass `help` as the first argument to see available flags for trade mutes.'
+    }
+  }
 );

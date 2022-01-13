@@ -8,11 +8,11 @@ class Automod extends BaseCollection {
     this.default = {
       censors: [],
       whitelistedRoles: [],
-      whitelistedChannels: [],
+      whitelistedChannels: []
     };
     this.cache = {
       cachedAt: 0,
-      censors: [],
+      censors: []
     };
   }
 
@@ -28,20 +28,20 @@ class Automod extends BaseCollection {
     if (type === 'role') {
       query = {
         $addToSet: {
-          whitelistedRoles: entity,
-        },
+          whitelistedRoles: entity
+        }
       };
     } else if (type === 'censor') {
       query = {
         $addToSet: {
-          censors: entity,
-        },
+          censors: entity
+        }
       };
     } else if (type === 'channel') {
       query = {
         $addToSet: {
-          whitelistedChannels: entity,
-        },
+          whitelistedChannels: entity
+        }
       };
     }
     return this.update(guildID, query);
@@ -59,20 +59,20 @@ class Automod extends BaseCollection {
     if (type === 'role') {
       query = {
         $pull: {
-          whitelistedRoles: entity,
-        },
+          whitelistedRoles: entity
+        }
       };
     } else if (type === 'censor') {
       query = {
         $pull: {
-          censors: entity,
-        },
+          censors: entity
+        }
       };
     } else if (type === 'channel') {
       query = {
         $pull: {
-          whitelistedChannels: entity,
-        },
+          whitelistedChannels: entity
+        }
       };
     }
     return this.update(guildID, query);

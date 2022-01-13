@@ -10,24 +10,24 @@ module.exports = {
       weekday: 'long',
       day: 'numeric',
       year: 'numeric',
-      month: 'long',
+      month: 'long'
     }),
   parseTime: (time) => {
     const methods = [
       { name: 'd', count: 86400 },
       { name: 'h', count: 3600 },
       { name: 'm', count: 60 },
-      { name: 's', count: 1 },
+      { name: 's', count: 1 }
     ];
 
     const timeStr = [
-      Math.floor(time / methods[0].count).toString() + methods[0].name,
+      Math.floor(time / methods[0].count).toString() + methods[0].name
     ];
     for (let i = 0; i < 3; i++) {
       timeStr.push(
         Math.floor(
-          (time % methods[i].count) / methods[i + 1].count,
-        ).toString() + methods[i + 1].name,
+          (time % methods[i].count) / methods[i + 1].count
+        ).toString() + methods[i + 1].name
       );
     }
     return timeStr.filter((t) => !t.startsWith('0')).join(' ');
@@ -96,5 +96,5 @@ module.exports = {
       }
     }
     return copyArgs.filter((arg) => arg && arg);
-  },
+  }
 };

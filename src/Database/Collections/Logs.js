@@ -9,9 +9,9 @@ class Logs extends BaseCollection {
       reason: '',
       moderator: {
         tag: '',
-        id: '',
+        id: ''
       },
-      date: Date.now(),
+      date: Date.now()
     };
   }
 
@@ -25,9 +25,9 @@ class Logs extends BaseCollection {
       reason,
       moderator: {
         tag: moderator.tag,
-        id: moderator.id,
+        id: moderator.id
       },
-      date: Date.now(),
+      date: Date.now()
     });
     return latestID;
   }

@@ -24,7 +24,7 @@ module.exports = new Command(
         await ctx.db.automod.genericAdd(msg.guild.id, censor, 'censor');
         return {
           title: 'Censor added',
-          description: `Successfully added \`${censor}\` as a censor. Run \`d!censor list\` to see all censors.`,
+          description: `Successfully added \`${censor}\` as a censor. Run \`d!censor list\` to see all censors.`
         };
       case 'list':
         if (!censors || !censors.length) {
@@ -33,20 +33,20 @@ module.exports = new Command(
         return {
           title: 'All Censors',
           description: censors.map((p, idx) => `${idx + 1}. ${p}`).join('\n'),
-          color: ctx.utils.randomColour(),
+          color: ctx.utils.randomColour()
         };
       case 'remove':
         const toRemove = args.slice(1).join(' ');
         if (!censors.includes(toRemove)) {
           return {
             description:
-              "This isn't a censor, maybe check the censor list first?",
+              "This isn't a censor, maybe check the censor list first?"
           };
         }
         await ctx.db.automod.genericRemove(msg.guild.id, toRemove, 'censor');
         return {
           title: 'Censor removed',
-          description: `Successfully removed \`${toRemove}\` as a censor. Run \`d!censor list\` to see all censors.`,
+          description: `Successfully removed \`${toRemove}\` as a censor. Run \`d!censor list\` to see all censors.`
         };
       // todo: add a 'clear' case with button confirmation
       default:
@@ -60,7 +60,7 @@ module.exports = new Command(
     minArgs: 1,
     adminOnly: true,
     responses: {
-      noArg: defaultOutput,
-    },
-  },
+      noArg: defaultOutput
+    }
+  }
 );

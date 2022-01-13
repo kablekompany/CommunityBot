@@ -12,7 +12,7 @@ module.exports = {
       attachments = attachments
         .map(
           (attachment, index) =>
-            `[\`Attachment - ${index}\`](${attachment.url})`,
+            `[\`Attachment - ${index}\`](${attachment.url})`
         )
         .join('\n');
       description.push(`**Attachments:\n${attachments}**`);
@@ -24,11 +24,11 @@ module.exports = {
           description: description.join('\n\n'),
           title: `Received DM from ${msg.author.tag}`,
           footer: {
-            text: msg.author.id,
+            text: msg.author.id
           },
-          color: 0x039be5,
-        },
-      ],
+          color: 0x039be5
+        }
+      ]
     });
-  },
+  }
 };

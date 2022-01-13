@@ -9,8 +9,8 @@ module.exports = {
       name: 'query',
       type: CommandOptionType.String,
       description: 'The song you want to play next',
-      required: true,
-    },
+      required: true
+    }
   ],
   default_permission: false,
 
@@ -22,7 +22,7 @@ module.exports = {
     const queue = client.player.getQueue(interaction.guildId);
     if (!queue || !queue.playing) {
       return interaction.editReply({
-        embeds: [{ description: '❌ | No music is being played!' }],
+        embeds: [{ description: '❌ | No music is being played!' }]
       });
     }
 
@@ -30,18 +30,18 @@ module.exports = {
     const searchResult = await client.player
       .search(query, {
         requestedBy: interaction.user,
-        searchEngine: QueryType.AUTO,
+        searchEngine: QueryType.AUTO
       })
       .catch(() => null);
 
     if (!searchResult || !searchResult.tracks.length) {
       return interaction.editReply({
-        embeds: [{ description: 'No results were found!' }],
+        embeds: [{ description: 'No results were found!' }]
       });
     }
     queue.insert(searchResult.tracks[0]);
     return interaction.editReply({
-      embeds: [{ description: '⏱ | Loading your track...' }],
+      embeds: [{ description: '⏱ | Loading your track...' }]
     });
-  },
+  }
 };

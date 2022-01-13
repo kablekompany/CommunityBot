@@ -10,7 +10,7 @@ module.exports = {
     const queue = client.player.getQueue(interaction.guildId);
     if (!queue || !queue.playing) {
       return interaction.editReply({
-        embeds: [{ description: '❌ | No music is being played!' }],
+        embeds: [{ description: '❌ | No music is being played!' }]
       });
     }
     const currentTrack = queue.current;
@@ -20,9 +20,9 @@ module.exports = {
         {
           description: success
             ? `✅ | ${interaction.user.username} has skipped **${currentTrack}**!`
-            : '❌ | Something went wrong!',
-        },
-      ],
+            : '❌ | Something went wrong!'
+        }
+      ]
     });
-  },
+  }
 };

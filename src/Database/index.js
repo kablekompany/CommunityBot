@@ -14,7 +14,7 @@ class Database {
 
   async bootstrap(mongoURI) {
     const dbConn = await MongoClient.connect(mongoURI, {
-      appName: 'CommunityBot',
+      appName: 'CommunityBot'
     });
     this.db = dbConn.db();
     this.users = new Users(this.db.collection('users'));

@@ -21,9 +21,9 @@ class OwnerCommand extends Command {
     return Object.assign(
       super.props,
       {
-        ownerOnly: true,
+        ownerOnly: true
       },
-      this._props,
+      this._props
     );
   }
 }

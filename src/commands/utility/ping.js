@@ -4,5 +4,5 @@ module.exports = new Command(({ ctx }) => `\`${ctx.bot.ws.ping}\`ms`, {
   name: 'ping',
   usage: '<command>',
   adminOnly: true,
-  argReq: false,
+  argReq: false
 });

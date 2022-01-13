@@ -9,7 +9,7 @@ module.exports = new Command(
       pageNum = args[1] || args[0];
     }
     const emotes = guild.emojis.cache.map(
-      (e) => `<${e.animated ? 'a' : ''}:${e.name}:${e.id}> \`:${e.name}:\``,
+      (e) => `<${e.animated ? 'a' : ''}:${e.name}:${e.id}> \`:${e.name}:\``
     );
 
     const pages = ctx.utils.paginate(emotes);
@@ -28,20 +28,20 @@ module.exports = new Command(
                 color,
                 title: `Server emotes - ${msg.guild.name}`,
                 footer: {
-                  text: `Page ${index + 1} of ${arr.length}`,
-                },
-              },
-            ],
-          }),
-        ),
+                  text: `Page ${index + 1} of ${arr.length}`
+                }
+              }
+            ]
+          })
+        )
       );
     } else {
       return {
         description: pages[pageNum - 1],
         title: `Server emotes - ${msg.guild.name}`,
         footer: {
-          text: `Page ${pageNum} of ${pages.length}`,
-        },
+          text: `Page ${pageNum} of ${pages.length}`
+        }
       };
     }
     return null;
@@ -50,6 +50,6 @@ module.exports = new Command(
     name: 'listemotes',
     aliases: ['le'],
     adminOnly: true,
-    usage: 'View server emotes',
-  },
+    usage: 'View server emotes'
+  }
 );

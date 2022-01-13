@@ -11,13 +11,13 @@ module.exports = {
     const queue = client.player.getQueue(interaction.guildId);
     if (!queue) {
       return interaction.editReply({
-        embeds: [{ description: '❌ | No music in the queue!' }],
+        embeds: [{ description: '❌ | No music in the queue!' }]
       });
     }
 
     queue.clear();
     return interaction.editReply({
-      embeds: [{ description: '❌ | Queue cleared.' }],
+      embeds: [{ description: '❌ | Queue cleared.' }]
     });
-  },
+  }
 };

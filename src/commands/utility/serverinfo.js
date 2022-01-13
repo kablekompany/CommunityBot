@@ -20,14 +20,14 @@ module.exports = new Command(
             `**Name**: ${guild.name}\n` +
             `**ID**: \`${guild.id}\`\n` +
             `**Verification**: ${upper}`,
-          inline: true,
+          inline: true
         },
         {
           name: 'Owner',
           value:
             `**Tag**: \`${username}\` [<@${guild.ownerId}>]\n` +
             `**ID**: \`${guild.ownerId}\``,
-          inline: true,
+          inline: true
         },
         {
           name: 'Stats',
@@ -36,30 +36,30 @@ module.exports = new Command(
             `**Emotes**: ${guild.emojis.cache.size}\n` +
             `**Roles**: ${guild.roles.cache.size}\n` +
             `**Members**: ${guild.memberCount.toLocaleString()}`,
-          inline: true,
+          inline: true
         },
         {
           name: 'Misc',
           value: `**Invites**: ${invs}`,
-          inline: true,
-        },
+          inline: true
+        }
       ],
       author: {
-        name: 'Server Info',
+        name: 'Server Info'
       },
       thumbnail: {
-        url: guild.iconURL({ dynamic: true, size: 1024 }),
+        url: guild.iconURL({ dynamic: true, size: 1024 })
       },
       footer: {
-        text: `Created on: ${ctx.utils.parseDate(guild.createdAt)}`,
+        text: `Created on: ${ctx.utils.parseDate(guild.createdAt)}`
       },
-      color: ctx.utils.randomColour(),
+      color: ctx.utils.randomColour()
     };
   },
   {
     name: 'serverinfo',
     aliases: ['si'],
     usage: 'View server information',
-    adminOnly: true,
-  },
+    adminOnly: true
+  }
 );

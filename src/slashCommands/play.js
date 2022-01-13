@@ -10,7 +10,7 @@ module.exports = {
     const searchResult = await client.player
       .search(query, {
         requestedBy: interaction.user.tag,
-        searchEngine: QueryType.AUTO,
+        searchEngine: QueryType.AUTO
       })
       .catch((e) => {
         console.error(e.message);
@@ -19,9 +19,9 @@ module.exports = {
       return interaction.editReply({
         embeds: [
           {
-            description: `No results were found ${interaction.user.tag}, try something else maybe?`,
-          },
-        ],
+            description: `No results were found ${interaction.user.tag}, try something else maybe?`
+          }
+        ]
       });
     }
 
@@ -30,13 +30,13 @@ module.exports = {
         {
           description: `⏱ | Loading your ${
             searchResult.playlist ? 'playlist' : 'track'
-          }...`,
-        },
-      ],
+          }...`
+        }
+      ]
     });
 
     const queue = await client.player.createQueue(guild, {
-      metadata: interaction,
+      metadata: interaction
     });
 
     try {
@@ -48,9 +48,9 @@ module.exports = {
       return interaction.editReply({
         embeds: [
           {
-            description: 'Could not join your voice channel!',
-          },
-        ],
+            description: 'Could not join your voice channel!'
+          }
+        ]
       });
     }
 
@@ -69,8 +69,8 @@ module.exports = {
       name: 'query',
       type: CommandOptionType.String,
       description: 'The song you want to play',
-      required: true,
-    },
+      required: true
+    }
   ],
-  default_permission: false,
+  default_permission: false
 };

@@ -87,7 +87,7 @@ class Command {
     const res = await axios.post(
       'https://hastepaste.com/api/create',
       parseQueryString({ raw: false, text: encodeURIComponent(content) }),
-      { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } },
+      { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
     );
     return res.data;
   }
@@ -130,7 +130,7 @@ class Command {
         ctx,
         msg,
         args,
-        cleanArgs,
+        cleanArgs
       });
       return res;
     } catch (err) {
@@ -151,11 +151,11 @@ class Command {
       minArgs: 0,
       responses: {
         noArg: 'You need to put in some args!',
-        lowArg: 'Not enough args!',
+        lowArg: 'Not enough args!'
       },
       argType: [],
       development: false,
-      ...this._props,
+      ...this._props
     };
   }
 

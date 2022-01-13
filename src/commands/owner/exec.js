@@ -12,8 +12,8 @@ module.exports = new OwnerCommand(
         const haste = await OwnerCommand.uploadResult(
           `${stdout}\n\n${stderr}`,
           {
-            input: toExec,
-          },
+            input: toExec
+          }
         );
         return msg.channel.send({
           embeds: [
@@ -23,20 +23,20 @@ module.exports = new OwnerCommand(
               footer: {
                 text: `Executed in ${hrDiff[0] > 0 ? `${hrDiff[0]}s ` : ''}${
                   hrDiff[1] / 10000
-                }ms`,
-              },
-            },
-          ],
+                }ms`
+              }
+            }
+          ]
         });
       }
       if (stdout) {
         msg.channel.send(
-          `**📤 Output**:\n${ctx.utils.codeblock(stdout, 'bash')}`,
+          `**📤 Output**:\n${ctx.utils.codeblock(stdout, 'bash')}`
         );
       }
       if (stderr) {
         msg.channel.send(
-          `**❌ Error**:\n${ctx.utils.codeblock(stderr, 'bash')}`,
+          `**❌ Error**:\n${ctx.utils.codeblock(stderr, 'bash')}`
         );
       }
       if (e) {
@@ -56,7 +56,7 @@ module.exports = new OwnerCommand(
     argReq: true,
     minArgs: 1,
     responses: {
-      noArg: 'give me something to execute smh',
-    },
-  },
+      noArg: 'give me something to execute smh'
+    }
+  }
 );

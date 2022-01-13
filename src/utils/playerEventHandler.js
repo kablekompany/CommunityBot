@@ -1,12 +1,12 @@
 module.exports.registerPlayerEvents = (player) => {
   player.on('error', (queue, error) => {
     console.log(
-      `[${queue.guild.name}] Error emitted from the queue: ${error.message}`,
+      `[${queue.guild.name}] Error emitted from the queue: ${error.message}`
     );
   });
   player.on('connectionError', (queue, error) => {
     console.error(
-      `[${queue.guild.name}] Error emitted from the connection: ${error.message}`,
+      `[${queue.guild.name}] Error emitted from the connection: ${error.message}`
     );
   });
 
@@ -14,15 +14,15 @@ module.exports.registerPlayerEvents = (player) => {
     queue.metadata.followUp({
       embeds: [
         {
-          description: `🎶 | Started playing: **${track.title}** in <#${queue.connection.channel.id}>!`,
-        },
-      ],
+          description: `🎶 | Started playing: **${track.title}** in <#${queue.connection.channel.id}>!`
+        }
+      ]
     });
   });
 
   player.on('trackAdd', (queue, track) => {
     queue.metadata.followUp({
-      embeds: [{ description: `🎶 | Track **${track.title}** queued!` }],
+      embeds: [{ description: `🎶 | Track **${track.title}** queued!` }]
     });
   });
 
@@ -31,23 +31,23 @@ module.exports.registerPlayerEvents = (player) => {
       embeds: [
         {
           description:
-            '❌ | I was manually disconnected from the voice channel, clearing queue!',
-        },
-      ],
+            '❌ | I was manually disconnected from the voice channel, clearing queue!'
+        }
+      ]
     });
   });
 
   player.on('channelEmpty', (queue) => {
     queue.metadata.followUp({
       embeds: [
-        { description: '❌ | Nobody is in the voice channel, leaving...' },
-      ],
+        { description: '❌ | Nobody is in the voice channel, leaving...' }
+      ]
     });
   });
 
   player.on('queueEnd', (queue) => {
     queue.metadata.followUp({
-      embeds: [{ description: '✅ | Queue finished!' }],
+      embeds: [{ description: '✅ | Queue finished!' }]
     });
   });
 };

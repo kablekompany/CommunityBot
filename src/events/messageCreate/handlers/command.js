@@ -30,7 +30,7 @@ module.exports = new MessageHandler(
       possibleMsg = await possibleCmd.execute({
         ctx,
         msg,
-        args,
+        args
       });
     } catch (err) {
       console.error(err.stack);
@@ -42,7 +42,7 @@ module.exports = new MessageHandler(
           possibleMsg.color = randomColour();
         }
         await msg.reply({
-          embeds: [possibleMsg],
+          embeds: [possibleMsg]
         });
       } else if (typeof possibleMsg === 'string') {
         await msg.reply(possibleMsg);
@@ -55,6 +55,6 @@ module.exports = new MessageHandler(
   {
     name: 'command',
     allowDM: false,
-    allowBot: false,
-  },
+    allowBot: false
+  }
 );

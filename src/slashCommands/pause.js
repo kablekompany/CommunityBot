@@ -11,7 +11,7 @@ module.exports = {
     const queue = client.player.getQueue(interaction.guildId);
     if (!queue || !queue.playing) {
       return interaction.editReply({
-        embeds: [{ description: '❌ | No music is being played!' }],
+        embeds: [{ description: '❌ | No music is being played!' }]
       });
     }
     const paused = queue.setPaused(true);
@@ -20,9 +20,9 @@ module.exports = {
         {
           description: paused
             ? '⏸ | Paused!'
-            : '❌ | Something went wrong! Use /resume to play again.',
-        },
-      ],
+            : '❌ | Something went wrong! Use /resume to play again.'
+        }
+      ]
     });
-  },
+  }
 };

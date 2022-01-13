@@ -14,27 +14,27 @@ module.exports = new Command(
             `**Emotes**: ${bot.emojis.cache.size}\n` +
             `**Guilds**: ${bot.guilds.cache.size}\n` +
             `**Users**: ${bot.users.cache.size.toLocaleString()}\n`,
-          inline: false,
+          inline: false
         },
         {
           name: 'Latency',
           value:
             `**Uptime**: <t:${Math.round(
-              Date.now() / 1000 - process.uptime(),
+              Date.now() / 1000 - process.uptime()
             )}:R>\n` +
             `**Shard online since**: ${ctx.utils.relativeTime(bot.readyAt)}\n` +
-            `**Ping**: ${Math.round(bot.ws.ping)}\n`,
-        },
+            `**Ping**: ${Math.round(bot.ws.ping)}\n`
+        }
       ],
       title: 'Bot Statistics',
       thumbnail: {
-        url: bot.user.avatarURL({ dynamic: true, size: 1024 }),
-      },
+        url: bot.user.avatarURL({ dynamic: true, size: 1024 })
+      }
     };
   },
   {
     name: 'stats',
     usage: 'view bot stats',
-    adminOnly: true,
-  },
+    adminOnly: true
+  }
 );

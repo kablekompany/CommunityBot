@@ -30,7 +30,7 @@ module.exports = new MessageHandler(
             title: `Reason: ${reason}`,
             author: {
               name: 'Trade Message Deleted',
-              icon_url: msg.author.avatarURL({ dynamic: true, size: 1024 }),
+              icon_url: msg.author.avatarURL({ dynamic: true, size: 1024 })
             },
             description: `**${msg.author.tag}** (\`${
               msg.author.id
@@ -38,15 +38,15 @@ module.exports = new MessageHandler(
               msg.channel.id
             }>`,
             timestamp: new Date(),
-            color: 15705088,
-          },
-        ],
+            color: 15705088
+          }
+        ]
       });
 
     if (filter(ctx.config.dmc.tradeBuying, 'sell')) {
       deleteMsg();
       await reply(
-        `This channel is for buying stuff, go to <#${ctx.config.dmc.tradeSelling}> to sell.`,
+        `This channel is for buying stuff, go to <#${ctx.config.dmc.tradeSelling}> to sell.`
       );
       return logMessage('selling in buying-ads');
     }
@@ -54,7 +54,7 @@ module.exports = new MessageHandler(
     if (filter(ctx.config.dmc.tradeSelling, 'buy')) {
       deleteMsg();
       await reply(
-        `This channel is for selling stuff, go to <#${ctx.config.dmc.tradeBuying}> to buy.`,
+        `This channel is for selling stuff, go to <#${ctx.config.dmc.tradeBuying}> to buy.`
       );
       return logMessage('buying in selling-ads');
     }
@@ -63,7 +63,7 @@ module.exports = new MessageHandler(
     if (lineCheck) {
       deleteMsg();
       await reply(
-        'Your trade-ad was 15 lines or longer, please post a shorter ad.',
+        'Your trade-ad was 15 lines or longer, please post a shorter ad.'
       );
       return logMessage('trade ad was 15 lines or longer');
     }
@@ -72,6 +72,6 @@ module.exports = new MessageHandler(
   {
     name: 'trading',
     allowDM: false,
-    allowBot: false,
-  },
+    allowBot: false
+  }
 );

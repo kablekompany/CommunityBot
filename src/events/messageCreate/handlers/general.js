@@ -17,6 +17,6 @@ module.exports = new MessageHandler(
   {
     name: 'general',
     allowDM: false,
-    allowBot: false,
-  },
+    allowBot: false
+  }
 );

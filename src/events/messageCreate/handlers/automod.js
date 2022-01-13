@@ -12,7 +12,7 @@ function testCensor(string, censors) {
 
 const [yesTick, noTick] = [
   '<:yesTick:931242491007606795>',
-  '<:noTick:931242523685449818>',
+  '<:noTick:931242523685449818>'
 ];
 
 module.exports = new MessageHandler(
@@ -41,7 +41,7 @@ module.exports = new MessageHandler(
     const { dmSent, caseNumber } = await ctx.utils.timeoutMember(
       ctx,
       msg,
-      reason,
+      reason
     );
 
     const automodLogs = ctx.bot.channels.resolve(ctx.config.dmc.automodLogs);
@@ -61,17 +61,17 @@ module.exports = new MessageHandler(
               }>\nUser has been timed out for **20 minutes**.\nDM Sent: ${
                 dmSent === true ? yesTick : noTick
               }`,
-              inline: false,
+              inline: false
             },
             {
               name: 'Caught by:',
-              value: censorTest,
-            },
+              value: censorTest
+            }
           ],
           timestamp: new Date(),
-          color: 15705088,
-        },
-      ],
+          color: 15705088
+        }
+      ]
     });
     await modlog.send({
       embeds: [
@@ -83,15 +83,15 @@ module.exports = new MessageHandler(
             '**Responsible moderator:** Community Bot#6333',
           color: 15960130,
           timestamp: new Date(),
-          footer: { text: `ID: ${msg.author.id}` },
-        },
-      ],
+          footer: { text: `ID: ${msg.author.id}` }
+        }
+      ]
     });
     return null;
   },
   {
     name: 'automod',
     allowDM: false,
-    allowBot: false,
-  },
+    allowBot: false
+  }
 );

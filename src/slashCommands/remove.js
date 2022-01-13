@@ -8,8 +8,8 @@ module.exports = {
       name: 'track',
       description: 'The number of the track to remove',
       type: CommandOptionType.Integer,
-      required: true,
-    },
+      required: true
+    }
   ],
   default_permission: false,
 
@@ -21,7 +21,7 @@ module.exports = {
     const queue = client.player.getQueue(interaction.guildId);
     if (!queue) {
       return interaction.editReply({
-        embeds: [{ description: '❌ | No music is being played!' }],
+        embeds: [{ description: '❌ | No music is being played!' }]
       });
     }
 
@@ -30,7 +30,7 @@ module.exports = {
     queue.remove(trackIndex);
 
     return interaction.editReply({
-      embeds: [{ description: `❌ | Removed track ${trackName}.` }],
+      embeds: [{ description: `❌ | Removed track ${trackName}.` }]
     });
-  },
+  }
 };

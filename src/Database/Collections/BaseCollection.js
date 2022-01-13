@@ -7,7 +7,7 @@ class BaseCollection {
   async get(_id) {
     return {
       ...this.default,
-      ...(await this.collection.findOne({ _id })),
+      ...(await this.collection.findOne({ _id }))
     };
   }
 
@@ -22,7 +22,7 @@ class BaseCollection {
   find(query) {
     return this.collection
       .find({
-        ...query,
+        ...query
       })
       .toArray();
   }
@@ -34,24 +34,24 @@ class BaseCollection {
   inc(_id, field, amount = 1) {
     return this.update(_id, {
       $inc: {
-        [field]: amount,
-      },
+        [field]: amount
+      }
     });
   }
 
   set(_id, field, value) {
     return this.update(_id, {
       $set: {
-        [field]: value,
-      },
+        [field]: value
+      }
     });
   }
 
   unset(_id, field) {
     return this.update(_id, {
       $unset: {
-        [field]: 0,
-      },
+        [field]: 0
+      }
     });
   }
 
@@ -59,9 +59,9 @@ class BaseCollection {
     return this.update(_id, {
       $bit: {
         [field]: {
-          xor: 1,
-        },
-      },
+          xor: 1
+        }
+      }
     });
   }
 
@@ -80,7 +80,7 @@ class BaseCollection {
   async getIncrementingID() {
     if (!this.currentID) {
       const currentIDResult = await this.collection.findOne({
-        currentID: { $exists: true },
+        currentID: { $exists: true }
       });
       if (currentIDResult) {
         this.currentID = currentIDResult.currentID;
@@ -92,7 +92,7 @@ class BaseCollection {
 
     this.collection.updateOne(
       { currentID: { $exists: true } },
-      { $inc: { currentID: 1 } },
+      { $inc: { currentID: 1 } }
     );
     return ++this.currentID;
   }
@@ -101,7 +101,7 @@ class BaseCollection {
     return this.collection
       .find({})
       .sort({
-        [field]: -1,
+        [field]: -1
       })
       .limit(limit)
       .toArray();

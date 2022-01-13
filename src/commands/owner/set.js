@@ -6,7 +6,7 @@ const activityTypes = [
   'STREAMING',
   'LISTENING',
   'WATCHING',
-  'COMPETING',
+  'COMPETING'
 ];
 const statusTypes = ['online', 'idle', 'invisible', 'dnd'];
 
@@ -21,7 +21,7 @@ module.exports = new OwnerCommand(
         const type = args.shift();
         if (!activityTypes.includes(type)) {
           return `Activity type can only be the following\n\`${activityTypes.join(
-            '`, `',
+            '`, `'
           )}\``;
         }
         ctx.bot.user.setActivity(args.join(' '), { type });
@@ -29,7 +29,7 @@ module.exports = new OwnerCommand(
         const status = args.shift();
         if (!statusTypes.includes(status)) {
           return `Status type can only be the from the following\n\`${statusTypes.join(
-            '`, `',
+            '`, `'
           )}\``;
         }
         ctx.bot.user.setStatus(status);
@@ -57,7 +57,7 @@ module.exports = new OwnerCommand(
     argReq: true,
     minArgs: 1,
     responses: {
-      noArg: `What exactly do you want me to set?\n\`${options.join('`, `')}\``,
-    },
-  },
+      noArg: `What exactly do you want me to set?\n\`${options.join('`, `')}\``
+    }
+  }
 );

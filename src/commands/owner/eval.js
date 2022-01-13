@@ -15,7 +15,7 @@ module.exports = new OwnerCommand(
       result = await eval(input);
       if (typeof result !== 'string') {
         result = inspect(result, {
-          depth: 1,
+          depth: 1
         });
       }
     } catch (e) {
@@ -27,7 +27,7 @@ module.exports = new OwnerCommand(
     if (result.length > 1500) {
       if (result.length >= 1901) {
         result = await OwnerCommand.uploadResult(result, {
-          input,
+          input
         });
         return `Oh no! looks like the result for this is too big:\n${result}`;
       }
@@ -43,7 +43,7 @@ module.exports = new OwnerCommand(
     argReq: true,
     minArgs: 1,
     responses: {
-      noArg: 'give me something to evaluate smh',
-    },
-  },
+      noArg: 'give me something to evaluate smh'
+    }
+  }
 );

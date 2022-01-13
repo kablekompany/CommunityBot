@@ -11,9 +11,9 @@ module.exports = {
           title: 'All Music Commands',
           description: `${interaction.client.slashCmds
             .map((cmd) => `- \`/${cmd.name}\` - ${cmd.description}`)
-            .join('\n')}`,
-        },
-      ],
+            .join('\n')}`
+        }
+      ]
     });
-  },
+  }
 };

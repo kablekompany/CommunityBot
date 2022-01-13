@@ -68,7 +68,7 @@ module.exports = new OwnerCommand(
     argReq: true,
     minArgs: 1,
     responses: {
-      noArg: 'What do you want to reload? `cmds|events|config|all`',
-    },
-  },
+      noArg: 'What do you want to reload? `cmds|events|config|all`'
+    }
+  }
 );

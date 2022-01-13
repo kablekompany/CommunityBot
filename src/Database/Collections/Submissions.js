@@ -9,11 +9,11 @@ class Submissions extends BaseCollection {
       link: '',
       upvotes: [],
       downvotes: [],
-      createdAt: 0,
+      createdAt: 0
     };
     this.leaderboardCache = {
       cachedAt: 0,
-      data: [],
+      data: []
     };
   }
 
@@ -25,7 +25,7 @@ class Submissions extends BaseCollection {
       link,
       upvotes: [],
       downvotes: [],
-      createdAt,
+      createdAt
     });
     return latestID;
   }
@@ -33,8 +33,8 @@ class Submissions extends BaseCollection {
   async addVote(submissionID, userID, type) {
     await this.update(+submissionID, {
       $addToSet: {
-        [`${type}`]: userID,
-      },
+        [`${type}`]: userID
+      }
     });
   }
 
@@ -52,7 +52,7 @@ class Submissions extends BaseCollection {
 
     return {
       upvotes: upvotes.length,
-      downvotes: downvotes.length,
+      downvotes: downvotes.length
     };
   }
 
@@ -62,7 +62,7 @@ class Submissions extends BaseCollection {
       const leaderboards = await this._getGenericTop(type, limit);
       cache = {
         data: leaderboards,
-        cachedAt: Date.now(),
+        cachedAt: Date.now()
       };
     }
     return cache.data;

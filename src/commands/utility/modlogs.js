@@ -9,10 +9,10 @@ module.exports = new Command(
       title: 'User Modlogs',
       author: {
         name: user.tag,
-        icon_url: user.avatarURL({ dynamic: true }),
+        icon_url: user.avatarURL({ dynamic: true })
       },
       fields: [],
-      footer: {},
+      footer: {}
     };
 
     if (!modlogs.length) {
@@ -27,7 +27,7 @@ module.exports = new Command(
         value: `Responsible Moderator: ${entry.moderator.tag}\nReason: ${
           entry.reason
         }\n${entry.duration ? `Duration: ${entry.duration}` : ''}`,
-        inline: true,
+        inline: true
       });
     }
 
@@ -44,7 +44,7 @@ module.exports = new Command(
     modOnly: true,
     argReq: true,
     responses: {
-      noArg: "I'm gonna need a **user ID** to check.",
-    },
-  },
+      noArg: "I'm gonna need a **user ID** to check."
+    }
+  }
 );

@@ -7,8 +7,8 @@ module.exports = {
     {
       name: 'time',
       description: 'The time to seek to (in seconds)',
-      type: CommandOptionType.Integer,
-    },
+      type: CommandOptionType.Integer
+    }
   ],
   default_permission: false,
 
@@ -19,7 +19,7 @@ module.exports = {
     if (!queue || !queue.playing) {
       return interaction.reply({
         embeds: [{ description: '❌ | No music is being played!' }],
-        ephemeral: true,
+        ephemeral: true
       });
     }
 
@@ -31,9 +31,9 @@ module.exports = {
         {
           description: `✅ | ${interaction.user.username} has seeked to \`${
             time / 1000
-          }\` seconds`,
-        },
-      ],
+          }\` seconds`
+        }
+      ]
     });
-  },
+  }
 };

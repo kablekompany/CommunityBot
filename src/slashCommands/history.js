@@ -8,8 +8,8 @@ module.exports = {
       name: 'page',
       type: CommandOptionType.Integer,
       description: 'Specific page number in queue history',
-      required: false,
-    },
+      required: false
+    }
   ],
   default_permission: false,
 
@@ -20,7 +20,7 @@ module.exports = {
     const queue = client.player.getQueue(interaction.guildId);
     if (!queue || !queue.playing) {
       return interaction.editReply({
-        embeds: [{ description: '❌ | No music is being played!' }],
+        embeds: [{ description: '❌ | No music is being played!' }]
       });
     }
     if (!interaction.options.page) interaction.options.page = 1;
@@ -44,11 +44,11 @@ module.exports = {
           fields: [
             {
               name: 'Now Playing',
-              value: `🎶 | **${currentTrack.title}** ([link](${currentTrack.url}))`,
-            },
-          ],
-        },
-      ],
+              value: `🎶 | **${currentTrack.title}** ([link](${currentTrack.url}))`
+            }
+          ]
+        }
+      ]
     });
-  },
+  }
 };

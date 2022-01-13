@@ -1,6 +1,6 @@
 const MessageHandler = require('../../../models/Handlers/MessageHandler');
 const {
-  log: { dmLog },
+  log: { dmLog }
 } = require('../../../configs/config.json');
 
 module.exports = new MessageHandler(
@@ -12,6 +12,6 @@ module.exports = new MessageHandler(
   },
   {
     name: 'dm',
-    allowDM: true,
-  },
+    allowDM: true
+  }
 );

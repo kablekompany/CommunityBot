@@ -8,7 +8,7 @@ const CommandOptionType = {
   Channel: 7,
   Role: 8,
   Mentionable: 9,
-  Number: 10,
+  Number: 10
 };
 
 module.exports = CommandOptionType;

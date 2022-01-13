@@ -5,17 +5,17 @@ class Users extends BaseCollection {
     super(collection);
     this.default = {
       infractions: [],
-      infractionCount: 0,
+      infractionCount: 0
     };
     this.infractionsCache = {
       cachedAt: 0,
-      data: [],
+      data: []
     };
   }
 
   async initUser(id) {
     const createdUser = await this.collection.insertOne({
-      _id: id,
+      _id: id
     });
     return createdUser.ops[0];
   }
@@ -33,9 +33,9 @@ class Users extends BaseCollection {
     await this.getUser(id);
     return this.update(id, {
       $inc: {
-        infractionCount: 1,
+        infractionCount: 1
       },
-      $push: { infractions: { $each: [msgLink], $slice: -5 } },
+      $push: { infractions: { $each: [msgLink], $slice: -5 } }
     });
   }
 
@@ -45,7 +45,7 @@ class Users extends BaseCollection {
       const topInfractions = await this._getGenericTop('infractionCount');
       cache = {
         data: topInfractions,
-        cachedAt: Date.now(),
+        cachedAt: Date.now()
       };
     }
 

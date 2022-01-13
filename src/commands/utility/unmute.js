@@ -10,7 +10,7 @@ module.exports = new Command(
       msg.guild.members.cache.find((m) =>
         m.tag === user || m.username === user || msg.mentions.users.size > 0
           ? m.id === msg.mentions.users.first().id
-          : false,
+          : false
       );
 
     if (!member) {
@@ -24,9 +24,9 @@ module.exports = new Command(
         embeds: [
           {
             description: `I was unable to remove this member's timeout.\n\nError: ${err.message}`,
-            color: 0xd3403d, // red
-          },
-        ],
+            color: 0xd3403d // red
+          }
+        ]
       });
       return null;
     }
@@ -42,14 +42,14 @@ module.exports = new Command(
             `**Responsible moderator:** ${msg.author.tag}`,
           color: 0x42f4a7, // green
           timestamp: new Date(),
-          footer: { text: `ID: ${member.id}` },
-        },
-      ],
+          footer: { text: `ID: ${member.id}` }
+        }
+      ]
     });
 
     const moderator = {
       id: msg.author.id,
-      tag: msg.author.tag,
+      tag: msg.author.tag
     };
     await ctx.db.logs.add(member.id, reason, moderator, null, 'unmute');
     const m = await msg.reply({
@@ -57,9 +57,9 @@ module.exports = new Command(
         {
           title: 'Timeout Reset',
           description: `**${member.user.tag}**'s timeout was removed.`,
-          color: 0x89ff7a, // green
-        },
-      ],
+          color: 0x89ff7a // green
+        }
+      ]
     });
     setTimeout(async () => {
       await m.delete();
@@ -73,7 +73,7 @@ module.exports = new Command(
     modOnly: true,
     argReq: true,
     responses: {
-      noArg: '`unmute <user> <reason>`',
-    },
-  },
+      noArg: '`unmute <user> <reason>`'
+    }
+  }
 );

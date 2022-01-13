@@ -4,7 +4,7 @@ const {
   removeDuplicates,
   relativeTime,
   randomInArray,
-  sleep,
+  sleep
 } = require('../utils/misc');
 const { dmc } = require('../configs/config.json');
 
@@ -32,20 +32,20 @@ module.exports = {
             {
               name: 'Prize',
               value: prize,
-              inline: true,
-            },
+              inline: true
+            }
           ],
           footer: {
-            text: 'Ends in 30 seconds!',
-          },
-        },
+            text: 'Ends in 30 seconds!'
+          }
+        }
       ],
-      components: [new MessageActionRow().addComponents(joinButton)],
+      components: [new MessageActionRow().addComponents(joinButton)]
     });
 
     const collector = await message.createMessageComponentCollector({
       componentType: 'BUTTON',
-      time,
+      time
     });
 
     const alreadyJoined = [];
@@ -56,13 +56,13 @@ module.exports = {
         alreadyJoined.push(click.user.id);
         await click.reply({
           content: 'Successfully joined, good luck!',
-          ephemeral: true,
+          ephemeral: true
         });
         return null;
       }
       await click.reply({
         content: "You've already joined this split or steal session!",
-        ephemeral: true,
+        ephemeral: true
       });
       return null;
     });
@@ -74,8 +74,8 @@ module.exports = {
           users.length === 1 ? 'one person' : `${users.length} people`
         }\`** joined!`,
         components: [
-          new MessageActionRow().addComponents(joinButton.setDisabled(true)),
-        ],
+          new MessageActionRow().addComponents(joinButton.setDisabled(true))
+        ]
       });
       if (users.length <= 1) {
         return interaction.followUp('Not enough people joined :(');
@@ -86,7 +86,7 @@ module.exports = {
     await sleep(time);
     const winner1 = randomInArray(users);
     const winner2 = randomInArray(
-      users.filter((u) => u.user.id !== winner1.user.id),
+      users.filter((u) => u.user.id !== winner1.user.id)
     );
 
     if (!winner1 || !winner2) {
@@ -99,9 +99,9 @@ module.exports = {
         await member.roles.add(dmc.eventParticipant);
         return setTimeout(
           () => member.roles.remove(dmc.eventParticipant),
-          time * 3,
+          time * 3
         );
-      }),
+      })
     );
 
     const winners = [winner1.user.id, winner2.user.id];
@@ -126,14 +126,14 @@ module.exports = {
         {
           title: `${prize} is on the line!`,
           description: `Both of you have **1 minute and 30 seconds to discuss**, and then **30 seconds to choose** either **SPLIT** or **STEAL**! Remember, if both users choose steal then it has to be re-done!\n\nA message with 2 buttons (split/steal) will be posted <t:${Math.round(
-            Date.now() / 1000 + 90,
+            Date.now() / 1000 + 90
           )}:R> for both contestants to choose!`,
           footer: {
             icon_url: interaction.guild.iconURL({ dynamic: true }),
-            text: 'Results will be posted after both users have discussed and made a choice.',
-          },
-        },
-      ],
+            text: 'Results will be posted after both users have discussed and made a choice.'
+          }
+        }
+      ]
     });
 
     // wait 90s then enable buttons for players to make a choice
@@ -141,12 +141,12 @@ module.exports = {
     const prompt = await interaction.channel.send({
       content: `It's time for ${winnerMentions} to make a choice!`,
       components: [
-        new MessageActionRow().addComponents(splitButton, stealButton),
-      ],
+        new MessageActionRow().addComponents(splitButton, stealButton)
+      ]
     });
     const choiceCollector = await prompt.createMessageComponentCollector({
       componentType: 'BUTTON',
-      time,
+      time
     });
 
     choiceCollector.on('collect', async (click) => {
@@ -156,14 +156,14 @@ module.exports = {
       if (!winners.includes(click.user.id)) {
         return click.reply({
           content: "You're not one of the winners, wyd?",
-          ephemeral: true,
+          ephemeral: true
         });
       }
 
       if (choices.has(click.user.username)) {
         return click.reply({
           content: "You've already chosen!",
-          ephemeral: true,
+          ephemeral: true
         });
       }
 
@@ -172,7 +172,7 @@ module.exports = {
         await reply();
         await click.reply({
           content: `You've chosen to **SPLIT** 💸 ${click.user.username}!`,
-          ephemeral: true,
+          ephemeral: true
         });
       }
 
@@ -181,7 +181,7 @@ module.exports = {
         await reply();
         await click.reply({
           content: `You've chosen to **STEAL** <a:pepeRobber:894458233769558096> ${click.user.username}!`,
-          ephemeral: true,
+          ephemeral: true
         });
       }
 
@@ -196,13 +196,13 @@ module.exports = {
         components: [
           new MessageActionRow().addComponents(
             splitButton.setDisabled(true),
-            stealButton.setDisabled(true),
-          ),
-        ],
+            stealButton.setDisabled(true)
+          )
+        ]
       });
       if (choices.size < 2) {
         return interaction.followUp(
-          "One of the contestants didn't make a choice, time to re-do that I guess.",
+          "One of the contestants didn't make a choice, time to re-do that I guess."
         );
       }
       const getChoice = (winner) =>
@@ -210,7 +210,7 @@ module.exports = {
           .get(winner.user.username)
           .toUpperCase()}**`;
       return interaction.followUp({
-        content: `${getChoice(winner1)}\n${getChoice(winner2)}`,
+        content: `${getChoice(winner1)}\n${getChoice(winner2)}`
       });
     });
     return null;
@@ -223,8 +223,8 @@ module.exports = {
       name: 'prize',
       type: CommandOptionType.String,
       description: "The prize that's going to be up for grabs",
-      required: true,
-    },
+      required: true
+    }
   ],
-  default_permission: false,
+  default_permission: false
 };

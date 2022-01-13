@@ -15,22 +15,22 @@ module.exports = {
       choices: [
         {
           name: 'Off',
-          value: QueueRepeatMode.OFF,
+          value: QueueRepeatMode.OFF
         },
         {
           name: 'Track',
-          value: QueueRepeatMode.TRACK,
+          value: QueueRepeatMode.TRACK
         },
         {
           name: 'Queue',
-          value: QueueRepeatMode.QUEUE,
+          value: QueueRepeatMode.QUEUE
         },
         {
           name: 'Autoplay',
-          value: QueueRepeatMode.AUTOPLAY,
-        },
-      ],
-    },
+          value: QueueRepeatMode.AUTOPLAY
+        }
+      ]
+    }
   ],
   default_permission: false,
 
@@ -41,7 +41,7 @@ module.exports = {
     const queue = client.player.getQueue(interaction.guildId);
     if (!queue || !queue.playing) {
       return interaction.editReply({
-        embeds: [{ description: '❌ | No music is being played!' }],
+        embeds: [{ description: '❌ | No music is being played!' }]
       });
     }
     const loopMode = interaction.options.getInteger('mode');
@@ -57,9 +57,9 @@ module.exports = {
         {
           description: success
             ? `${mode} | Updated loop mode!`
-            : '❌ | Could not update loop mode!',
-        },
-      ],
+            : '❌ | Could not update loop mode!'
+        }
+      ]
     });
-  },
+  }
 };

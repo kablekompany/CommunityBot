@@ -5,14 +5,14 @@ class Guilds extends BaseCollection {
     super(collection);
     this.default = {
       prefixes: ['d!'],
-      commands: 0,
+      commands: 0
     };
   }
 
   async initGuild(id) {
     const createdGuild = await this.collection.insertOne({
       _id: id,
-      ...this.default,
+      ...this.default
     });
     return createdGuild;
   }
@@ -28,16 +28,16 @@ class Guilds extends BaseCollection {
   async addPrefix(id, prefix) {
     await this.update(id, {
       $addToSet: {
-        prefixes: prefix,
-      },
+        prefixes: prefix
+      }
     });
   }
 
   async removePrefix(id, prefix) {
     await this.update(id, {
       $pull: {
-        prefixes: prefix,
-      },
+        prefixes: prefix
+      }
     });
   }
 }

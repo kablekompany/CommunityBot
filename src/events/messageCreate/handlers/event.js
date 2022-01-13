@@ -18,6 +18,6 @@ module.exports = new MessageHandler(
   {
     name: 'event',
     allowDM: false,
-    allowBot: false,
-  },
+    allowBot: false
+  }
 );

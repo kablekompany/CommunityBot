@@ -9,7 +9,7 @@ class MessageHandler {
       msg.content
         .toLowerCase()
         .split(' ')
-        .find((a) => a.startsWith(p)),
+        .find((a) => a.startsWith(p))
     );
     if (!prefix) {
       return null;
@@ -37,7 +37,7 @@ class MessageHandler {
       name: '',
       allowDM: false,
       allowBot: false,
-      ...this._props,
+      ...this._props
     };
   }
 }

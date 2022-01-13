@@ -6,7 +6,7 @@ module.exports = new Command(
     user = ctx.bot.users.resolve(user) || msg.author;
     const member = msg.guild.members.resolve(user.id) || {
       nickname: 'Member not in server',
-      joinedAt: 'Member not in server',
+      joinedAt: 'Member not in server'
     };
     return {
       fields: [
@@ -15,32 +15,32 @@ module.exports = new Command(
         {
           name: '**Nickname**:',
           value: member.nickname || 'No Nickname',
-          inline: false,
+          inline: false
         },
         {
           name: '**Created At**:',
           value: ctx.utils.parseDate(user.createdAt),
-          inline: false,
+          inline: false
         },
         {
           name: '**Joined At**:',
           value: ctx.utils.parseDate(member.joinedAt),
-          inline: false,
-        },
+          inline: false
+        }
       ],
       author: {
-        name: 'User Info',
+        name: 'User Info'
       },
       thumbnail: {
-        url: user.avatarURL({ dynamic: true, size: 1024 }),
+        url: user.avatarURL({ dynamic: true, size: 1024 })
       },
-      color: ctx.utils.randomColour(),
+      color: ctx.utils.randomColour()
     };
   },
   {
     name: 'userinfo',
     aliases: ['ui'],
     usage: 'View user info for someone or yourself',
-    adminOnly: true,
-  },
+    adminOnly: true
+  }
 );

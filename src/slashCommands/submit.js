@@ -18,18 +18,18 @@ module.exports = {
       title: 'Invalid image URL',
       description:
         'Please ensure the link is a _direct_ link to the image. Direct links should end in **.png**, **.jpg** OR **.jpeg**.\n\nExample: https://i.imgur.com/wDPDj3T.png',
-      color: 16711680, // red
+      color: 16711680 // red
     };
 
     if (!link.match(imageURLRegex)) {
       return interaction.reply({
         embeds: [errorEmbed],
-        ephemeral: true,
+        ephemeral: true
       });
     }
 
     const alreadySubmitted = await ctx.db.submissions.exists(
-      interaction.user.id,
+      interaction.user.id
     );
 
     if (alreadySubmitted) {
@@ -40,10 +40,10 @@ module.exports = {
               title: "You've already submitted an art piece!",
               description:
                 'You can only submit one art piece to be voted for. If you would like to re-submit your piece, please ping **Dauntless#0711**.',
-              color: 16711680, // red
-            },
+              color: 16711680 // red
+            }
           ],
-          ephemeral: true,
+          ephemeral: true
         })
         .catch(console.error);
     }
@@ -54,21 +54,21 @@ module.exports = {
           new MessageButton({
             emoji: {
               id: '919416789266497596',
-              name: 'approve',
+              name: 'approve'
             },
             style: 'SECONDARY',
-            customId: `approve_${usertag}`,
+            customId: `approve_${usertag}`
           }),
           new MessageButton({
             emoji: {
               id: '919416821428412517',
-              name: 'deny',
+              name: 'deny'
             },
             style: 'SECONDARY',
-            customId: `deny_${usertag}`,
-          }),
-        ],
-      }),
+            customId: `deny_${usertag}`
+          })
+        ]
+      })
     ];
 
     const channel = interaction.client.channels.resolve(submissionChannel);
@@ -78,15 +78,15 @@ module.exports = {
         {
           title: `Art Submission by ${usertag}`,
           image: {
-            url: link,
+            url: link
           },
           footer: {
-            text: interaction.user.id,
+            text: interaction.user.id
           },
-          color: 0x2f3136, // grey
-        },
+          color: 0x2f3136 // grey
+        }
       ],
-      components,
+      components
     });
 
     return interaction
@@ -95,10 +95,10 @@ module.exports = {
           {
             title: 'Art has been submitted for review, sit tight!',
             description: `It will be posted in <#${submissions}> when an admin or moderator reviews it to ensure that it doesn't break any rules.`,
-            color: 8519546, // green
-          },
+            color: 8519546 // green
+          }
         ],
-        ephemeral: true,
+        ephemeral: true
       })
       .catch(console.error);
   },
@@ -109,7 +109,7 @@ module.exports = {
       name: 'link',
       type: CommandOptionType.String,
       description: 'The direct image link of the art.',
-      required: true,
-    },
-  ],
+      required: true
+    }
+  ]
 };

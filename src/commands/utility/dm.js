@@ -10,7 +10,7 @@ module.exports = new Command(
     let position = '';
     const role = msg.member.roles.cache.find(
       (r) =>
-        r.id === ctx.config.dmc.adminRole || r.id === ctx.config.dmc.modRole,
+        r.id === ctx.config.dmc.adminRole || r.id === ctx.config.dmc.modRole
     );
     if (!role) {
       return null;
@@ -22,12 +22,12 @@ module.exports = new Command(
           {
             author: {
               name: `You've received a message from a ${position} in ${msg.guild.name}`,
-              icon_url: msg.guild.iconURL({ dynamic: true, size: 1024 }),
+              icon_url: msg.guild.iconURL({ dynamic: true, size: 1024 })
             },
             description: args.join(' '),
-            timestamp: new Date(),
-          },
-        ],
+            timestamp: new Date()
+          }
+        ]
       });
       await msg.react('📨');
     } catch (err) {
@@ -44,7 +44,7 @@ module.exports = new Command(
     minArgs: 2,
     responses: {
       noArg: 'Who do I dm? What do i dm them?',
-      lowArg: 'What do I dm them?',
-    },
-  },
+      lowArg: 'What do I dm them?'
+    }
+  }
 );

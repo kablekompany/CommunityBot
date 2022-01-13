@@ -15,7 +15,7 @@ class ModerationCommand extends Command {
       ctx,
       msg,
       args,
-      cleanArgs,
+      cleanArgs
     });
   }
 
@@ -24,9 +24,9 @@ class ModerationCommand extends Command {
       super.props,
       {
         permissions: [],
-        hierarchy: false,
+        hierarchy: false
       },
-      this.props,
+      this.props
     );
   }
 }

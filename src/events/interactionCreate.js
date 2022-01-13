@@ -22,20 +22,20 @@ module.exports = async function oninteraction(interaction) {
     if (interaction.member.roles.cache.has(trialModRole)) {
       return reply({
         content: 'You already have the **Trial Moderator** role.',
-        ephemeral: true,
+        ephemeral: true
       });
     }
     await interaction.member.roles.add(trialModRole);
     return reply({
       content: "You've been given the **Trial Moderator** role!",
-      ephemeral: true,
+      ephemeral: true
     });
   }
 
   if (interaction.isButton() && interaction.customId.startsWith('approve')) {
     const submission = {
       link: interaction.message.embeds[0].image.url,
-      userID: interaction.message.embeds[0].footer.text,
+      userID: interaction.message.embeds[0].footer.text
     };
 
     const emb = interaction.message.embeds[0];
@@ -43,12 +43,12 @@ module.exports = async function oninteraction(interaction) {
     await interaction.message.edit({
       content: `Approved by **${interaction.user.tag}**`,
       embeds: [emb],
-      components: [],
+      components: []
     });
     const submissionChannel = this.bot.channels.resolve(submissions);
     const submissionID = await this.db.submissions.addSubmission(
       submission.userID,
-      submission.link,
+      submission.link
     );
 
     const components = [
@@ -57,21 +57,21 @@ module.exports = async function oninteraction(interaction) {
           new MessageButton({
             emoji: {
               id: '919609115129569350',
-              name: 'upvote',
+              name: 'upvote'
             },
             style: 'SUCCESS',
-            customId: `upvotes_${submission.userID}_${submissionID}`,
+            customId: `upvotes_${submission.userID}_${submissionID}`
           }),
           new MessageButton({
             emoji: {
               id: '919609066442063952',
-              name: 'downvote',
+              name: 'downvote'
             },
             style: 'DANGER',
-            customId: `downvotes_${submission.userID}_${submissionID}`,
-          }),
-        ],
-      }),
+            customId: `downvotes_${submission.userID}_${submissionID}`
+          })
+        ]
+      })
     ];
     const embed = new MessageEmbed()
       .setTitle(`Art Submission #${submissionID}`)
@@ -79,16 +79,16 @@ module.exports = async function oninteraction(interaction) {
       .setImage(submission.link);
     await submissionChannel.send({
       embeds: [embed],
-      components,
+      components
     });
     return reply({
       embeds: [
         {
           description: `**Submission #${submissionID}** has been posted! See <#${submissions}> for the message.`,
-          color: 8519546, // green
-        },
+          color: 8519546 // green
+        }
       ],
-      ephemeral: true,
+      ephemeral: true
     });
   }
 
@@ -98,15 +98,15 @@ module.exports = async function oninteraction(interaction) {
     await interaction.message.edit({
       content: `Denied by **${interaction.user.tag}**`,
       embeds: [emb],
-      components: [],
+      components: []
     });
     return reply({
       embeds: [
         {
-          description: 'Submission Denied',
-        },
+          description: 'Submission Denied'
+        }
       ],
-      ephemeral: true,
+      ephemeral: true
     });
   }
 
@@ -118,7 +118,7 @@ module.exports = async function oninteraction(interaction) {
     const [type, userID, submissionID] = interaction.customId.split('_');
     const hasVoted = await this.db.submissions.hasVoted(
       interaction.user.id,
-      submissionID,
+      submissionID
     );
 
     if (hasVoted === true) {
@@ -127,10 +127,10 @@ module.exports = async function oninteraction(interaction) {
           {
             title: 'You can only vote once per submission',
             description: `You've already voted for **submission #${submissionID}** ${interaction.user.username}`,
-            color: 16711680, // red
-          },
+            color: 16711680 // red
+          }
         ],
-        ephemeral: true,
+        ephemeral: true
       });
     }
 
@@ -139,23 +139,23 @@ module.exports = async function oninteraction(interaction) {
       embeds: [
         {
           description: `You've successfully voted for **submission #${submissionID}** ${interaction.user.username}`,
-          color: 8519546, // green
-        },
+          color: 8519546 // green
+        }
       ],
-      ephemeral: true,
+      ephemeral: true
     });
   }
 
   if (interaction.channelId === selfRolesChannel && interaction.isButton()) {
     const role = interaction.guild.roles.cache.get(
-      selfRoles[interaction.customId],
+      selfRoles[interaction.customId]
     );
 
     await interaction.guild.members.fetch(interaction.member.id);
     if (!role) {
       return reply({
         content: 'uh this is awkward, go yell at daunt',
-        ephemeral: true,
+        ephemeral: true
       });
     }
 
@@ -166,10 +166,10 @@ module.exports = async function oninteraction(interaction) {
           embeds: [
             {
               title: `Removed ${role.name} from you`,
-              color: role.color || 8907491,
-            },
+              color: role.color || 8907491
+            }
           ],
-          ephemeral: true,
+          ephemeral: true
         });
       } else {
         // The start of the check module.
@@ -196,17 +196,17 @@ module.exports = async function oninteraction(interaction) {
                   fields: [
                     {
                       name: 'Added Role',
-                      value: role.name,
+                      value: role.name
                     },
                     {
                       name: 'Removed Role(s)',
-                      value: roleNames.map((r) => r).join('\n'),
-                    },
+                      value: roleNames.map((r) => r).join('\n')
+                    }
                   ],
-                  color: role.color,
-                },
+                  color: role.color
+                }
               ],
-              ephemeral: true,
+              ephemeral: true
             });
           }
         }
@@ -217,16 +217,16 @@ module.exports = async function oninteraction(interaction) {
           embeds: [
             {
               title: `Added ${role.name} to you`,
-              color: role.color || 8907491,
-            },
+              color: role.color || 8907491
+            }
           ],
-          ephemeral: true,
+          ephemeral: true
         });
       }
     } catch (err) {
       await reply({
         content: 'Something went wrong here, go yell at daunt for this error.',
-        ephemeral: true,
+        ephemeral: true
       });
       console.error(err.message);
     }

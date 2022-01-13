@@ -9,10 +9,10 @@ module.exports = {
         {
           title: 'pong!',
           description: `**Discord API Websocket Ping**: \`${Math.round(
-            interaction.client.ws.ping,
-          )}ms\`.`,
-        },
-      ],
+            interaction.client.ws.ping
+          )}ms\`.`
+        }
+      ]
     });
-  },
+  }
 };

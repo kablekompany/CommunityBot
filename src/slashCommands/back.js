@@ -10,13 +10,13 @@ module.exports = {
     if (!queue || !queue.playing) {
       await interaction.reply({
         embeds: [{ description: '❌ | No music is being played!' }],
-        ephemeral: true,
+        ephemeral: true
       });
     }
 
     await queue.back();
     return interaction.reply({
-      embeds: [{ description: '✅ | Playing the previous track!' }],
+      embeds: [{ description: '✅ | Playing the previous track!' }]
     });
-  },
+  }
 };

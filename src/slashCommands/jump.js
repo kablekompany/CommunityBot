@@ -8,8 +8,8 @@ module.exports = {
       name: 'tracks',
       description: 'The number of tracks to skip',
       type: CommandOptionType.Integer,
-      required: true,
-    },
+      required: true
+    }
   ],
   default_permission: false,
 
@@ -19,7 +19,7 @@ module.exports = {
     const queue = client.player.getQueue(interaction.guildId);
     if (!queue || !queue.playing) {
       return interaction.editReply({
-        embeds: [{ description: '❌ | No music is being played!' }],
+        embeds: [{ description: '❌ | No music is being played!' }]
       });
     }
 
@@ -29,16 +29,16 @@ module.exports = {
 
     if (!trackName) {
       return interaction.editReply(
-        `\`${tracks}\` is an invalid queue position.`,
+        `\`${tracks}\` is an invalid queue position.`
       );
     }
     queue.jump(trackIndex);
     return interaction.editReply({
       embeds: [
         {
-          description: `⏭ | ${interaction.user.username} has jumped to **${trackName}** in the queue!`,
-        },
-      ],
+          description: `⏭ | ${interaction.user.username} has jumped to **${trackName}** in the queue!`
+        }
+      ]
     });
-  },
+  }
 };

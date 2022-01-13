@@ -9,7 +9,7 @@ module.exports = {
     if (!interaction.member.roles.cache.has(ctx.config.dmc.modRole)) {
       return interaction.reply({
         content: "You're missing the **Moderator** role.",
-        ephemeral: true,
+        ephemeral: true
       });
     }
 
@@ -23,7 +23,7 @@ module.exports = {
     } catch (err) {
       return interaction.reply({
         content: 'This seems like an invalid time, try again maybe?',
-        ephemeral: true,
+        ephemeral: true
       });
     }
 
@@ -34,10 +34,10 @@ module.exports = {
         embeds: [
           {
             description: `I was unable to timeout this member.\n\nError: ${err.message}`,
-            color: 0xd3403d, // red
-          },
+            color: 0xd3403d // red
+          }
         ],
-        ephemeral: true,
+        ephemeral: true
       });
     }
 
@@ -48,9 +48,9 @@ module.exports = {
           {
             title: `You've been timed out in ${interaction.guild.name}`,
             description: `Reason: ${reason}\n\nTimeout ends ${endTime}`,
-            color: 0xed7438, // orange
-          },
-        ],
+            color: 0xed7438 // orange
+          }
+        ]
       })
       .catch(() => null);
 
@@ -65,9 +65,9 @@ module.exports = {
             `**Responsible moderator:** ${interaction.user.tag}`,
           color: 15960130,
           timestamp: new Date(),
-          footer: { text: `ID: ${member.id}` },
-        },
-      ],
+          footer: { text: `ID: ${member.id}` }
+        }
+      ]
     });
 
     return interaction.reply({
@@ -75,10 +75,10 @@ module.exports = {
         {
           title: 'Timeout Successful',
           description: `**${member.user.tag}**'s timeout ends **${endTime}**`,
-          color: 0x89ff7a, // green
-        },
+          color: 0x89ff7a // green
+        }
       ],
-      ephemeral: true,
+      ephemeral: true
     });
   },
   name: 'timeout',
@@ -88,19 +88,19 @@ module.exports = {
       name: 'member',
       type: CommandOptionType.User,
       description: 'The member you would like to timeout',
-      required: true,
+      required: true
     },
     {
       name: 'reason',
       type: CommandOptionType.String,
       description: 'The reason for the timeout',
-      required: true,
+      required: true
     },
     {
       name: 'time',
       type: CommandOptionType.String,
       description: 'The duration of the timeout',
-      required: true,
-    },
-  ],
+      required: true
+    }
+  ]
 };

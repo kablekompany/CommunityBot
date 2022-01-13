@@ -10,7 +10,7 @@ module.exports = {
     if (!queue || !queue.playing) {
       return interaction.reply({
         embeds: [{ description: '❌ | No music is being played!' }],
-        ephemeral: true,
+        ephemeral: true
       });
     }
     const progress = queue.createProgressBar();
@@ -26,12 +26,12 @@ module.exports = {
           fields: [
             {
               name: '\u200b',
-              value: progress.replace(/ 0:00/g, ' ◉ LIVE'),
-            },
+              value: progress.replace(/ 0:00/g, ' ◉ LIVE')
+            }
           ],
-          color: 0xffffff,
-        },
-      ],
+          color: 0xffffff
+        }
+      ]
     });
-  },
+  }
 };

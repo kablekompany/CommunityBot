@@ -23,32 +23,32 @@ module.exports = new Command(
         await ctx.db.guilds.addPrefix(msg.guild.id, newPrefix);
         return {
           title: 'Prefix added!',
-          description: `Successfully added \`${newPrefix}\` as a prefix.`,
+          description: `Successfully added \`${newPrefix}\` as a prefix.`
         };
       case 'list':
         const { prefixes } = await ctx.db.guilds.get(msg.guild.id);
         return {
           title: 'All Prefixes',
           description: prefixes.map((p, idx) => `${idx + 1}. ${p}`).join('\n'),
-          color: ctx.utils.randomColour(),
+          color: ctx.utils.randomColour()
         };
       case 'remove':
         const toRemove = args[1];
         if (!guild.prefixes.includes(toRemove)) {
           return {
-            description: `This isn't even a prefix, what are you trying to do? Run \`${guild.prefixes[0]} prefix list\` to see all prefixes.`,
+            description: `This isn't even a prefix, what are you trying to do? Run \`${guild.prefixes[0]} prefix list\` to see all prefixes.`
           };
         }
         if (guild.prefixes.length === 1) {
           return {
             description:
-              "lol you only have one prefix, pretty sure you don't wanna do this",
+              "lol you only have one prefix, pretty sure you don't wanna do this"
           };
         }
         await ctx.db.guilds.removePrefix(msg.guild.id, toRemove);
         return {
           title: 'Prefix removed!',
-          description: `Successfully removed \`${toRemove}\` as a prefix.`,
+          description: `Successfully removed \`${toRemove}\` as a prefix.`
         };
       default:
         return defaultOutput;
@@ -61,7 +61,7 @@ module.exports = new Command(
     minArgs: 1,
     modOnly: true,
     responses: {
-      noArg: defaultOutput,
-    },
-  },
+      noArg: defaultOutput
+    }
+  }
 );

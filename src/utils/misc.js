@@ -19,7 +19,7 @@ module.exports = {
 
   randomColour: () =>
     Number(
-      colours[Math.floor(Math.random() * colours.length)].replace('#', '0x'),
+      colours[Math.floor(Math.random() * colours.length)].replace('#', '0x')
     ),
 
   codeblock: (msg, language = '') => {
@@ -47,13 +47,13 @@ module.exports = {
     await msg.member.timeout(duration);
     const moderator = {
       id: '549210020622106625',
-      tag: 'Community Bot#6333',
+      tag: 'Community Bot#6333'
     };
     const caseNumber = await ctx.db.logs.add(
       msg.author.id,
       reason,
       moderator,
-      '20m',
+      '20m'
     );
     try {
       await msg.member.send({
@@ -61,12 +61,12 @@ module.exports = {
           {
             title: `You have been timed out in ${msg.guild.name}`,
             description: `Your timeout ends <t:${Math.round(
-              (Date.now() + duration) / 1000,
+              (Date.now() + duration) / 1000
             )}:R>.\n**Reason**: ${reason}`,
             timestamp: new Date(),
-            color: 0xf38842,
-          },
-        ],
+            color: 0xf38842
+          }
+        ]
       });
       dmSent = true;
     } catch (err) {
@@ -74,7 +74,7 @@ module.exports = {
     }
     return {
       dmSent,
-      caseNumber,
+      caseNumber
     };
   },
 
@@ -100,17 +100,17 @@ module.exports = {
       { name: 'd', count: 86400 },
       { name: 'h', count: 3600 },
       { name: 'm', count: 60 },
-      { name: 's', count: 1 },
+      { name: 's', count: 1 }
     ];
 
     const timeStr = [
-      Math.floor(time / methods[0].count).toString() + methods[0].name,
+      Math.floor(time / methods[0].count).toString() + methods[0].name
     ];
     for (let i = 0; i < 3; i += 1) {
       timeStr.push(
         Math.floor(
-          (time % methods[i].count) / methods[i + 1].count,
-        ).toString() + methods[i + 1].name,
+          (time % methods[i].count) / methods[i + 1].count
+        ).toString() + methods[i + 1].name
       );
     }
 
@@ -125,7 +125,7 @@ module.exports = {
       h: 0,
       m: 0,
       s: 0,
-      y: 0,
+      y: 0
     };
     for (const c of input) {
       if (['y', 'd', 'h', 'm', 's'].includes(c)) {
@@ -143,5 +143,5 @@ module.exports = {
       throw new Error('Invalid time inputted.');
     }
     return sum;
-  },
+  }
 };

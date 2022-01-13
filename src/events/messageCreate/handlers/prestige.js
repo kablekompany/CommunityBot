@@ -20,6 +20,6 @@ module.exports = new MessageHandler(
   {
     name: 'prestige',
     allowDM: false,
-    allowBot: true,
-  },
+    allowBot: true
+  }
 );

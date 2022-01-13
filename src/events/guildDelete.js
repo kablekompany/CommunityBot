@@ -9,10 +9,10 @@ async function guildDelete(guild) {
         description: `**Guild Name**: ${guild.name}\n**Guild ID**: ${guild.id}\n**Guild Owner**: ${guild.owner.user.tag} [<@${guild.ownerId}>]\n**Guild Member Count**: ${guild.memberCount}`,
         color: this.utils.randomColour(),
         image: {
-          url: guild.iconURL({ dynamic: true, size: 1024 }),
-        },
-      },
-    ],
+          url: guild.iconURL({ dynamic: true, size: 1024 })
+        }
+      }
+    ]
   });
   return null;
 }

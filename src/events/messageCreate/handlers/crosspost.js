@@ -10,12 +10,12 @@ module.exports = new MessageHandler(
 
     msg.crosspost();
     return console.log(
-      `Crossposted message from lottery channel at ${ctx.utils.prettyDate()}`,
+      `Crossposted message from lottery channel at ${ctx.utils.prettyDate()}`
     );
   },
   {
     name: 'crosspost',
     allowDM: false,
-    allowBot: true,
-  },
+    allowBot: true
+  }
 );

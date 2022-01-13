@@ -30,5 +30,5 @@ module.exports = {
       return true;
     }
     return false;
-  },
+  }
 };
