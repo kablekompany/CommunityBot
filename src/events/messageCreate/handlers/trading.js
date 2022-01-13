@@ -22,9 +22,9 @@ module.exports = new MessageHandler(
       return setTimeout(() => message.delete(), 7500);
     };
 
-    const dramaWatcher = ctx.bot.channels.resolve(ctx.config.dmc.dramaWatcher);
+    const tradeLogs = ctx.bot.channels.resolve(ctx.config.dmc.tradeLogs);
     const logMessage = (reason) =>
-      dramaWatcher.send({
+      tradeLogs.send({
         embeds: [
           {
             title: `Reason: ${reason}`,

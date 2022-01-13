@@ -44,9 +44,9 @@ module.exports = new MessageHandler(
       reason,
     );
 
-    const dramaWatcher = ctx.bot.channels.resolve(ctx.config.dmc.dramaWatcher);
+    const automodLogs = ctx.bot.channels.resolve(ctx.config.dmc.automodLogs);
     const modlog = ctx.bot.channels.resolve(ctx.config.dmc.modlog);
-    await dramaWatcher.send({
+    await automodLogs.send({
       content: msg.author.toString(),
       embeds: [
         {
