@@ -39,6 +39,7 @@ module.exports = new Command(
   },
   {
     name: 'modlogs',
+    aliases: ['ml', 'modlog', 'l', 'logs'],
     usage: 'modlogs <id>',
     modOnly: true,
     argReq: true,
