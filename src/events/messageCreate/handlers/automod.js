@@ -2,9 +2,9 @@ const MessageHandler = require('../../../models/Handlers/MessageHandler');
 
 function testCensor(string, censors) {
   const re = new RegExp(censors.join('|'), 'gi');
-  const match = string.match(re);
+  const match = re.exec(string);
 
-  if (match === null) {
+  if (!match) {
     return false;
   }
   return match[0];
@@ -37,7 +37,7 @@ module.exports = new MessageHandler(
     }
 
     await msg.delete();
-    const reason = `Automatic action carried out for using a blacklisted word (${censorTest}).`;
+    const reason = `Automatic action carried out for using blacklisted word(s): \`${censorTest}\``;
     const { dmSent, caseNumber } = await ctx.utils.timeoutMember(
       ctx,
       msg,
@@ -47,16 +47,27 @@ module.exports = new MessageHandler(
     const dramaWatcher = ctx.bot.channels.resolve(ctx.config.dmc.dramaWatcher);
     const modlog = ctx.bot.channels.resolve(ctx.config.dmc.modlog);
     await dramaWatcher.send({
+      content: msg.author.toString(),
       embeds: [
         {
           title: 'Censor Automod',
-          description: `**${msg.author.tag}** (\`${
-            msg.author.id
-          }\`) said:\n${ctx.utils.codeblock(msg.content)}\nChannel: <#${
-            msg.channel.id
-          }>\nUser has been timed out for **20 minutes**.\nDM Sent: ${
-            dmSent === true ? yesTick : noTick
-          }`,
+          fields: [
+            {
+              name: 'Information:',
+              value: `**${msg.author.tag}** (\`${
+                msg.author.id
+              }\`) said:\n${ctx.utils.codeblock(msg.content)}\nChannel: <#${
+                msg.channel.id
+              }>\nUser has been timed out for **20 minutes**.\nDM Sent: ${
+                dmSent === true ? yesTick : noTick
+              }`,
+              inline: false,
+            },
+            {
+              name: 'Caught by:',
+              value: censorTest,
+            },
+          ],
           timestamp: new Date(),
           color: 15705088,
         },
