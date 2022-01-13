@@ -134,7 +134,7 @@ class Command {
       });
       return res;
     } catch (err) {
-      res = err.stack;
+      res = err.message;
       return `An error occured, go yell at daunt\n\`\`\`js\n${res}\`\`\``;
     }
   }

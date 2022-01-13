@@ -20,6 +20,10 @@ class BotModel {
         return new Collection();
       },
       intents: 4847,
+      allowedMentions: {
+        repliedUser: false,
+        parse: ['users'],
+      },
     });
     this.db = new Database();
     this.cmds = new Collection();

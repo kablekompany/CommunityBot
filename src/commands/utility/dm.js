@@ -7,12 +7,21 @@ module.exports = new Command(
       return "This doesn't seem like a real user?";
     }
 
+    let position = '';
+    const role = msg.member.roles.cache.find(
+      (r) =>
+        r.id === ctx.config.dmc.adminRole || r.id === ctx.config.dmc.modRole,
+    );
+    if (!role) {
+      return null;
+    }
+    position = role.name.toLowerCase();
     try {
       await user.send({
         embeds: [
           {
             author: {
-              name: `You've received a message from a server admin in ${msg.guild.name}`,
+              name: `You've received a message from a ${position} in ${msg.guild.name}`,
               icon_url: msg.guild.iconURL({ dynamic: true, size: 1024 }),
             },
             description: args.join(' '),
@@ -30,7 +39,7 @@ module.exports = new Command(
   {
     name: 'dm',
     usage: 'dms the user stuff, <command>',
-    adminOnly: true,
+    modOnly: true,
     argReq: true,
     minArgs: 2,
     responses: {
