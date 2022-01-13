@@ -2,7 +2,7 @@ const { MongoClient } = require('mongodb');
 const Users = require('./Collections/Users');
 const Guilds = require('./Collections/Guilds');
 const Logs = require('./Collections/Logs');
-// const Submissions = require('./Collections/Submissions');
+const Automod = require('./Collections/Automod');
 
 class Database {
   constructor() {
@@ -14,13 +14,13 @@ class Database {
 
   async bootstrap(mongoURI) {
     const dbConn = await MongoClient.connect(mongoURI, {
-      useUnifiedTopology: true,
+      appName: 'CommunityBot',
     });
     this.db = dbConn.db();
     this.users = new Users(this.db.collection('users'));
     this.guilds = new Guilds(this.db.collection('guilds'));
     this.logs = new Logs(this.db.collection('logs'));
-    // this.submissions = new Submissions(this.db.collection('submissions'));
+    this.automod = new Automod(this.db.collection('automod'));
   }
 }
 
