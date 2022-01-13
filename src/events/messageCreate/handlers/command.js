@@ -18,7 +18,7 @@ module.exports = new MessageHandler(
     const command = args.shift();
     const possibleCmd =
       ctx.cmds.get(command) ||
-      ctx.cmds.find((c) => c.triggers.includes(command.toLowerCase()));
+      ctx.cmds.find((c) => c.triggers.includes(command?.toLowerCase()));
 
     if (!possibleCmd) {
       return null;

@@ -13,6 +13,7 @@
   "author": "dauntless",
   "license": "MIT",
   "dependencies": {
+    "@discordjs/builders": "^0.11.0",
     "@discordjs/opus": "^0.7.0",
     "@discordjs/rest": "^0.2.0-canary.0",
     "axios": "^0.24.0",
@@ -25,8 +26,7 @@
     "node-cron": "^3.0.0",
     "node-fetch": "^3.1.0",
     "npm": "^8.3.0",
-    "opusscript": "^0.0.8",
-    "pm2": "^5.1.2"
+    "opusscript": "^0.0.8"
   },
   "devDependencies": {
     "eslint": "^8.6.0",
