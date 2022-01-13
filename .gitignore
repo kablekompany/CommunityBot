@@ -112,5 +112,3 @@ src/configs/config.json
 
 # editors/workspace
 dmc.code-workspace
-.prettierrc
-.eslintrc.json
