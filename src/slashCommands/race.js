@@ -1,3 +1,9 @@
+const {
+  MessageActionRow,
+  MessageButton,
+  MessageEmbed: Embed,
+} = require('discord.js');
+
 function arrayMoveMutable(array, fromIndex, toIndex) {
   const startIndex = fromIndex < 0 ? array.length + fromIndex : fromIndex;
 
@@ -14,7 +20,6 @@ function arrayMove(array, fromIndex, toIndex) {
   arrayMoveMutable(array, fromIndex, toIndex);
   return array;
 }
-const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 
 module.exports = {
   /**
@@ -95,7 +100,7 @@ module.exports = {
       clearInterval(interval);
       await interaction.followUp({
         embeds: [
-          new MessageEmbed()
+          new Embed()
             .setTitle('Game Over')
             .setDescription(
               winner[2]
@@ -106,33 +111,25 @@ module.exports = {
       });
       return raceMsg.join('\n');
     };
-    const joinon = new MessageActionRow().addComponents(
-      new MessageButton()
-        .setCustomId('join')
-        .setLabel('Join Race')
-        .setStyle('SUCCESS'),
-    );
-    const joinoff = new MessageActionRow().addComponents(
-      new MessageButton()
-        .setCustomId('join')
-        .setLabel('Join Race')
-        .setStyle('SUCCESS')
-        .setDisabled(true),
-    );
+    const join = new MessageButton({
+      customId: 'join',
+      label: 'Join Race',
+      style: 'SUCCESS',
+    });
 
     await interaction.reply({
       embeds: [
-        new MessageEmbed()
+        new Embed()
           .setTitle('Race!')
+          .setAuthor({ name: 'Starts in 60 seconds' })
           .setDescription(
             "Click the button on this message to enter the race. There's limited space so hurry!",
           )
-          .setFooter('Starts in 60 seconds')
           .addField('Prize', prize),
       ],
-      components: [joinon],
+      components: [new MessageActionRow({ components: [join] })],
     });
-    const m = await interaction.fetchReply()
+    const m = await interaction.fetchReply();
     const collector = m.createMessageComponentCollector({
       time: 60000,
     });
@@ -144,13 +141,13 @@ module.exports = {
         userEmos[`<@${i.user.id}>`] =
           emotes[gamemode][Math.floor(Math.random() * emotes[gamemode].length)];
         await i.reply({
-          content: 'You successfully joined the race',
+          content: 'You have successfully joined the race',
           ephemeral: true,
         });
         if (participants.length >= 25) return collector.stop('players');
       } else {
         await i.reply({
-          content: 'You already joined the race!',
+          content: "You've already joined the race!",
           ephemeral: true,
         });
       }
@@ -158,21 +155,25 @@ module.exports = {
 
     collector.on('end', async () => {
       await m.edit({
-        components: [joinoff],
+        components: [
+          new MessageActionRow({ components: [join.setDisabled(true)] }),
+        ],
       });
       if (participants.length < 2) {
-        return interaction.followUp('Not enough ppl joined, get friends lol');
+        return interaction.followUp(
+          'Not enough people joined, get more friends lol',
+        );
       }
       participants = participants.map((item) => `<@${item}>`);
       const players = participants.join(', ');
       await interaction.followUp({
         embeds: [
-          new MessageEmbed()
+          new Embed()
             .setTitle(`${interaction.user.tag} started a new race!`)
             .addField('Participants:', `${players}`)
             .addField('Race type:', gamemode)
             .addField('Prize:', `${prize}`)
-            .addField('No. of participants:', `${participants.length}`, true),
+            .addField('# of participants:', `${participants.length}`, true),
         ],
       });
 
@@ -184,12 +185,13 @@ module.exports = {
       let e = racemsg;
       const msg = await interaction.followUp({
         embeds: [
-          new MessageEmbed()
+          new Embed({
+            footer: { text: `There were ${participants.length} participants` },
+          })
             .setTitle(`Race started by ${interaction.user.tag}`)
-            .setDescription(racemsg)
-            .setFooter(`Participants - ${participants.length}`),
+            .setDescription(racemsg),
         ],
-      });
+      }); // getting an error from this, fix later: https://i.imgur.com/Oiiz2RB.png
       const interval = setInterval(async () => {
         e = move(e, interval);
         msg.embeds[0].description = e;
