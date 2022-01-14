@@ -64,10 +64,22 @@ module.exports = new Command(
       .catch(() => null);
 
     const modlog = ctx.bot.channels.resolve(ctx.config.dmc.modlog);
+    const moderator = {
+      id: msg.author.id,
+      tag: msg.author.tag
+    };
+    const caseNumber = await ctx.db.logs.add(
+      member.id,
+      reason,
+      moderator,
+      time
+    );
     modlog.send({
       embeds: [
         {
-          title: `timeout | ${ctx.utils.parseTime(milliseconds / 1000)}`,
+          title: `timeout | case #${caseNumber} | ${ctx.utils.parseTime(
+            milliseconds / 1000
+          )}`,
           description:
             `**Offender:** ${member.user.tag} <@${member.id}>\n` +
             `**Reason:** ${reason}\n` +
@@ -79,11 +91,6 @@ module.exports = new Command(
       ]
     });
 
-    const moderator = {
-      id: msg.author.id,
-      tag: msg.author.tag
-    };
-    await ctx.db.logs.add(member.id, reason, moderator, time);
     const m = await msg.reply({
       embeds: [
         {

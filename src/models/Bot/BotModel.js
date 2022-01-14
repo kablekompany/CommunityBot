@@ -79,9 +79,9 @@ class BotModel {
         }
       );
 
-      return console.log('[REST] Reloaded guild slash commands.');
+      return this.utils.log('[REST] Reloaded guild slash commands.');
     } catch (error) {
-      return console.error(`[REST Error] ${error.message}`);
+      return this.utils.log(`[REST Error] ${error.message}`);
     }
   }
 
@@ -109,7 +109,7 @@ class BotModel {
     }
   }
 
-  loadCronJob() {
+  startCronJobs() {
     const roleColourChange = schedule('0 12 * * *', async () => {
       const guild = this.bot.guilds.cache.get(this.config.dmc.guildID);
       const randomColour = Math.floor(Math.random() * 0xffffff);
@@ -126,7 +126,7 @@ class BotModel {
         ]
       });
     });
-    const cacheMembers = schedule('0 0 * * *', async () => {
+    const cacheMembers = schedule('0 5 * * *', async () => {
       try {
         const { members, name } = this.bot.guilds.cache.get(
           this.config.dmc.guildID
@@ -144,12 +144,12 @@ class BotModel {
 
   async launch() {
     await this.db.bootstrap(mongo);
-    await this.loadSlashCommands();
     registerPlayerEvents(this.bot.player);
-    this.loadCommands();
     this.loadListeners();
+    this.loadCommands();
     this.loadUtils();
-    this.loadCronJob();
+    this.startCronJobs();
+    this.loadSlashCommands();
     this.bot.login(this.token);
   }
 }

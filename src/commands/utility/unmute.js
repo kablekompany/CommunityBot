@@ -32,10 +32,21 @@ module.exports = new Command(
     }
 
     const modlog = ctx.bot.channels.resolve(ctx.config.dmc.modlog);
+    const moderator = {
+      id: msg.author.id,
+      tag: msg.author.tag
+    };
+    const caseNumber = await ctx.db.logs.add(
+      member.id,
+      reason,
+      moderator,
+      null,
+      'unmute'
+    );
     modlog.send({
       embeds: [
         {
-          title: 'removed timeout',
+          title: `removed timeout | case #${caseNumber}`,
           description:
             `**Offender:** ${member.user.tag} <@${member.id}>\n` +
             `**Reason:** ${reason}\n` +
@@ -47,11 +58,6 @@ module.exports = new Command(
       ]
     });
 
-    const moderator = {
-      id: msg.author.id,
-      tag: msg.author.tag
-    };
-    await ctx.db.logs.add(member.id, reason, moderator, null, 'unmute');
     const m = await msg.reply({
       embeds: [
         {

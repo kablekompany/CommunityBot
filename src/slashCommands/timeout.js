@@ -42,7 +42,7 @@ module.exports = {
     }
 
     const endTime = ctx.utils.relativeTime(Date.now() + milliseconds);
-    member
+    await member
       .send({
         embeds: [
           {
@@ -55,14 +55,26 @@ module.exports = {
       .catch(() => null);
 
     const modlog = ctx.bot.channels.resolve(ctx.config.dmc.modlog);
+    const moderator = {
+      id: interaction.user.id,
+      tag: interaction.user.tag
+    };
+    const caseNumber = await ctx.db.logs.add(
+      member.id,
+      reason,
+      moderator,
+      time
+    );
     modlog.send({
       embeds: [
         {
-          title: `timeout | ${ctx.utils.parseTime(milliseconds / 1000)}`,
+          title: `timeout | case #${caseNumber} | ${ctx.utils.parseTime(
+            milliseconds / 1000
+          )}`,
           description:
             `**Offender:** ${member.user.tag} <@${member.id}>\n` +
             `**Reason:** ${reason}\n` +
-            `**Responsible moderator:** ${interaction.user.tag}`,
+            `**Responsible moderator:** ${moderator.tag}`,
           color: 15960130,
           timestamp: new Date(),
           footer: { text: `ID: ${member.id}` }
