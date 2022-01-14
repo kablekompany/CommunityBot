@@ -1,11 +1,7 @@
 const { Collection, MessageButton, MessageActionRow } = require('discord.js');
+const { sample, uniq } = require('lodash');
 const CommandOptionType = require('../utils/CommandOptionType');
-const {
-  removeDuplicates,
-  relativeTime,
-  randomInArray,
-  sleep
-} = require('../utils/misc');
+const { relativeTime, sleep } = require('../utils/misc');
 const { dmc } = require('../configs/config.json');
 
 const time = 30 * 1000;
@@ -68,7 +64,7 @@ module.exports = {
     });
 
     collector.on('end', async (collected) => {
-      users = removeDuplicates(collected.map((c) => c));
+      users = uniq(collected.map((c) => c));
       await message.edit({
         content: `**Event ended** ${relativeTime()} and **\`${
           users.length === 1 ? 'one person' : `${users.length} people`
@@ -84,10 +80,8 @@ module.exports = {
     });
 
     await sleep(time);
-    const winner1 = randomInArray(users);
-    const winner2 = randomInArray(
-      users.filter((u) => u.user.id !== winner1.user.id)
-    );
+    const winner1 = sample(users);
+    const winner2 = sample(users.filter((u) => u.user.id !== winner1.user.id));
 
     if (!winner1 || !winner2) {
       return null;
