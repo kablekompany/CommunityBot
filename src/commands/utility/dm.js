@@ -3,11 +3,16 @@ const Command = require('../../models/Command/CommandModel');
 module.exports = new Command(
   async ({ ctx, msg, args }) => {
     const user = Command.resolveUser(ctx, args.shift());
+
     if (!user) {
       return "This doesn't seem like a real user?";
     }
 
     let position = '';
+    let nameFlag = false;
+    if (args.includes('--showname')) {
+      nameFlag = true;
+    }
     const role = msg.member.roles.cache.find(
       (r) =>
         r.id === ctx.config.dmc.adminRole || r.id === ctx.config.dmc.modRole
@@ -25,7 +30,9 @@ module.exports = new Command(
               icon_url: msg.guild.iconURL({ dynamic: true, size: 1024 })
             },
             description: args.join(' '),
-            timestamp: new Date()
+            footer: {
+              text: nameFlag ? `Sent by ${msg.author.tag}` : ''
+            }
           }
         ]
       });
