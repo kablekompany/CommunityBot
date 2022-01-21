@@ -1,4 +1,5 @@
 /* eslint-disable no-await-in-loop */
+const { shuffle } = require('lodash');
 const QuickChart = require('quickchart-js');
 const {
   selfRoles,
@@ -48,6 +49,7 @@ module.exports = async function oninteraction(interaction) {
     const pollID = interaction.customId.split('_')[1];
     const poll = await this.db.polls.get(+pollID);
     const emotes = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣'];
+    const colours = ['#e27d60', '#085dcb', '#e8a87c', '#c38d9e', '#41b3a3'];
     if (poll.createdBy !== interaction.user.id) {
       return reply({
         embeds: [{ description: "This isn't your poll, so you can't end it." }],
@@ -82,13 +84,7 @@ module.exports = async function oninteraction(interaction) {
         labels: choiceNumber,
         datasets: [
           {
-            backgroundColor: [
-              '#e27d60',
-              '#085dcb',
-              '#e8a87c',
-              '#c38d9e',
-              '#41b3a3'
-            ],
+            backgroundColor: shuffle(colours),
             data: voteCount,
             borderColor: '#00000000'
           }
@@ -96,8 +92,11 @@ module.exports = async function oninteraction(interaction) {
       },
       options: {
         title: {
+          text: 'Vote Results',
           display: true,
-          text: 'Vote Results'
+          fontColor: 'white',
+          fontSize: 20,
+          fontFamily: 'lato'
         },
         legend: {
           position: 'right'
@@ -108,7 +107,7 @@ module.exports = async function oninteraction(interaction) {
             color: 'black',
             stretch: 30,
             font: {
-              minSize: 13
+              minSize: 15
             }
           }
         }
