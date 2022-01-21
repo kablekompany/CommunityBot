@@ -1,5 +1,7 @@
 const Command = require('../../models/Command/CommandModel');
 
+const flag = '--showname';
+
 module.exports = new Command(
   async ({ ctx, msg, args }) => {
     const user = Command.resolveUser(ctx, args.shift());
@@ -10,7 +12,7 @@ module.exports = new Command(
 
     let position = '';
     let nameFlag = false;
-    if (args.includes('--showname')) {
+    if (args.includes(flag)) {
       nameFlag = true;
     }
     const role = msg.member.roles.cache.find(
@@ -29,10 +31,11 @@ module.exports = new Command(
               name: `You've received a message from a ${position} in ${msg.guild.name}`,
               icon_url: msg.guild.iconURL({ dynamic: true, size: 1024 })
             },
-            description: args.join(' '),
+            description: args.join(' ').replace(flag, ''),
             footer: {
               text: nameFlag ? `Sent by ${msg.author.tag}` : ''
-            }
+            },
+            timestamp: new Date()
           }
         ]
       });
