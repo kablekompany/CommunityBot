@@ -1,22 +1,22 @@
 const { Collection, MessageButton, MessageActionRow } = require('discord.js');
-const { sample, uniq } = require('lodash');
+const { sample } = require('lodash');
 const CommandOptionType = require('../utils/CommandOptionType');
-const { relativeTime, sleep } = require('../utils/misc');
 const { dmc } = require('../configs/config.json');
 
-const time = 30 * 1000;
+const time = 5 * 1000;
 
 module.exports = {
   /**
    * @param {import('discord.js').CommandInteraction} interaction interaction received by the API
+   * @param {import('../models/Bot/BotModel')} ctx
    */
-  async execute(interaction) {
+  async execute(interaction, ctx) {
     await interaction.deferReply();
     const prize = interaction.options.getString('prize', true);
     const joinButton = new MessageButton()
       .setCustomId('splitorsteal')
       .setStyle('SUCCESS')
-      .setLabel('Join!');
+      .setLabel('Join');
 
     const message = await interaction.editReply({
       embeds: [
@@ -39,19 +39,18 @@ module.exports = {
       components: [new MessageActionRow().addComponents(joinButton)]
     });
 
-    const collector = await message.createMessageComponentCollector({
+    const collector = message.createMessageComponentCollector({
       componentType: 'BUTTON',
       time
     });
 
-    const alreadyJoined = [];
-    let users = [];
+    const users = new Collection();
 
     collector.on('collect', async (click) => {
-      if (!alreadyJoined.includes(click.user.id)) {
-        alreadyJoined.push(click.user.id);
+      if (!users.has(click.user.id)) {
+        users.set(click.user.id, click);
         await click.reply({
-          content: 'Successfully joined, good luck!',
+          content: "You've successfully joined, good luck!",
           ephemeral: true
         });
         return null;
@@ -63,23 +62,22 @@ module.exports = {
       return null;
     });
 
-    collector.on('end', async (collected) => {
-      users = uniq(collected.map((c) => c));
+    collector.on('end', async () => {
       await message.edit({
-        content: `**Event ended** ${relativeTime()} and **\`${
-          users.length === 1 ? 'one person' : `${users.length} people`
+        content: `**Event ended** ${ctx.utils.formatTime()} and **\`${
+          users.size === 1 ? 'one person' : `${users.size} people`
         }\`** joined!`,
         components: [
           new MessageActionRow().addComponents(joinButton.setDisabled(true))
         ]
       });
-      if (users.length <= 1) {
+      if (users.size <= 1) {
         return interaction.followUp('Not enough people joined :(');
       }
       return null;
     });
 
-    await sleep(time);
+    await ctx.utils.sleep(time);
     const winner1 = sample(users);
     const winner2 = sample(users.filter((u) => u.user.id !== winner1.user.id));
 
@@ -131,7 +129,7 @@ module.exports = {
     });
 
     // wait 90s then enable buttons for players to make a choice
-    await sleep(time * 3);
+    await ctx.utils.sleep(time * 3);
     const prompt = await interaction.channel.send({
       content: `It's time for ${winnerMentions} to make a choice!`,
       components: [
