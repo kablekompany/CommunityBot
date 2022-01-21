@@ -52,7 +52,7 @@ module.exports = new Command(
     modOnly: true,
     argReq: true,
     responses: {
-      noArg: 'Syntax: `[p]reason <case #> <new reason>'
+      noArg: 'Syntax: `[p]reason <case #> <new reason>`'
     }
   }
 );
