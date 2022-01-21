@@ -87,12 +87,7 @@ module.exports = async function oninteraction(interaction) {
               '#085dcb',
               '#e8a87c',
               '#c38d9e',
-              '#41b3a3',
-              '#8d8741',
-              '#659dbd',
-              '#daad86',
-              '#bc986a',
-              '#fbeec1'
+              '#41b3a3'
             ],
             data: voteCount,
             borderColor: '#00000000'
