@@ -1,4 +1,5 @@
 /* eslint-disable no-await-in-loop */
+const QuickChart = require('quickchart-js');
 const {
   selfRoles,
   colourRoles,
@@ -55,6 +56,69 @@ module.exports = async function oninteraction(interaction) {
     }
     await this.db.polls.end(poll._id);
     const choices = Object.values(poll.choices);
+    const choicesObject = {};
+
+    choices.forEach((c, idx) => {
+      choicesObject[idx + 1] = c.votes;
+    });
+    const myChart = new QuickChart()
+      .setWidth(640)
+      .setHeight(480)
+      .setBackgroundColor('#0D0C1D');
+    const [choiceNumber, voteCount] = Object.entries(choicesObject)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .reduce(
+        (acc, elem) => {
+          acc[0].push(elem[0]);
+          acc[1].push(elem[1]);
+          return acc;
+        },
+        [[], []]
+      );
+    myChart.setConfig({
+      type: 'outlabeledPie',
+      data: {
+        labels: choiceNumber,
+        datasets: [
+          {
+            backgroundColor: [
+              '#e27d60',
+              '#085dcb',
+              '#e8a87c',
+              '#c38d9e',
+              '#41b3a3',
+              '#8d8741',
+              '#659dbd',
+              '#daad86',
+              '#bc986a',
+              '#fbeec1'
+            ],
+            data: voteCount,
+            borderColor: '#00000000'
+          }
+        ]
+      },
+      options: {
+        title: {
+          display: true,
+          text: 'Vote Results'
+        },
+        legend: {
+          position: 'right'
+        },
+        plugins: {
+          outlabels: {
+            text: '%l %p',
+            color: 'black',
+            stretch: 30,
+            font: {
+              minSize: 13
+            }
+          }
+        }
+      }
+    });
     await interaction.message.edit({
       content: `This poll ended **${this.utils.formatTime()}**!`,
       components: [],
@@ -68,15 +132,17 @@ module.exports = async function oninteraction(interaction) {
                   c.votes?.toLocaleString() ?? 0
                 }**`
             )
-            .join('\n\n')}`
+            .join('\n\n')}`,
+          image: {
+            url: myChart.getUrl()
+          }
         }
       ]
     });
-    await reply({
+    return reply({
       content: `Successfully ended poll **#${pollID}**`,
       ephemeral: true
     });
-    return console.log(require('util').inspect(poll));
   }
 
   if (interaction.channelId === selfRolesChannel && interaction.isButton()) {
