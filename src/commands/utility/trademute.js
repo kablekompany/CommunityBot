@@ -74,7 +74,7 @@ module.exports = new Command(
       return null;
     }
 
-    const endTime = ctx.utils.relativeTime(Date.now() + milliseconds);
+    const endTime = ctx.utils.formatTime(Date.now() + milliseconds);
     member
       .send({
         embeds: [

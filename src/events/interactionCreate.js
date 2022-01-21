@@ -1,13 +1,9 @@
 /* eslint-disable no-await-in-loop */
-/* eslint-disable no-case-declarations */
-const { MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
-const { selfRoles, colourRoles } = require('../../assets/communityRoles');
-
-const selfRolesChannel = '882509580024840192';
-const submissions = '919635043201204314';
-const trialModChannel = '927620705653231616';
-const trialModRole = '587913036648546305';
-
+const {
+  selfRoles,
+  colourRoles,
+  selfRolesChannel
+} = require('../../assets/communityRoles');
 /**
  * @param {import('discord.js').MessageComponentInteraction} interaction interaction received by the gateway
  */
@@ -15,118 +11,19 @@ module.exports = async function oninteraction(interaction) {
   const reply = (stuff) =>
     interaction.reply(stuff).catch((e) => console.error(e.message));
 
-  if (
-    interaction.channelId === trialModChannel &&
-    interaction.customId === 'trialmod'
-  ) {
-    if (interaction.member.roles.cache.has(trialModRole)) {
-      return reply({
-        content: 'You already have the **Trial Moderator** role.',
-        ephemeral: true
-      });
-    }
-    await interaction.member.roles.add(trialModRole);
-    return reply({
-      content: "You've been given the **Trial Moderator** role!",
-      ephemeral: true
-    });
-  }
-
-  if (interaction.isButton() && interaction.customId.startsWith('approve')) {
-    const submission = {
-      link: interaction.message.embeds[0].image.url,
-      userID: interaction.message.embeds[0].footer.text
-    };
-
-    const emb = interaction.message.embeds[0];
-    emb.color = 8519546; // green
-    await interaction.message.edit({
-      content: `Approved by **${interaction.user.tag}**`,
-      embeds: [emb],
-      components: []
-    });
-    const submissionChannel = this.bot.channels.resolve(submissions);
-    const submissionID = await this.db.submissions.addSubmission(
-      submission.userID,
-      submission.link
-    );
-
-    const components = [
-      new MessageActionRow({
-        components: [
-          new MessageButton({
-            emoji: {
-              id: '919609115129569350',
-              name: 'upvote'
-            },
-            style: 'SUCCESS',
-            customId: `upvotes_${submission.userID}_${submissionID}`
-          }),
-          new MessageButton({
-            emoji: {
-              id: '919609066442063952',
-              name: 'downvote'
-            },
-            style: 'DANGER',
-            customId: `downvotes_${submission.userID}_${submissionID}`
-          })
-        ]
-      })
-    ];
-    const embed = new MessageEmbed()
-      .setTitle(`Art Submission #${submissionID}`)
-      .setColor('0x2f3136')
-      .setImage(submission.link);
-    await submissionChannel.send({
-      embeds: [embed],
-      components
-    });
-    return reply({
-      embeds: [
-        {
-          description: `**Submission #${submissionID}** has been posted! See <#${submissions}> for the message.`,
-          color: 8519546 // green
-        }
-      ],
-      ephemeral: true
-    });
-  }
-
-  if (interaction.isButton() && interaction.customId.includes('deny')) {
-    const emb = interaction.message.embeds[0];
-    emb.color = 16711680; // red
-    await interaction.message.edit({
-      content: `Denied by **${interaction.user.tag}**`,
-      embeds: [emb],
-      components: []
-    });
-    return reply({
-      embeds: [
-        {
-          description: 'Submission Denied'
-        }
-      ],
-      ephemeral: true
-    });
-  }
-
-  if (
-    interaction.isButton() &&
-    ['upvotes', 'downvotes'].some((a) => interaction.customId.startsWith(a))
-  ) {
+  if (interaction.isButton() && interaction.customId.startsWith('poll')) {
     // eslint-disable-next-line no-unused-vars
-    const [type, userID, submissionID] = interaction.customId.split('_');
-    const hasVoted = await this.db.submissions.hasVoted(
-      interaction.user.id,
-      submissionID
-    );
-
+    const [_, pollID, __, choice] = interaction.customId.split('_');
+    const {
+      user: { id, username }
+    } = interaction;
+    const hasVoted = await this.db.polls.hasVoted(pollID, id);
     if (hasVoted === true) {
       return reply({
         embeds: [
           {
-            title: 'You can only vote once per submission',
-            description: `You've already voted for **submission #${submissionID}** ${interaction.user.username}`,
+            title: 'You can only vote once',
+            description: `You've already voted for **poll #${pollID}** ${username}`,
             color: 16711680 // red
           }
         ],
@@ -134,16 +31,52 @@ module.exports = async function oninteraction(interaction) {
       });
     }
 
-    await this.db.submissions.addVote(submissionID, interaction.user.id, type);
+    await this.db.polls.addVote(pollID, id, choice);
     return reply({
       embeds: [
         {
-          description: `You've successfully voted for **submission #${submissionID}** ${interaction.user.username}`,
+          description: `You've successfully voted for **poll #${pollID}** ${username}`,
           color: 8519546 // green
         }
       ],
       ephemeral: true
     });
+  }
+
+  if (interaction.isButton() && interaction.customId.startsWith('endPoll')) {
+    const pollID = interaction.customId.split('_')[1];
+    const poll = await this.db.polls.get(+pollID);
+    const emotes = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣'];
+    if (poll.createdBy !== interaction.user.id) {
+      return reply({
+        embeds: [{ description: "This isn't your poll, so you can't end it." }],
+        ephemeral: true
+      });
+    }
+    await this.db.polls.end(poll._id);
+    const choices = Object.values(poll.choices);
+    await interaction.message.edit({
+      content: `This poll ended **${this.utils.formatTime()}**!`,
+      components: [],
+      embeds: [
+        {
+          title: `Results for poll #${pollID} by ${interaction.user.username}`,
+          description: `Question: ${poll.question}\n\n${choices
+            .map(
+              (c, idx) =>
+                `${emotes[idx]} — ${c.choice}: **${
+                  c.votes?.toLocaleString() ?? 0
+                }**`
+            )
+            .join('\n\n')}`
+        }
+      ]
+    });
+    await reply({
+      content: `Successfully ended poll **#${pollID}**`,
+      ephemeral: true
+    });
+    return console.log(require('util').inspect(poll));
   }
 
   if (interaction.channelId === selfRolesChannel && interaction.isButton()) {

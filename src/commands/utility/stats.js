@@ -22,7 +22,7 @@ module.exports = new Command(
             `**Uptime**: <t:${Math.round(
               Date.now() / 1000 - process.uptime()
             )}:R>\n` +
-            `**Shard online since**: ${ctx.utils.relativeTime(bot.readyAt)}\n` +
+            `**Shard online since**: ${ctx.utils.formatTime(bot.readyAt)}\n` +
             `**Ping**: ${Math.round(bot.ws.ping)}\n`
         }
       ],

@@ -41,7 +41,7 @@ module.exports = {
       });
     }
 
-    const endTime = ctx.utils.relativeTime(Date.now() + milliseconds);
+    const endTime = ctx.utils.formatTime(Date.now() + milliseconds);
     await member
       .send({
         embeds: [

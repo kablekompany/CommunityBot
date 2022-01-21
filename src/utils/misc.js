@@ -29,7 +29,8 @@ module.exports = {
 
   removeDuplicates: (array) => Array.from(new Set(array).values()),
 
-  relativeTime: (date = Date.now()) => `<t:${Math.round(date / 1000)}:R>`,
+  formatTime: (time = Date.now(), format = 'R') =>
+    `<t:${Math.round(time / 1000)}:${format}>`,
 
   randomInArray: (array) => array[Math.floor(Math.random() * array.length)],
 

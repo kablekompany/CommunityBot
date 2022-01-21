@@ -2,6 +2,7 @@ const { MongoClient } = require('mongodb');
 const Users = require('./Collections/Users');
 const Guilds = require('./Collections/Guilds');
 const Logs = require('./Collections/Logs');
+const Polls = require('./Collections/Polls');
 const Automod = require('./Collections/Automod');
 
 class Database {
@@ -9,6 +10,7 @@ class Database {
     this.db = null;
     this.users = null;
     this.guilds = null;
+    this.polls = null;
     this.logs = null;
   }
 
@@ -20,6 +22,7 @@ class Database {
     this.users = new Users(this.db.collection('users'));
     this.guilds = new Guilds(this.db.collection('guilds'));
     this.logs = new Logs(this.db.collection('logs'));
+    this.polls = new Polls(this.db.collection('polls'));
     this.automod = new Automod(this.db.collection('automod'));
   }
 }

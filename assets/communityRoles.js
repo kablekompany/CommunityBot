@@ -17,50 +17,52 @@ module.exports.selfRoles = {
   announcements: '754401757144285204',
   giveawayPing: '754453793902690354',
   heists: '754471933474766949',
-  events: '754471991876124773',
+  events: '754471991876124773'
 };
+
+module.exports.selfRolesChannel = '882509580024840192';
 
 module.exports.emojiData = [
   {
     emojiName: 'betterPurple',
-    emojiID: '882496524771262474',
+    emojiID: '882496524771262474'
   },
   {
     emojiName: 'pink',
-    emojiID: '882496683013984276',
+    emojiID: '882496683013984276'
   },
   {
     emojiName: 'green',
-    emojiID: '882496616165146695',
+    emojiID: '882496616165146695'
   },
   {
     emojiName: 'blue',
-    emojiID: '882496588293996574',
+    emojiID: '882496588293996574'
   },
   {
     emojiName: 'orange',
-    emojiID: '882496656698916914',
+    emojiID: '882496656698916914'
   },
   {
     emojiName: 'edgy',
-    emojiID: '882496554836058132',
+    emojiID: '882496554836058132'
   },
   {
     emojiName: 'yellow',
-    emojiID: '882496824785637427',
+    emojiID: '882496824785637427'
   },
   {
     emojiName: 'red',
-    emojiID: '882496789192785950',
+    emojiID: '882496789192785950'
   },
   {
     emojiName: 'purple',
-    emojiID: '882496718330015785',
+    emojiID: '882496718330015785'
   },
   {
     emojiName: 'a:randomColour',
-    emojiID: '882496755432841250',
-  },
+    emojiID: '882496755432841250'
+  }
 ];
 
 module.exports.colourRoles = [
@@ -73,5 +75,5 @@ module.exports.colourRoles = [
   '754728401973149696',
   '754731785585295500',
   '683052454832898069',
-  '754726365479174164',
+  '754726365479174164'
 ];
