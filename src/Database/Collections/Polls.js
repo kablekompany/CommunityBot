@@ -11,6 +11,7 @@ class Polls extends BaseCollection {
         }
       },
       voted: [],
+      randomVoter: false,
       createdBy: '',
       createdAt: Date.now(),
       ended: false
@@ -21,13 +22,20 @@ class Polls extends BaseCollection {
     };
   }
 
-  async addPoll(createdBy, question, choices, createdAt = Date.now()) {
+  async addPoll(
+    createdBy,
+    question,
+    choices,
+    randomVoter,
+    createdAt = Date.now()
+  ) {
     const latestID = await this.getIncrementingID();
     await this.collection.insertOne({
       _id: latestID,
       question,
       choices,
       voted: [],
+      randomVoter,
       createdBy,
       createdAt,
       ended: false

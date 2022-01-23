@@ -1,5 +1,5 @@
 /* eslint-disable no-await-in-loop */
-const { shuffle } = require('lodash');
+const { shuffle, sample } = require('lodash');
 const QuickChart = require('quickchart-js');
 const {
   selfRoles,
@@ -16,16 +16,14 @@ module.exports = async function oninteraction(interaction) {
   if (interaction.isButton() && interaction.customId.startsWith('poll')) {
     // eslint-disable-next-line no-unused-vars
     const [_, pollID, __, choice] = interaction.customId.split('_');
-    const {
-      user: { id, username }
-    } = interaction;
-    const hasVoted = await this.db.polls.hasVoted(pollID, id);
+    const { user } = interaction;
+    const hasVoted = await this.db.polls.hasVoted(pollID, user.id);
     if (hasVoted === true) {
       return reply({
         embeds: [
           {
             title: 'You can only vote once',
-            description: `You've already voted for **poll #${pollID}** ${username}`,
+            description: `You've already voted for **poll #${pollID}**`,
             color: 16711680 // red
           }
         ],
@@ -33,11 +31,11 @@ module.exports = async function oninteraction(interaction) {
       });
     }
 
-    await this.db.polls.addVote(pollID, id, choice);
+    await this.db.polls.addVote(pollID, user.id, choice);
     return reply({
       embeds: [
         {
-          description: `You've successfully voted for **poll #${pollID}** ${username}`,
+          description: `You've successfully voted for **poll #${pollID}**`,
           color: 8519546 // green
         }
       ],
@@ -48,8 +46,6 @@ module.exports = async function oninteraction(interaction) {
   if (interaction.isButton() && interaction.customId.startsWith('endPoll')) {
     const pollID = interaction.customId.split('_')[1];
     const poll = await this.db.polls.get(+pollID);
-    const emotes = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣'];
-    const colours = ['#e27d60', '#085dcb', '#e8a87c', '#c38d9e', '#41b3a3'];
     if (poll.createdBy !== interaction.user.id) {
       return reply({
         embeds: [{ description: "This isn't your poll, so you can't end it." }],
@@ -57,16 +53,30 @@ module.exports = async function oninteraction(interaction) {
       });
     }
     await this.db.polls.end(poll._id);
-    const choices = Object.values(poll.choices);
-    const choicesObject = {};
 
-    choices.forEach((c, idx) => {
-      choicesObject[idx + 1] = c.votes;
-    });
     const myChart = new QuickChart()
       .setWidth(640)
       .setHeight(480)
       .setBackgroundColor('#0D0C1D');
+    const choices = Object.values(poll.choices);
+    const choicesObject = {};
+    const emotes = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣'];
+    const colours = [
+      '#e27d60',
+      '#085dcb',
+      '#e8a87c',
+      '#c38d9e',
+      '#41b3a3',
+      '#8d8741',
+      '#659dbd',
+      '#daad86',
+      '#bc986a',
+      '#fbeec1'
+    ];
+
+    choices.forEach((c, idx) => {
+      choicesObject[idx + 1] = c.votes;
+    });
     const [choiceNumber, voteCount] = Object.entries(choicesObject)
       .sort((a, b) => b[1] - a[1])
       .slice(0, 5)
@@ -119,7 +129,11 @@ module.exports = async function oninteraction(interaction) {
       embeds: [
         {
           title: `Results for poll #${pollID} by ${interaction.user.username}`,
-          description: `Question: ${poll.question}\n\n${choices
+          description: `${
+            poll.randomVoter === true
+              ? `Random Voter: <@${sample(poll.voted)}>\n`
+              : ''
+          }Question: ${poll.question}\n\n${choices
             .map(
               (c, idx) =>
                 `${emotes[idx]} — ${c.choice}: **${

@@ -2,7 +2,6 @@ const {
   MessageButton: Button,
   MessageActionRow: ActionRow,
   MessageEmbed: Embed,
-  MessageActionRow,
   MessageButton
 } = require('discord.js');
 const { pickBy } = require('lodash');
@@ -16,7 +15,9 @@ module.exports = {
   async execute(interaction, ctx) {
     await interaction.deferReply({ ephemeral: true });
     const question = interaction.options.getString('question');
+    const randomVoter = interaction.options.getBoolean('random_voter') ?? false;
     const options = this.options
+      .filter((o) => o.name !== 'random_voter')
       .map((o) => interaction.options.getString(o.name) ?? null)
       .filter((o, index) => index !== 0 && o !== null);
     const defaultChoices = {
@@ -70,7 +71,7 @@ module.exports = {
     });
     const prompt = await interaction.editReply({
       content: `Are you sure you want to post this to <#${ctx.config.dmc.votes}>?`,
-      components: [new MessageActionRow({ components: [yes, no] })]
+      components: [new ActionRow({ components: [yes, no] })]
     });
     const collector = prompt.createMessageComponentCollector({
       componentType: 'BUTTON',
@@ -78,6 +79,7 @@ module.exports = {
     });
 
     collector.on('collect', async (button) => {
+      collector.stop();
       if (button.customId === `no_${interaction.user.id}`) {
         return button.reply({
           content: 'Okay, not gonna post this poll then.',
@@ -89,6 +91,7 @@ module.exports = {
         interaction.user.id,
         question,
         choices,
+        randomVoter,
         Date.now()
       );
 
@@ -172,6 +175,12 @@ module.exports = {
       name: 'choice_5',
       type: CommandOptionType.String,
       description: 'The fifth choice for this poll.',
+      required: false
+    },
+    {
+      name: 'random_voter',
+      type: CommandOptionType.Boolean,
+      description: 'Pass "true" if you\'d like a random voter to be chosen',
       required: false
     }
   ]
