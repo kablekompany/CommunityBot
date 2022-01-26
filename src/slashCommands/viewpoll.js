@@ -20,13 +20,14 @@ module.exports = {
 
     const choices = Object.values(poll.choices);
     const emotes = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣'];
+    const user = await ctx.bot.users.fetch(poll.createdBy);
     return interaction.editReply({
       embeds: [
         {
-          title: `Poll #${pollID} by ${interaction.user.username}`,
-          description: `Question: ${poll.question}\nEnded: ${
-            poll.ended === true ? 'yes' : 'no'
-          }\n\n${choices
+          title: `Poll #${pollID} by ${user?.tag ?? 'invalid user'}`,
+          description: `Question: ${poll.question}\n\nRandom Voter: ${
+            poll.randomVoter === true ? 'enabled' : 'disabled'
+          }\nEnded: ${poll.ended === true ? 'yes' : 'no'}\n\n${choices
             .map(
               (c, idx) =>
                 `${emotes[idx]} — ${c.choice}: **${

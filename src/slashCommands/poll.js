@@ -180,7 +180,7 @@ module.exports = {
     {
       name: 'random_voter',
       type: CommandOptionType.Boolean,
-      description: 'Pass "true" if you\'d like a random voter to be chosen',
+      description: 'Select "true" if you\'d like a random voter to be chosen',
       required: false
     }
   ]
