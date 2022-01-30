@@ -34,14 +34,10 @@ class Command {
       member = member.replace(/<@!?/g, '').replace('>', '');
       possibleMember = members.get(member);
     }
-
     if (member.match(/.+#\d{4}/g)) {
       member = result.shift();
       possibleMember = members.find((m) => m.user.tag === member);
-    } else {
-      possibleMember = members.find((m) => m.nickname === member);
     }
-
     return possibleMember;
   }
 

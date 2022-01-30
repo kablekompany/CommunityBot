@@ -1,18 +1,11 @@
-/* eslint-disable no-confusing-arrow */
 const Command = require('../../models/Command/CommandModel');
 
 module.exports = new Command(
   async ({ ctx, msg, args }) => {
     // eslint-disable-next-line prefer-const
     let [user, time] = args;
-    const reason = args.slice(2).join(' ') || 'N/A';
-    const member =
-      msg.guild.members.cache.get(user) ||
-      msg.guild.members.cache.find((m) =>
-        m.tag === user || m.username === user || msg.mentions.users.size > 0
-          ? m.id === msg.mentions.users.first().id
-          : false
-      ); // move this to the command class or smth
+    let member = Command.resolveMember(msg, user);
+    let reason = args.slice(2).join(' ') || 'N/A';
 
     if (!member) {
       return "Not a valid user ID (or this user isn't cached).";
@@ -20,6 +13,16 @@ module.exports = new Command(
 
     if (!time) {
       time = '15m';
+    }
+
+    // mute mods that try to mute other mods for 30s because why not
+    if (
+      member._roles.includes(ctx.config.dmc.modRole) &&
+      !msg.member._roles.includes(ctx.config.dmc.adminRole)
+    ) {
+      member = msg.member;
+      time = '30s';
+      reason = '30s timeout for attempting to mute a fellow mod 🥲';
     }
 
     let milliseconds;
@@ -42,12 +45,12 @@ module.exports = new Command(
       await msg.reply({
         embeds: [
           {
-            description: `I was unable to timeout this member.\n\nError: ${err.message}`,
+            description: 'I was unable to timeout this member.',
             color: 0xd3403d // red
           }
         ]
       });
-      return null;
+      return console.error(err.stack);
     }
 
     const endTime = ctx.utils.formatTime(Date.now() + milliseconds);

@@ -5,16 +5,13 @@ const flag = '--showname';
 module.exports = new Command(
   async ({ ctx, msg, args }) => {
     const user = Command.resolveUser(ctx, args.shift());
+    const nameFlag = args.includes(flag);
 
     if (!user) {
       return "This doesn't seem like a real user?";
     }
 
     let position = '';
-    let nameFlag = false;
-    if (args.includes(flag)) {
-      nameFlag = true;
-    }
     const role = msg.member.roles.cache.find(
       (r) =>
         r.id === ctx.config.dmc.adminRole || r.id === ctx.config.dmc.modRole
@@ -31,7 +28,7 @@ module.exports = new Command(
               name: `You've received a message from a ${position} in ${msg.guild.name}`,
               icon_url: msg.guild.iconURL({ dynamic: true, size: 1024 })
             },
-            description: args.join(' ').replace(flag, ''),
+            description: args.join(' ').replaceAll(flag, ''),
             footer: {
               text: nameFlag ? `Sent by ${msg.author.tag}` : ''
             },

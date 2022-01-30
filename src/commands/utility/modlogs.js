@@ -2,9 +2,11 @@ const Command = require('../../models/Command/CommandModel');
 
 module.exports = new Command(
   async ({ ctx, args }) => {
-    const [id] = args;
-    const modlogs = await ctx.db.logs.fetchAll(id);
-    const user = await ctx.bot.users.fetch(id);
+    const user = Command.resolveUser(ctx, args[0]);
+    if (!user) {
+      return 'This seems like an invalid user.';
+    }
+    const modlogs = await ctx.db.logs.fetchAll(user.id);
     const embed = {
       title: 'User Modlogs',
       author: {
@@ -31,6 +33,7 @@ module.exports = new Command(
       });
     }
 
+    embed.fields.reverse();
     if (embed.fields.length > 10) {
       embed.footer.text = `Showing 10 of ${embed.fields.length}`;
       embed.fields = embed.fields.splice(0, 10); // paginate later instead of splicing
