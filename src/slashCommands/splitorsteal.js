@@ -71,7 +71,7 @@ module.exports = {
           new MessageActionRow().addComponents(joinButton.setDisabled(true))
         ]
       });
-      if (users.size <= 1) {
+      if (users.size <= 2) {
         return interaction.followUp('Not enough people joined :(');
       }
       return null;

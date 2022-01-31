@@ -9,10 +9,11 @@ module.exports = new OwnerCommand(
     if (input.match(/^```(js)?(.|\n)*```$/g)) {
       input = input.replace(/^```(js)?\n/g, '').replace(/```$/g, '');
     }
+    const asynchr = input.match(/(return|await)/g);
 
     let result;
     try {
-      result = await eval(input);
+      result = await eval(asynchr ? `(async () => ${input})()` : input);
       if (typeof result !== 'string') {
         result = inspect(result, {
           depth: 1

@@ -5,8 +5,13 @@ const { join } = require('path');
 const { readdirSync } = require('fs');
 const { Player } = require('discord-player');
 const { schedule } = require('node-cron');
+const {
+  setApiKey,
+  checkDomain,
+  reportCaughtPhish,
+  getDomainInfo
+} = require('@sapphire/phisherman');
 const { registerPlayerEvents } = require('../../utils/playerEventHandler');
-const { mongo } = require('../../configs/secrets.json');
 const Database = require('../../Database/index');
 
 class BotModel {
@@ -29,7 +34,13 @@ class BotModel {
     this.cmds = new Collection();
     this.bot.player = new Player(this.bot);
     this.bot.slashCmds = new Collection();
+    this.phisherman = {
+      checkDomain,
+      getDomainInfo,
+      reportCaughtPhish
+    };
     this.config = require('../../configs/config.json');
+    this.secrets = require('../../configs/secrets.json');
     this.roles = require('../../../assets/communityRoles');
     this.utils = {};
   }
@@ -143,13 +154,14 @@ class BotModel {
   }
 
   async launch() {
-    await this.db.bootstrap(mongo);
+    await this.db.bootstrap(this.secrets.mongo);
     registerPlayerEvents(this.bot.player);
     this.loadListeners();
     this.loadCommands();
     this.loadUtils();
     this.startCronJobs();
     this.loadSlashCommands();
+    setApiKey(this.secrets.phishermanApiKey);
     this.bot.login(this.token);
   }
 }
