@@ -7,7 +7,7 @@ module.exports = new MessageHandler(
       return null;
     }
 
-    const domainRegex = /(?:[\w-]+\.)+[\w-]+/;
+    const domainRegex = /(?:[\w-]+\.)+[\w-]+/gi;
     const domainRegexTest = domainRegex.exec(msg.content);
 
     if (!domainRegexTest) {
@@ -20,11 +20,15 @@ module.exports = new MessageHandler(
       return null;
     }
 
-    await ctx.phisherman.reportCaughtPhish(
-      domainRegexTest[0],
-      ctx.secrets.phishermanApiKey,
-      msg.guild.id
-    );
+    try {
+      await ctx.phisherman.reportCaughtPhish(
+        domainRegexTest[0],
+        ctx.secrets.phishermanApiKey,
+        msg.guild.id
+      );
+    } catch (err) {
+      console.error(err.stack);
+    }
     const banAndPostToLogs = async (modlogChannelID) => {
       const red = 0xf83656;
       const reason = `Sent phishing link in ${msg.channel.toString()}`;
@@ -106,7 +110,7 @@ module.exports = new MessageHandler(
               },
               {
                 name: 'API info for this domain',
-                value: `Classification: ${classification}\nVerified phishing link: ${verifiedPhish}`
+                value: `Classified as: ${classification}\nVerified phishing link: ${verifiedPhish}`
               }
             ],
             timestamp: new Date(),

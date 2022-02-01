@@ -29,8 +29,12 @@ module.exports = {
 
   removeDuplicates: (array) => Array.from(new Set(array).values()),
 
-  formatTime: (time = Date.now(), format = 'R') =>
-    `<t:${Math.round(time / 1000)}:${format}>`,
+  formatTime: (time = Date.now(), format = 'R') => {
+    if (typeof time === 'string') {
+      time = Date.parse(time);
+    }
+    return `<t:${Math.round(time / 1000)}:${format}>`;
+  },
 
   randomInArray: (array) => array[Math.floor(Math.random() * array.length)],
 
@@ -92,6 +96,8 @@ module.exports = {
     const msg = message instanceof Object ? inspect(message) : message;
     console.log(`[${date}] ${msg}`);
   },
+
+  capitalize: (text) => text.slice(0, 1).toUpperCase() + text.slice(1),
 
   parseTime: (time) => {
     if (time === 0) {
