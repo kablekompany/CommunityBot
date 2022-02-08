@@ -1,21 +1,21 @@
 const MessageHandler = require('../../../models/Handlers/MessageHandler');
 
 module.exports = new MessageHandler(
-  async ({ ctx, msg }) => {
-    const newsChannels = [ctx.config.dmc.lottery];
+	async ({ ctx, msg }) => {
+		const newsChannels = [ctx.config.dmc.lottery];
 
-    if (!newsChannels.includes(msg.channel.id)) {
-      return null;
-    }
+		if (!newsChannels.includes(msg.channel.id)) {
+			return null;
+		}
 
-    msg.crosspost();
-    return console.log(
-      `Crossposted message from lottery channel at ${ctx.utils.prettyDate()}`
-    );
-  },
-  {
-    name: 'crosspost',
-    allowDM: false,
-    allowBot: true
-  }
+		msg.crosspost();
+		return console.log(
+			`Crossposted message from lottery channel at ${ctx.utils.prettyDate()}`
+		);
+	},
+	{
+		name: 'crosspost',
+		allowDM: false,
+		allowBot: true
+	}
 );

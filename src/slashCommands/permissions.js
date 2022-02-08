@@ -1,6 +1,6 @@
 module.exports = {
-	name: 'ping',
-	description: "pong, get the latency to Discord's API",
+	name: 'permissions',
+	description: 'Change / commands permissions',
 	default_permission: false,
 
 	async execute(interaction) {

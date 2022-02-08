@@ -6,25 +6,25 @@ const Polls = require('./Collections/Polls');
 const Automod = require('./Collections/Automod');
 
 class Database {
-  constructor() {
-    this.db = null;
-    this.users = null;
-    this.guilds = null;
-    this.polls = null;
-    this.logs = null;
-  }
+	constructor() {
+		this.db = null;
+		this.users = null;
+		this.guilds = null;
+		this.polls = null;
+		this.logs = null;
+	}
 
-  async bootstrap(mongoURI) {
-    const dbConn = await MongoClient.connect(mongoURI, {
-      appName: 'CommunityBot'
-    });
-    this.db = dbConn.db();
-    this.users = new Users(this.db.collection('users'));
-    this.guilds = new Guilds(this.db.collection('guilds'));
-    this.logs = new Logs(this.db.collection('logs'));
-    this.polls = new Polls(this.db.collection('polls'));
-    this.automod = new Automod(this.db.collection('automod'));
-  }
+	async bootstrap(mongoURI) {
+		const dbConn = await MongoClient.connect(mongoURI, {
+			appName: 'CommunityBot'
+		});
+		this.db = dbConn.db();
+		this.users = new Users(this.db.collection('users'));
+		this.guilds = new Guilds(this.db.collection('guilds'));
+		this.logs = new Logs(this.db.collection('logs'));
+		this.polls = new Polls(this.db.collection('polls'));
+		this.automod = new Automod(this.db.collection('automod'));
+	}
 }
 
 module.exports = Database;

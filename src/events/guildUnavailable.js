@@ -3,7 +3,7 @@
  * @returns
  */
 async function guildUnavailable(guild) {
-  this.utils.log(`${guild.name} just had an outage`);
+	this.utils.log(`${guild.name} just had an outage`);
 }
 
 module.exports = guildUnavailable;
