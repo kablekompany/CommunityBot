@@ -2,7 +2,6 @@ const MessageHandler = require('../../../models/Handlers/MessageHandler');
 
 module.exports = new MessageHandler(
 	async ({ ctx, msg }) => {
-		return; // TODO
 		const guildIDs = [ctx.config.dmo.guildID, ctx.config.dmc.guildID];
 		if (msg.guild && !guildIDs.includes(msg.guild.id)) {
 			return null;

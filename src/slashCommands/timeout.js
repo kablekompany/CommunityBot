@@ -51,7 +51,7 @@ module.exports = {
 							`You've been timed out in ${interaction.guild.name}`
 						)
 						.setDescription(
-							`Reason: ${reason}\n\nTimeout ends ${endTime}`
+							`\`Reason\`: ${reason}\n\nTimeout ends ${endTime}`
 						)
 						.setColor(colors.invisible)
 				]

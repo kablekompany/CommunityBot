@@ -1,6 +1,6 @@
 const { promisify, inspect } = require('util');
 const ms = require('ms');
-const colours = require('../../assets/colours.json');
+const randomColors = require('../../assets/colours.json');
 
 module.exports = {
 	paginate: (data, separator = '\n') => {
@@ -19,10 +19,9 @@ module.exports = {
 
 	randomColour: () =>
 		Number(
-			colours[Math.floor(Math.random() * colours.length)].replace(
-				'#',
-				'0x'
-			)
+			randomColors[
+				Math.floor(Math.random() * randomColors.length)
+			].replace('#', '0x')
 		),
 
 	codeblock: (msg, language = '') => {
@@ -44,46 +43,6 @@ module.exports = {
 	sleep: async (milliseconds) => {
 		const wait = promisify(setTimeout);
 		await wait(milliseconds);
-	},
-
-	timeoutMember: async (ctx, msg, reason = 'N/A', duration = 1.2e6) => {
-		// 20 minutes = default
-		if (!msg.member) {
-			return null;
-		}
-		let dmSent = false;
-		await msg.member.timeout(duration);
-		const moderator = {
-			id: '549210020622106625',
-			tag: 'Community Bot#6333'
-		};
-		const caseNumber = await ctx.db.logs.add(
-			msg.author.id,
-			reason,
-			moderator,
-			'20m'
-		);
-		try {
-			await msg.member.send({
-				embeds: [
-					{
-						title: `You have been timed out in ${msg.guild.name}`,
-						description: `Your timeout ends <t:${Math.round(
-							(Date.now() + duration) / 1000
-						)}:R>.\n**Reason**: ${reason}`,
-						timestamp: new Date(),
-						color: 0xf38842
-					}
-				]
-			});
-			dmSent = true;
-		} catch (err) {
-			console.error(err.message);
-		}
-		return {
-			dmSent,
-			caseNumber
-		};
 	},
 
 	prettyDate: () => {

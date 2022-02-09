@@ -1,4 +1,6 @@
+const { MessageEmbed } = require('discord.js');
 const MessageHandler = require('../../../models/Handlers/MessageHandler');
+const colors = require('../../../utils/colors');
 
 function testCensor(string, censors) {
 	const re = new RegExp(censors.join('|'), 'gi');
@@ -18,82 +20,101 @@ const [yesTick, noTick] = [
 module.exports = new MessageHandler(
 	async ({ ctx, msg }) => {
 		if (msg.guild && msg.guild.id !== ctx.config.dmc.guildID) {
-			return null;
+			return;
 		}
+
 		if (
-			ctx.config.dmc.allStaffRoles.some((r) =>
+			Object.values(ctx.config.dmc.roles).some((r) =>
 				msg.member._roles.includes(r)
 			)
 		) {
-			return null;
+			return;
 		}
 
 		const { censors } = await ctx.db.automod.get(msg.guild.id);
 		if (!censors.length) {
-			return null;
+			return;
 		}
 
 		const censorTest = testCensor(msg.content, censors);
 		if (!censorTest) {
-			return null;
+			return;
 		}
 
 		await msg.delete();
+
 		const reason = `Automatic action carried out for using blacklisted word(s): \`${censorTest}\``;
-		const { dmSent, caseNumber } = await ctx.utils.timeoutMember(
-			ctx,
-			msg,
-			reason
+
+		let dmSent = false;
+		await msg.member.timeout(1_200_000);
+
+		const caseNumber = await ctx.db.logs.add(
+			msg.author.id,
+			reason,
+			{
+				tag: ctx.bot.user.tag,
+				id: ctx.bot.user.id
+			},
+			'20m'
 		);
+		try {
+			const endTime = ctx.utils.formatTime(Date.now() + 1_200_000);
+			await msg.member.send({
+				embeds: [
+					new MessageEmbed()
+						.setTitle(
+							`You have been timed out in ${msg.guild.name}`
+						)
+						.setDescription(
+							`\`Reason\`: ${reason}\n\nTimeout ends ${endTime}`
+						)
+						.setColor(colors.invisible)
+				]
+			});
+			dmSent = true;
+		} catch (err) {
+			console.error(err.message);
+		}
 
 		const automodLogs = ctx.bot.channels.resolve(
-			ctx.config.dmc.automodLogs
+			ctx.config.dmc.channels.autoModLogs
 		);
-		const modlog = ctx.bot.channels.resolve(ctx.config.dmc.modlog);
+		const modlog = ctx.bot.channels.resolve(ctx.config.dmc.channels.modLog);
 		await automodLogs.send({
 			content: msg.author.toString(),
 			embeds: [
-				{
-					title: 'Censor Automod',
-					fields: [
-						{
-							name: 'Information:',
-							value: `**${msg.author.tag}** (\`${
-								msg.author.id
-							}\`) said:\n${ctx.utils.codeblock(
-								msg.content
-							)}\nChannel: <#${
-								msg.channel.id
-							}>\nUser has been timed out for **20 minutes**.\nDM Sent: ${
+				new MessageEmbed()
+					.setTitle('Censor Automod')
+					.setTimestamp(new Date())
+					.setColor(colors.orange)
+					.addField(
+						'Information',
+						`\`User:\` ${msg.author.tag} (${msg.author.id})\n` +
+							`\`Channel:\` <#${msg.channel.id}>\n` +
+							'`Action:` 20 minutes timeout\n' +
+							`\`DM Sent\`: ${
 								dmSent === true ? yesTick : noTick
 							}`,
-							inline: false
-						},
-						{
-							name: 'Caught by:',
-							value: censorTest
-						}
-					],
-					timestamp: new Date(),
-					color: 15705088
-				}
+						false
+					)
+					.addField('Said', ctx.utils.codeblock(msg.content), false)
+					.addField('Caught by', censorTest, false)
 			]
 		});
 		await modlog.send({
 			embeds: [
-				{
-					title: `timeout | case #${caseNumber} | 20 minutes`,
-					description:
-						`**Offender:** ${msg.author.tag} <@${msg.author.id}>\n` +
-						`**Reason:** ${reason}\n` +
-						'**Responsible moderator:** Community Bot#6333',
-					color: 15960130,
-					timestamp: new Date(),
-					footer: { text: `ID: ${msg.author.id}` }
-				}
+				new MessageEmbed()
+					.setTitle(`timeout | case #${caseNumber} | 20 minutes`)
+					.setDescription(
+						`\`Offender:\` ${msg.author.tag} <@${msg.author.id}>\n` +
+							`\`Reason:\` ${reason}\n` +
+							'`Responsible moderator:` Community Bot#6333'
+					)
+					.setColor(colors.orange)
+					.setTimestamp(new Date())
+					.setFooter({ text: `ID: ${msg.author.id}` })
 			]
 		});
-		return null;
 	},
 	{
 		name: 'automod',
