@@ -2,9 +2,11 @@ const {
 	MessageButton: Button,
 	MessageActionRow: ActionRow,
 	MessageEmbed: Embed,
-	MessageButton
+	MessageButton,
+	MessageEmbed
 } = require('discord.js');
 const { pickBy } = require('lodash');
+const colors = require('../utils/colors');
 const CommandOptionType = require('../utils/CommandOptionType');
 
 module.exports = {
@@ -21,6 +23,7 @@ module.exports = {
 			.filter((o) => o.name !== 'random_voter')
 			.map((o) => interaction.options.getString(o.name) ?? null)
 			.filter((o, index) => index !== 0 && o !== null);
+
 		const defaultChoices = {
 			one: {
 				choice: '',
@@ -72,9 +75,16 @@ module.exports = {
 			customId: `no_${interaction.user.id}`
 		});
 		const prompt = await interaction.editReply({
-			content: `Are you sure you want to post this to <#${ctx.config.dmc.votes}>?`,
+			embeds: [
+				new MessageEmbed()
+					.setColor(colors.invisible)
+					.setDescription(
+						`Are you sure you want to post this to <#${ctx.config.dmc.channels.votes}>?`
+					)
+			],
 			components: [new ActionRow({ components: [yes, no] })]
 		});
+
 		const collector = prompt.createMessageComponentCollector({
 			componentType: 'BUTTON',
 			time: 15_000
@@ -82,6 +92,7 @@ module.exports = {
 
 		collector.on('collect', async (button) => {
 			collector.stop();
+
 			if (button.customId === `no_${interaction.user.id}`) {
 				return button.reply({
 					content: 'Okay, not gonna post this poll then.',
@@ -117,7 +128,9 @@ module.exports = {
 				new ActionRow({ components: [...buttons] }),
 				new ActionRow({ components: [endButton] })
 			];
-			const voteChannel = ctx.bot.channels.resolve(ctx.config.dmc.votes);
+			const voteChannel = ctx.bot.channels.resolve(
+				ctx.config.dmc.channels.votes
+			);
 			const embed = new Embed({
 				title: `Poll #${pollNumber} by ${interaction.user.username}`,
 				color: 0x3b88c3,
@@ -136,8 +149,15 @@ module.exports = {
 				embeds: [embed],
 				components
 			});
+
 			return button.editReply({
-				content: `Successfully created poll **#${pollNumber}**, view it in ${voteChannel.toString()}!`
+				embeds: [
+					new MessageEmbed()
+						.setColor(colors.invisible)
+						.setDescription(
+							`Successfully created poll \`#${pollNumber}\`, view it in ${voteChannel.toString()}!`
+						)
+				]
 			});
 		});
 	},

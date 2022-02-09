@@ -6,6 +6,10 @@ const {
 	colourRoles,
 	selfRolesChannel
 } = require('../../assets/communityRoles');
+const colors = require('../utils/colors');
+
+// TODO: move stuff to separate files
+
 /**
  * @param {import('discord.js').MessageComponentInteraction} interaction interaction received by the gateway
  */
@@ -134,6 +138,7 @@ module.exports = async function oninteraction(interaction) {
 			embeds: [
 				{
 					title: `Results for poll #${pollID} by ${interaction.user.username}`,
+					color: colors.invisible,
 					description: `${
 						poll.randomVoter === true
 							? `Random Voter: <@${sample(poll.voted)}>\n`
