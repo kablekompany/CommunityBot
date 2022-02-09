@@ -1,3 +1,5 @@
+const { MessageEmbed } = require('discord.js');
+const colors = require('../utils/colors');
 const CommandOptionType = require('../utils/CommandOptionType');
 
 const domainRegex = /(?:[\w-]+\.)+[\w-]+/gi;
@@ -26,80 +28,61 @@ module.exports = {
 			domainRegexTest[0]
 		);
 
-		let advancedCheckEmbed = {
-			description: 'No extra info is available for this domain.'
-		};
+		let advancedCheckEmbed = new MessageEmbed()
+			.setDescription('No extra info is available for this domain.')
+			.setColor(colors.invisible);
 
 		if (
 			advancedCheck &&
 			!['safe', 'unknown'].includes(advancedCheck.classification)
 		) {
-			advancedCheckEmbed = {
-				title: `Domain Info | ${domainRegexTest[0]}`,
-				description: `Caught \`${advancedCheck.phishCaught.toLocaleString()}\` times`,
-				timestamp: new Date(),
-				color:
-					advancedCheck.classification === 'suspicious'
-						? 0xfbb948
-						: 0xf83656,
-				fields: [
-					{
-						name: 'Status',
-						value: advancedCheck.status,
-						inline: true
-					},
-					{
-						name: 'Verified Phish',
-						value: advancedCheck.verifiedPhish ? 'Yes' : 'No',
-						inline: true
-					},
-					{
-						name: 'Classification',
-						value: ctx.utils.capitalize(
-							advancedCheck.classification
-						),
-						inline: true
-					},
-					{
-						name: 'Date Added',
-						value: ctx.utils.formatTime(advancedCheck.created, 'f'),
-						inline: true
-					},
-					{
-						name: 'First Seen',
-						value: ctx.utils.formatTime(
-							advancedCheck.firstSeen,
-							'f'
-						),
-						inline: true
-					},
-					{
-						name: 'Last Seen',
-						value: ctx.utils.formatTime(
-							advancedCheck.lastSeen,
-							'f'
-						),
-						inline: true
-					},
-					{
-						name: 'Targeted Brand',
-						value: advancedCheck.targetedBrand,
-						inline: true
-					}
-				]
-			};
+			advancedCheckEmbed = new MessageEmbed()
+				.setTitle(`Domain Info | ${domainRegexTest[0]}`)
+				.setDescription(
+					`Caught \`${advancedCheck.phishCaught.toLocaleString()}\` times`
+				)
+				.setTimestamp(new Date())
+				.setColor(colors.invisible)
+				.addField('Status', advancedCheck.status, true)
+				.addField(
+					'Verified Phish',
+					advancedCheck.verifiedPhish ? 'Yes' : 'No',
+					true
+				)
+				.addField(
+					'Classification',
+					ctx.utils.capitalize(advancedCheck.classification),
+					true
+				)
+				.addField(
+					'Date Added',
+					ctx.utils.formatTime(advancedCheck.created, 'f'),
+					true
+				)
+				.addField(
+					'First Seen',
+					ctx.utils.formatTime(advancedCheck.firstSeen, 'f'),
+					true
+				)
+				.addField(
+					'Last Seen',
+					ctx.utils.formatTime(advancedCheck.lastSeen, 'f'),
+					true
+				)
+				.addField('Targeted Brand', advancedCheck.targetedBrand, true);
 		}
 
 		return interaction.editReply({
 			embeds: [
-				{
-					title: 'Basic Check Results',
-					description: `Classification: ${
-						basicCheck.classification
-					}\nVerified phishing link: ${
-						basicCheck.verifiedPhish === true ? 'Yes' : 'No'
-					}`
-				},
+				new MessageEmbed()
+					.setTitle('Basic Check Results')
+					.addField('Classification', basicCheck.classification, true)
+					.addField(
+						'Verified phishing link',
+						basicCheck.verifiedPhish === true ? 'Yes' : 'No',
+						true
+					)
+					.setColor(colors.invisible),
 				advancedCheckEmbed
 			]
 		});
