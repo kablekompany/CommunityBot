@@ -1,3 +1,5 @@
+const { MessageEmbed } = require('discord.js');
+const colors = require('../utils/colors');
 const CommandOptionType = require('../utils/CommandOptionType');
 
 module.exports = {
@@ -6,13 +8,6 @@ module.exports = {
 	 * @param {import('../models/Bot/BotModel')} ctx
 	 */
 	async execute(interaction, ctx) {
-		if (!interaction.member.roles.cache.has(ctx.config.dmc.modRole)) {
-			return interaction.reply({
-				content: "You're missing the **Moderator** role.",
-				ephemeral: true
-			});
-		}
-
 		const member = interaction.options.getMember('member', true);
 		const reason = interaction.options.getString('reason', true);
 		const time = interaction.options.getString('time', true);
@@ -22,8 +17,13 @@ module.exports = {
 			milliseconds = ctx.utils.validateTime(time);
 		} catch (err) {
 			return interaction.reply({
-				content: 'This seems like an invalid time, try again maybe?',
-				ephemeral: true
+				embeds: [
+					new MessageEmbed()
+						.setDescription(
+							'This seems like an invalid time, try again maybe?'
+						)
+						.setColor(colors.invisible)
+				]
 			});
 		}
 
@@ -32,10 +32,11 @@ module.exports = {
 		} catch (err) {
 			return interaction.reply({
 				embeds: [
-					{
-						description: `I was unable to timeout this member.\n\nError: ${err.message}`,
-						color: 0xd3403d // red
-					}
+					new MessageEmbed()
+						.setDescription(
+							`I was unable to timeout this member.\n\nError: ${err.message}`
+						)
+						.setColor(colors.red)
 				],
 				ephemeral: true
 			});
@@ -45,16 +46,19 @@ module.exports = {
 		await member
 			.send({
 				embeds: [
-					{
-						title: `You've been timed out in ${interaction.guild.name}`,
-						description: `Reason: ${reason}\n\nTimeout ends ${endTime}`,
-						color: 0xed7438 // orange
-					}
+					new MessageEmbed()
+						.setTitle(
+							`You've been timed out in ${interaction.guild.name}`
+						)
+						.setDescription(
+							`Reason: ${reason}\n\nTimeout ends ${endTime}`
+						)
+						.setColor(colors.invisible)
 				]
 			})
 			.catch(() => null);
 
-		const modlog = ctx.bot.channels.resolve(ctx.config.dmc.modlog);
+		const modlog = ctx.bot.channels.resolve(ctx.config.dmc.channels.modLog);
 		const moderator = {
 			id: interaction.user.id,
 			tag: interaction.user.tag
@@ -67,33 +71,37 @@ module.exports = {
 		);
 		modlog.send({
 			embeds: [
-				{
-					title: `timeout | case #${caseNumber} | ${ctx.utils.parseTime(
-						milliseconds / 1000
-					)}`,
-					description:
-						`**Offender:** ${member.user.tag} <@${member.id}>\n` +
-						`**Reason:** ${reason}\n` +
-						`**Responsible moderator:** ${moderator.tag}`,
-					color: 15960130,
-					timestamp: new Date(),
-					footer: { text: `ID: ${member.id}` }
-				}
+				new MessageEmbed()
+					.setTitle(
+						`timeout | case #${caseNumber} | ${ctx.utils.parseTime(
+							milliseconds / 1000
+						)}`
+					)
+					.setDescription(
+						`\`Offender:\` ${member.user.tag} <@${member.id}>\n` +
+							`\`Reason:\` ${reason}\n` +
+							`\`Responsible moderator:\` ${moderator.tag}`
+					)
+					.setColor(colors.orange)
+					.setTimestamp(new Date())
+					.setFooter({ text: `ID: ${member.id}` })
 			]
 		});
 
 		return interaction.reply({
 			embeds: [
-				{
-					title: 'Timeout Successful',
-					description: `**${member.user.tag}**'s timeout ends **${endTime}**`,
-					color: 0x89ff7a // green
-				}
+				new MessageEmbed()
+					.setTitle('Timeout Successful')
+					.setDescription(
+						`\`${member.user.tag}\`'s timeout ends ${endTime}`
+					)
+					.setColor(colors.green)
 			],
 			ephemeral: true
 		});
 	},
 	name: 'timeout',
+	default_permission: false,
 	description: 'Timeout a user for a specified duration with a reason.',
 	options: [
 		{
