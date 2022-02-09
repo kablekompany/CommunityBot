@@ -1,10 +1,20 @@
 {
   "owners": [],
   "applicationID": "",
-  "prefixes": ["d!"],
+  "prefixes": [
+    "d!"
+  ],
   "dmc": {
+    "roles": {
+      "moderator": "",
+      "admin": ""
+    },
+    "channels": {
+      "votes": "",
+      "modLog": "",
+      "autoModLogs": ""
+    },
     "communityManagerRole": "",
-    "modRole": "",
     "trialMod": "",
     "mutedRole": "",
     "adminRole": "",
@@ -21,10 +31,8 @@
     "memerCategory": "",
     "automodLogs": "",
     "tradeLogs": "",
-    "modlog": "",
-    "guildID": "",
-    "eventParticipant": "",
-    "allStaffRoles": []
+    "guildID": "917075127139717200",
+    "eventParticipant": ""
   },
   "log": {
     "bootLog": {
