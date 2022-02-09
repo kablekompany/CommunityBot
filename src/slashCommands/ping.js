@@ -1,3 +1,6 @@
+const { MessageEmbed } = require('discord.js');
+const colors = require('../utils/colors');
+
 module.exports = {
 	name: 'ping',
 	description: "pong, get the latency to Discord's API",
@@ -6,12 +9,14 @@ module.exports = {
 	async execute(interaction) {
 		await interaction.reply({
 			embeds: [
-				{
-					title: 'pong!',
-					description: `**Discord API Websocket Ping**: \`${Math.round(
-						interaction.client.ws.ping
-					)}ms\`.`
-				}
+				new MessageEmbed()
+					.setTitle('Pong! :ping_pong:')
+					.setColor(colors.invisible)
+					.setDescription(
+						`Discord API Websocket Ping: \`${Math.round(
+							interaction.client.ws.ping
+						)}ms\`.`
+					)
 			]
 		});
 	}
